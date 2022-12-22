@@ -1,3 +1,6 @@
+// import 'antd/dist/reset.css';
+// import "antd/dist/antd.min.js"
+
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
