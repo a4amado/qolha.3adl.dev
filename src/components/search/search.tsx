@@ -1,6 +1,7 @@
 import { AutoComplete, Input, Row, Typography, Spin, Button } from "antd";
 import React, { Reducer, useReducer } from "react";
 import axios from "axios";
+import Router from "next/router";
 
 export interface AutoComeleteOption {
   label: any;
@@ -25,14 +26,14 @@ interface ReducerAction {
 }
 
 const SearchOption: HitsReducerState = {
-  hits: [{ label: <Spin />, value: "Searching", key: "SEARCHING" }],
+  hits: [{ label: <Spin />, value: "Searching", key: "asd" }],
 };
 const NotingFoundOption: HitsReducerState = {
   hits: [
     {
       label: <Typography>لم نجد شيئاََ</Typography>,
       value: "Searching",
-      key: "ss",
+      key: "Asdasdasda",
     },
   ],
 };
@@ -119,7 +120,9 @@ export default function Search() {
     return () => document.removeEventListener("scroll", tooglePosition);
   });
 
-  console.log(hits);
+  function handleSelect(_: any, s: AutoComeleteOption) {
+    return Router.push({ pathname: "/", query: { q: s.key, word: s.value } });
+  }
 
   return (
     <>
@@ -127,7 +130,7 @@ export default function Search() {
         <Row ref={targetRef} className="w-full max-w-4xl px-4 py-4 mx-auto">
           <AutoComplete
             options={hits}
-            onSelect={console.log}
+            onSelect={handleSelect}
             className="w-full"
             onChange={search}
             value={q[0]}
