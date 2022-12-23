@@ -1,23 +1,12 @@
 import { AutoComplete, Input, Row, Typography, Spin, Button } from "antd";
 import React, { Reducer, useReducer } from "react";
 import axios from "axios";
-import { toNamespacedPath } from "path";
 
 export interface AutoComeleteOption {
   label: any;
   value: string;
   key: string;
 }
-const SearchOption: Array<AutoComeleteOption> = [
-  { label: <Spin />, value: "Searching", key: "SEARCHING" },
-];
-const NotingFoundOption: Array<AutoComeleteOption> = [
-  {
-    label: <Typography>لم نجد شيئاََ</Typography>,
-    value: "Searching",
-    key: "ss",
-  },
-];
 
 export interface AlogoliaHit {
   ar: string;
@@ -26,27 +15,41 @@ export interface AlogoliaHit {
 }
 
 export interface HitsReducerState {
-  hits: Array<{ label: string; value: string; key: string }> | Array<never>;
+  hits:
+    | Array<{ label: React.ReactElement | string; value: string; key: string }>
+    | Array<never>;
 }
 interface ReducerAction {
   type: "REPLACE_ITEMS" | "LOADING" | "NOT_FOUND";
   data?: HitsReducerState;
 }
 
-// @ts-ignore next-line
+const SearchOption: HitsReducerState = {
+  hits: [{ label: <Spin />, value: "Searching", key: "SEARCHING" }],
+};
+const NotingFoundOption: HitsReducerState = {
+  hits: [
+    {
+      label: <Typography>لم نجد شيئاََ</Typography>,
+      value: "Searching",
+      key: "ss",
+    },
+  ],
+};
+
 export const handleReducer: Reducer<HitsReducerState, ReducerAction> = (
   state,
   action
-) => {
+): HitsReducerState => {
   switch (action.type) {
     case "LOADING":
-      const IS_LOADING_STATE = { hits: SearchOption };
+      const IS_LOADING_STATE: HitsReducerState = SearchOption;
       return IS_LOADING_STATE;
     case "NOT_FOUND":
-      const NOT_FOUND_STATE = { hits: NotingFoundOption };
+      const NOT_FOUND_STATE = NotingFoundOption;
       return NOT_FOUND_STATE;
     case "REPLACE_ITEMS":
-      const NEW_STATE = { hits: action.data?.hits };
+      const NEW_STATE: HitsReducerState = { hits: action.data?.hits || [] };
       return NEW_STATE;
     default:
       const STATE = { hits: [] };
@@ -93,9 +96,7 @@ export default function Search() {
             })),
           },
         });
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     },
     [q[0]]
   );
