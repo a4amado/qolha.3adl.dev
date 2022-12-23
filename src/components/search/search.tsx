@@ -54,11 +54,14 @@ export default function Search() {
         function tooglePosition() {
             if (window.scrollY > containerRef.current.offsetTop) {
                 targetRef.current.classList.add("fixed");
-                targetRef.current.style.top = "0px";
-                
-
+                targetRef.current.classList.add("top-0")
+                targetRef.current.classList.add("left-1/2")
+                targetRef.current.classList.add("-translate-x-1/2")
             } else {
-                targetRef.current.classList.remove("fixed")
+                targetRef.current.classList.remove("fixed");
+                targetRef.current.classList.remove("top-0")
+                targetRef.current.classList.remove("left-1/2")
+                targetRef.current.classList.remove("-translate-x-1/2")
             }
         }
         document.addEventListener("scroll", tooglePosition)
@@ -67,21 +70,15 @@ export default function Search() {
 
     return <>
         <Row ref={containerRef} className="w-full">
-            <Row ref={targetRef} className="w-full h-full max-w-4xl px-4 py-4">
+            <Row ref={targetRef} className="w-full max-w-4xl px-4 py-4 mx-auto">
                 <AutoComplete
-
                     options={hits[0] || []}
                     onSelect={console.log}
                     className="w-full"
                     onChange={search}
                     value={q[0]}
-
-
-
                 >
-                    <Input.Search className="w-full" size="large" placeholder="ورميت سهم الحب اقصد قلبها فأصاب سهمي عينها فاعورت"
-                         />
-
+                    <Input.Search className="w-full" size="large" placeholder="ورميت سهم الحب اقصد قلبها فأصاب سهمي عينها فاعورت" />
                 </AutoComplete>
 
             </Row>
