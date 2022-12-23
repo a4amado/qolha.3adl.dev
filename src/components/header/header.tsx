@@ -2,7 +2,7 @@ import { Row, Col, Typography } from "antd";
 import Search from "../search";
 import NextLink from "next/link";
 
-export default function Header() {
+export default function Header({ isSearch }: { isSearch: boolean }) {
   return (
     <Row className="w-full flex flex-col">
       <Row className="w-full  bg-slate-600 px-5">
@@ -20,7 +20,8 @@ export default function Header() {
         </Row>
       </Row>
 
-      <Search />
+      {isSearch && <Search />}
+
     </Row>
   );
 }

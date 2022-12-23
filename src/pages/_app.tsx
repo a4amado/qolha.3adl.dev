@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react";
 
 import "../styles/globals.css";
 import GoToUp from "../components/gotToUp";
+import Loading from "../components/loading";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,6 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
+      <Loading />
       <Component {...pageProps} />
       <GoToUp />
     </SessionProvider>

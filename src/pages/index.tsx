@@ -29,7 +29,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      word: true
+      word: true,
+      query: ctx.query,
     },
   };
 };
@@ -42,9 +43,9 @@ export default function Page(props: any) {
   return (
     <>
       <Row className="flex flex-col">
-        <Header />
+        <Header isSearch={true} />
         <PageContainer>
-          <TargetWord />
+          {isError && <TargetWord word="حدثَ خطاََ ما." />}
           <Row>
             {isHome && "HOME"}
             {isError && "Error"}

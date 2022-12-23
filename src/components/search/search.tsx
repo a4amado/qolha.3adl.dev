@@ -71,8 +71,7 @@ export default function Search() {
       try {
         q[1](e);
         if (!e) {
-          dispatchHits({ type: "REPLACE_ITEMS", data: { hits: [] } });
-          return;
+          return dispatchHits({ type: "REPLACE_ITEMS", data: { hits: [] } });
         }
         dispatchHits({
           type: "LOADING",
@@ -130,6 +129,7 @@ export default function Search() {
         <Row ref={targetRef} className="w-full max-w-4xl px-4 py-4 mx-auto">
           <AutoComplete
             options={hits}
+            defaultActiveFirstOption
             onSelect={handleSelect}
             className="w-full"
             onChange={search}

@@ -1,6 +1,6 @@
 import { Typography, Row } from "antd";
 
-export default function TargetWord() {
+export default function TargetWord({ word }: { word: string }) {
   return (
     <Row>
       <Typography.Title
@@ -8,7 +8,7 @@ export default function TargetWord() {
         className="text-4xl xs:text-4xl md:text-6xl font-medium h-auto"
         itemType=""
       >
-        كلمة عربيه
+        {word}
       </Typography.Title>
     </Row>
   );
