@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
     "dev": "next dev",
+    "format": "prettier --write \"./src/**/*.{ts,js,tsx,html,css,scss}\"",
+    "build": "next build",
     "postinstall": "prisma migrate dev",
     "lint": "next lint",
     "start": "next start"
@@ -29,10 +30,12 @@
     "react-icons": "^4.7.1",
     "react-use": "^17.4.0",
     "superjson": "1.9.1",
-    "zod": "^3.18.0"
+    "zod": "^3.18.0",
+    "zustand": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
+    "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
@@ -41,7 +44,7 @@
     "eslint": "^8.26.0",
     "eslint-config-next": "13.0.2",
     "postcss": "^8.4.14",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "prisma": "^4.5.0",
     "tailwindcss": "^3.2.0",
