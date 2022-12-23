@@ -1,6 +1,6 @@
 import { Row } from "antd"
 import Header from "../components/header"
-
+import TargetWord from "../components/TargetWord/TargetWord"
 
 
 
@@ -10,7 +10,7 @@ export default function Page() {
     <Row className="flex flex-col">
 
     <Header />
-    {Array.from({ length: 100 }).map(() => <div>ss</div>)}
+    <TargetWord />
     </Row>
     </>
 }
