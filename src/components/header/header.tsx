@@ -21,7 +21,6 @@ export default function Header({ isSearch }: { isSearch: boolean }) {
       </Row>
 
       {isSearch && <Search />}
-
     </Row>
   );
 }

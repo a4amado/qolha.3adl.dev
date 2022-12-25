@@ -6,6 +6,7 @@ import PageContainer from "../components/PageContainer";
 import TargetWord from "../components/TargetWord/TargetWord";
 import { GetServerSideProps } from "next/types";
 import * as yup from "yup";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!ctx.query.q && !ctx.query.word) return { props: { home: true } };
@@ -16,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   });
 
   try {
-    const v = await quertSchema.validate(ctx.query);
+    await quertSchema.validate(ctx.query);
   } catch (error: any) {
     const err: yup.ValidationError = error;
     return {
@@ -39,12 +40,21 @@ export default function Page(props: any) {
   const isHome = !!props.home;
   const isError = !!props.error;
   const isWord = !!props.word;
+  const supabase = useSupabaseClient();
 
   return (
     <>
       <Row className="flex flex-col">
         <Header isSearch={true} />
         <PageContainer>
+          <Button
+            onClick={async () => {
+              const f = await supabase.from("audios").select("*");
+              console.log(f);
+            }}
+          >
+            supabase
+          </Button>
           {isError && <TargetWord word="حدثَ خطاََ ما." />}
           <Row>
             {isHome && "HOME"}

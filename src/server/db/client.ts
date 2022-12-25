@@ -1,19 +1,34 @@
-import { PrismaClient } from "@prisma/client";
+import mongoose from "mongoose";
 
-import { env } from "../../env/server.mjs";
+const WordSchema = new mongoose.Schema({
+  ar: String,
+  en: String,
+  audios: [{ type: mongoose.Schema.Types.ObjectId, ref: "Audio" }],
+});
+export const Word =
+  mongoose.models["Word"] || mongoose.model("Word", WordSchema);
 
-declare global {
-  // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
-}
+const WordToReviewSchema = new mongoose.Schema({
+  ar: String,
+  en: String,
+  audios: [{ type: mongoose.Schema.Types.ObjectId, ref: "Audio" }],
+});
 
-export const prisma =
-  global.prisma ||
-  new PrismaClient({
-    log:
-      env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
+export const WordToReview =
+  mongoose.models["WordToReview"] ||
+  mongoose.model("WordToReview", WordToReviewSchema);
 
-if (env.NODE_ENV !== "production") {
-  global.prisma = prisma;
-}
+const AudioSchema = new mongoose.Schema({
+  path: String,
+  word: { type: mongoose.Schema.Types.ObjectId, ref: "Word" },
+});
+export const Audio =
+  mongoose.models["Audio"] || mongoose.model("Audio", AudioSchema);
+
+const AudioToReviewSchema = new mongoose.Schema({
+  path: String,
+  word: { type: mongoose.Schema.Types.ObjectId, ref: "Word" },
+});
+export const AudioToReview =
+  mongoose.models["AudioToReview"] ||
+  mongoose.model("AudioToReview", AudioToReviewSchema);
