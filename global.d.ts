@@ -3,8 +3,9 @@ declare global {
       interface ProcessEnv {
         NODE_ENV: 'development' | 'production';
         PORT?: string;
-        GOOGLE_CLIENT_ID: string;
-        GOOGLE_CLIENT_SECRET: string;
+        ALGO_API_ID:string;
+        ALOG_SEARCH_ONLY_KEY:string;
+        DATABASE_URL: string;
       }
     }
   }

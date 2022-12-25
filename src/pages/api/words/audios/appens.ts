@@ -24,15 +24,7 @@ export default nextConnect().post(
       });
       const saveNewAudio = await newAudio.save();
 
-      // @ts-ignore next-line
-      const getWord = await Word.findOne({
-        _id: req.body.word_id,
-      });
-
-      getWord.audios.push(saveNewAudio);
-      await getWord.save();
-
-      res.json(getWord);
+      res.json(saveNewAudio);
     } catch (error) {
       console.log(error);
     }

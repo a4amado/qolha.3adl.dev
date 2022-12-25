@@ -1,7 +1,5 @@
 import { Row, Button, Typography, Spin, notification } from "antd";
-
 import { useHotkeys } from "react-hotkeys-hook";
-
 import useRecorder from "@wmik/use-media-recorder";
 import React from "react";
 import FormData from "form-data";
