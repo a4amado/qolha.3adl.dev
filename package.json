@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "format": "prettier --write \"./src/**/*.{ts,js,tsx,html,css,scss}\"",
-     "lint": "next lint",
+    "lint": "next lint",
     "build": "next build",
     "start": "next start"
   },
@@ -21,6 +21,7 @@
     "axios": "^1.2.1",
     "cross-env": "^7.0.3",
     "express": "^4.18.2",
+    "firebase": "^9.15.0",
     "form-data": "^4.0.0",
     "framer-motion": "^8.0.2",
     "mongoose": "^6.8.1",
@@ -29,6 +30,7 @@
     "next-connect": "^0.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-hotkeys-hook": "^4.0.8",
     "react-icons": "^4.7.1",
     "react-use": "^17.4.0",
