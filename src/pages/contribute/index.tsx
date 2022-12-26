@@ -57,7 +57,7 @@ export default function Page() {
 
   // GET Word onMount
   React.useEffect(() => {
-     getWord();
+    getWord();
   }, []);
 
   const url = React.useMemo(() => {
@@ -175,7 +175,6 @@ export default function Page() {
               ارسل
             </Button>
           </Row>
-           
         </Row>
       </PageContainer>
     </>
