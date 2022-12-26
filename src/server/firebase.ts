@@ -4,16 +4,15 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCPHSsraLEMa2Hu41OVACMV_nslUgJyqUU",
-  authDomain: "sait-5fd26.firebaseapp.com",
-  databaseURL:
-    "https://sait-5fd26-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "sait-5fd26",
-  storageBucket: "sait-5fd26.appspot.com",
-  messagingSenderId: "505856707076",
-  appId: "1:505856707076:web:e5bc46d5e979c8eee94351",
-  measurementId: "G-CXPZ214N2C",
+  apiKey: "AIzaSyD6eR7x0BSTi4wasnzkrW_Qi6j8uiJiM7g",
+  authDomain: "qolha-372817.firebaseapp.com",
+  projectId: "qolha-372817",
+  storageBucket: "qolha-372817.appspot.com",
+  messagingSenderId: "118315522198",
+  appId: "1:118315522198:web:30ee3cb0ae1bc335424ab7",
+  measurementId: "G-FKLJDTKM5E"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
