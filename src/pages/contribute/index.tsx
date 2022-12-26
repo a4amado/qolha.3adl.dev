@@ -1,29 +1,32 @@
 import { Row, Button, Typography, Spin, notification } from "antd";
-import { useHotkeys } from "react-hotkeys-hook";
 import useRecorder from "@wmik/use-media-recorder";
 import React from "react";
-import FormData from "form-data";
 import PageContainer from "../../components/PageContainer";
 import Header from "../../components/header";
 import { useToggle } from "react-use";
 import { v4 } from "uuid";
 import { Cols, db, storage } from "../../server/firebase";
 import { uploadBytes, ref as StorageRef } from "firebase/storage";
-import { updateDoc, collection, doc, arrayUnion, query, orderBy, getDocs, limit, addDoc, DocumentReference} from "firebase/firestore";
- 
+import {
+  updateDoc,
+  collection,
+  doc,
+  arrayUnion,
+  query,
+  orderBy,
+  getDocs,
+  limit,
+  addDoc,
+  DocumentReference,
+} from "firebase/firestore";
 
 interface WordType {
   ar: string;
-  
   en: string;
-   id: string;
-};
-
-
+  id: string;
+}
 
 export default function Page() {
-  
- 
   ///////////////////////////////////////////////////////////
   // Audiorecording instance
   ///////////////////////////////////////////////////////////
@@ -36,22 +39,27 @@ export default function Page() {
   const [word, setWord] = React.useState<WordType | null>();
 
   async function getWord() {
-    const {docs} = await getDocs(query(collection(db, "/"+ Cols.WORDS), orderBy("audios"), limit(1)))
-    const f = docs[0]?.data()
-    if (!f) return;
-    
-    const w: WordType = {
-       id: docs[0]?.id || "",
-      ar: f.ar,
-      en: f.en,
-     };
-    
-    setWord(w);
-    
+    const { docs } = await getDocs(
+      query(collection(db, "/" + Cols.WORDS), orderBy("audios"), limit(1))
+    );
 
+    const data = docs[0]?.data();
+    if (!data) return;
+
+    const w: WordType = {
+      id: docs[0]?.id || "",
+      ar: data.ar,
+      en: data.en,
+    };
+
+    setWord(w);
   }
 
-  const audioRef = React.useRef<any>();
+  // GET Word onMount
+  React.useEffect(() => {
+    getWord();
+  }, []);
+
   const url = React.useMemo(() => {
     if (!recorder.mediaBlob) return "";
     return typeof window !== "undefined"
@@ -59,55 +67,39 @@ export default function Page() {
       : "";
   }, [recorder.status, recorder.mediaBlob]);
 
-  React.useEffect(() => {
-    getWord();
-  }, []);
-  const sound = new FormData();
-  React.useEffect(() => {
-    sound.append("audio", recorder.mediaBlob);
-  }, [recorder.status]);
-
   const [o, OF] = useToggle(false);
   const [, setError] = React.useState(false);
 
   async function submit() {
     try {
-      // if (recorder.mediaBlob?.size === 0) return false;
-      // if (!word?._id) return false;
+      if (recorder.mediaBlob?.size === 0) return false;
+      if (!word?.id) return false;
 
       OF(true);
       setError(false);
       if (!recorder.mediaBlob) return false;
-      if (recorder.status === "recording") recorder.stopRecording()
+      if (recorder.status === "recording") recorder.stopRecording();
       setIsSubmitting(true);
 
+      const clip = await uploadBytes(
+        StorageRef(storage, `/clips/${v4()}`),
+        recorder.mediaBlob
+      );
 
-      const clip = await uploadBytes(StorageRef(storage, `/clips/${v4()}`), recorder.mediaBlob);
-      
-      
       const audios = await addDoc(collection(db, `/${Cols.AUDIOS_TO_REVIEW}`), {
-        
-        word: doc(collection(db, `/${Cols.AUDIOS_TO_REVIEW}`),`/${word?.id}`) as DocumentReference,
-        path: clip.metadata.fullPath
-      });
-      
-      const w = await updateDoc(doc(collection(db, "/" + Cols.WORDS), `/${word?.id}`), {
-        audios: arrayUnion(clip.metadata.fullPath)
+        word: doc(
+          collection(db, `/${Cols.WORDS}`),
+          `/${word?.id}`
+        ) as DocumentReference,
+        path: clip.metadata.fullPath,
       });
 
-      console.log(w);
-      
-      // const s = await supabase.storage
-      //   .from("audios")
-      //   .upload(v4(), recorder.mediaBlob);
-      // await axios({
-      //   url: "api/words/audios/appens",
-      //   method: "POST",
-      //   data: {
-      //     path: s.data?.path,
-      //     word_id: word._id,
-      //   },
-      // });
+      const w = await updateDoc(
+        doc(collection(db, "/" + Cols.WORDS), `/${word?.id}`),
+        {
+          audios: arrayUnion(clip.metadata.fullPath),
+        }
+      );
 
       await getWord();
 
@@ -115,12 +107,17 @@ export default function Page() {
       setIsSubmitting(false);
       recorder.clearMediaBlob();
       recorder.clearMediaStream();
-      notification["success"]({
+      const uid = v4();
+      const not = notification["success"]({
         message: "تَم الحِفظ.",
         closeIcon: true,
         duration: 40,
         btn: true,
+        key: uid,
       });
+      setTimeout(() => {
+        notification["destroy"](uid);
+      }, 1000);
     } catch {
       OF(false);
       setError(true);
@@ -131,7 +128,6 @@ export default function Page() {
       });
     }
   }
-
 
   return (
     <>
@@ -179,19 +175,19 @@ export default function Page() {
               ارسل
             </Button>
           </Row>
-          <Button onClick={async () => {
-            
-            for (let index = 0; index < 100; index++) {
-              addDoc(collection(db, `/${Cols.WORDS}`), {
-                ar: `كلمة ${index}`,
-                en: `Word ${index}`,
-                audios: []
-              })
-              
-            }
-            
-            
-          }}>ss</Button>
+          <Button
+            onClick={async () => {
+              for (let index = 0; index < 100; index++) {
+                addDoc(collection(db, `/${Cols.WORDS}`), {
+                  ar: `كلمة ${index}`,
+                  en: `Word ${index}`,
+                  audios: [],
+                });
+              }
+            }}
+          >
+            ss
+          </Button>
         </Row>
       </PageContainer>
     </>

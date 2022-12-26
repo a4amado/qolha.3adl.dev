@@ -1,5 +1,4 @@
-import { Button, Row } from "antd";
-import Router from "next/router";
+import { Row } from "antd";
 import React from "react";
 import Header from "../components/header";
 import PageContainer from "../components/PageContainer";
@@ -47,14 +46,6 @@ export default function Page(props: any) {
       <Row className="flex flex-col">
         <Header isSearch={true} />
         <PageContainer>
-          <Button
-            onClick={async () => {
-              const f = await supabase.from("audios").select("*");
-              console.log(f);
-            }}
-          >
-            supabase
-          </Button>
           {isError && <TargetWord word="حدثَ خطاََ ما." />}
           <Row>
             {isHome && "HOME"}

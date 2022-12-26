@@ -17,6 +17,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.33.0
   '@typescript-eslint/parser': ^5.33.0
   '@wmik/use-media-recorder': 1.6.5-beta.0
+  adblock-detect-react: ^1.1.0
   algoliasearch: ^4.14.3
   antd: ^5.1.0
   autoprefixer: ^10.4.7
@@ -57,6 +58,7 @@ dependencies:
   '@supabase/supabase-js': 2.2.2
   '@tanstack/react-query': 4.20.4_biqbaboplfbrettd7655fr4n2y
   '@wmik/use-media-recorder': 1.6.5-beta.0_react@18.2.0
+  adblock-detect-react: 1.1.0_biqbaboplfbrettd7655fr4n2y
   algoliasearch: 4.14.3
   antd: 5.1.0_biqbaboplfbrettd7655fr4n2y
   axios: 1.2.1
@@ -2356,6 +2358,16 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: true
+
+  /adblock-detect-react/1.1.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-MyXO3gbq5JdYRYpCz0RiB3VFckYryIxVwME+ES6oPOIEovn17hKnfYOfwEXZyPUTnvEvtx7r8LY3hGpSDhNIoA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /ajv/6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
