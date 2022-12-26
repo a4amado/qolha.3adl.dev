@@ -175,19 +175,7 @@ export default function Page() {
               ارسل
             </Button>
           </Row>
-          <Button
-            onClick={async () => {
-              for (let index = 0; index < 100; index++) {
-                addDoc(collection(db, `/${Cols.WORDS}`), {
-                  ar: `كلمة ${index}`,
-                  en: `Word ${index}`,
-                  audios: [],
-                });
-              }
-            }}
-          >
-            ss
-          </Button>
+           
         </Row>
       </PageContainer>
     </>
