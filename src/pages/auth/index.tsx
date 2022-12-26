@@ -1,13 +1,13 @@
 import PageContainer from "../../components/PageContainer";
 import { Button } from "antd";
 import { auth } from "../../server/firebase";
-import { GoogleAuthProvider, signInWithPopup    } from "firebase/auth";
-const g = new GoogleAuthProvider();
-const LoginPage = () => {
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword    } from "firebase/auth";
+ const LoginPage = () => {
    return (
     <PageContainer>
  
-      <Button onClick={() => signInWithPopup(auth, g)}>Login</Button>
+ <Button onClick={() => createUserWithEmailAndPassword(auth, "a4addel@gmail.com", "a4addel@gmail.com")}>Register</Button>
+ <Button onClick={() => signInWithEmailAndPassword(auth, "a4addel@gmail.com", "a4addel@gmail.com")}>Login</Button>
     </PageContainer>
   );
 };

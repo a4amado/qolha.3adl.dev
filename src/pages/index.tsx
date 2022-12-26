@@ -5,9 +5,8 @@ import PageContainer from "../components/PageContainer";
 import TargetWord from "../components/TargetWord/TargetWord";
 import { GetServerSideProps } from "next/types";
 import * as yup from "yup";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { auth } from "../server/firebase";
-import { signOut } from "firebase/auth";
+ import { auth } from "../server/firebase";
+import { signOut, onAuthStateChanged} from "firebase/auth";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!ctx.query.q && !ctx.query.word) return { props: { home: true } };
@@ -17,6 +16,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     word: yup.string().required(),
   });
 
+  onAuthStateChanged(auth, (s) => {
+    console.log(s?.email);
+    
+  } )
   try {
     await quertSchema.validate(ctx.query);
   } catch (error: any) {
