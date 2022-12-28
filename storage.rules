@@ -1,0 +1,12 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /clips/{fileId} {
+      allow delete, update: if  request.auth != null &&  request.auth.token.role == "admin";
+      allow write, read: if true;
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

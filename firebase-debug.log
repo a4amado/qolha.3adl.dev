@@ -1,0 +1,29 @@
+[debug] [2022-12-28T10:57:16.609Z] ----------------------------------------------------------------------
+[debug] [2022-12-28T10:57:16.613Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-12-28T10:57:16.614Z] CLI Version:   11.19.0
+[debug] [2022-12-28T10:57:16.614Z] Platform:      win32
+[debug] [2022-12-28T10:57:16.614Z] Node Version:  v16.19.0
+[debug] [2022-12-28T10:57:16.616Z] Time:          Wed Dec 28 2022 02:57:16 GMT-0800 (Pacific Standard Time)
+[debug] [2022-12-28T10:57:16.616Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-12-28T10:57:16.744Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-12-28T10:57:16.745Z] > authorizing via signed-in user (a4addel@gmail.com)
+[debug] [2022-12-28T10:57:16.745Z] [iam] checking project qolha-372817 for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2022-12-28T10:57:16.749Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/qolha-372817:testIamPermissions [none]
+[debug] [2022-12-28T10:57:16.750Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/qolha-372817:testIamPermissions x-goog-quota-user=projects/qolha-372817
+[debug] [2022-12-28T10:57:16.750Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/qolha-372817:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2022-12-28T10:57:17.716Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/qolha-372817:testIamPermissions 200
+[debug] [2022-12-28T10:57:17.717Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/qolha-372817:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2022-12-28T10:57:17.720Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/qolha-372817 [none]
+[debug] [2022-12-28T10:57:18.166Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/qolha-372817 200
+[debug] [2022-12-28T10:57:18.166Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/qolha-372817 {"projectId":"qolha-372817","projectNumber":"118315522198","displayName":"Qolha","name":"projects/qolha-372817","resources":{"hostingSite":"qolha-372817","storageBucket":"qolha-372817.appspot.com","locationId":"asia-southeast2"},"state":"ACTIVE","etag":"1_8e087914-4117-415c-b863-15672360fd50"}
+[debug] [2022-12-28T10:57:38.849Z] defaultcredentials: writing to file C:\Users\ali\AppData\Roaming\firebase\a4addel_gmail_com_application_default_credentials.json
+[debug] [2022-12-28T10:57:38.853Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/qolha-372817/sites pageToken=&pageSize=10
+[debug] [2022-12-28T10:57:39.985Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/qolha-372817/sites 200
+[debug] [2022-12-28T10:57:39.985Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/qolha-372817/sites {"sites":[{"name":"projects/qolha-372817/sites/qolha-372817","defaultUrl":"https://qolha-372817.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2022-12-28T10:57:39.988Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/qolha-372817/sites 
+[debug] [2022-12-28T10:57:41.102Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/qolha-372817/sites 200
+[debug] [2022-12-28T10:57:41.103Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/qolha-372817/sites {"sites":[{"name":"projects/qolha-372817/sites/qolha-372817","defaultUrl":"https://qolha-372817.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2022-12-28T10:57:41.104Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/qolha-372817/webApps/-/config [none]
+[debug] [2022-12-28T10:57:42.190Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/qolha-372817/webApps/-/config 200
+[debug] [2022-12-28T10:57:42.191Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/qolha-372817/webApps/-/config {"projectId":"qolha-372817","appId":"1:118315522198:web:30ee3cb0ae1bc335424ab7","storageBucket":"qolha-372817.appspot.com","locationId":"asia-southeast2","apiKey":"AIzaSyD6eR7x0BSTi4wasnzkrW_Qi6j8uiJiM7g","authDomain":"qolha-372817.firebaseapp.com","messagingSenderId":"118315522198","measurementId":"G-FKLJDTKM5E"}
