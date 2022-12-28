@@ -4,10 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-
+qolha-372817-firebase-adminsdk-xy46m-171f58298f.json
 # testing
 /coverage
-
+.firebase
 # database
 /prisma/db.sqlite
 /prisma/db.sqlite-journal
