@@ -1,18 +1,8 @@
 import nextConnect from "next-connect";
 import * as jsonwebtoken from "jsonwebtoken";
-import mongoose from "mongoose";
-import { compareSync } from "bcrypt";
 import * as yup from "yup";
 import { NextApiRequest, NextApiResponse } from "next";
-import { serialize } from "cookie";
 
-const AdminSchema = new mongoose.Schema({
-  email: String,
-  hash: String,
-  role: String,
-});
-const Admin = mongoose.models["Admin"] || mongoose.model("Admin", AdminSchema);
-mongoose.set('strictQuery', false);
 export default nextConnect().post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     try {
@@ -23,17 +13,10 @@ export default nextConnect().post(
 
       await schema.validate(req.body);
 
-      await mongoose.connect(process.env.DATABASE_URL);
+      const isAdmin = req.body.email == process.env.ADMIN_EMAIL;
+      const isPassword = req.body.password == process.env.ADMIN_PASSWORD;
 
-      // @ts-ignore next-line
-      const admin = await Admin.findOne({ email: req.body.email || "" });
-
-      if (!admin) {
-        throw "No Admin";
-      }
-
-      const ss = await compareSync(req.body.password, admin.hash);
-      if (!ss) throw "Wrong Password or Email";
+      if (!isAdmin || !isPassword) throw "Wrong Password or Email";
 
       const token = jsonwebtoken.sign(
         {
@@ -42,15 +25,10 @@ export default nextConnect().post(
         `${process.env.JWT_SECRET}`,
         { expiresIn: "1h" }
       );
-      res.setHeader(
-        "set-cookie",
-        serialize("token", token, { httpOnly: true, path: "/" })
-      )
+      res.setHeader("set-cookie", `token=${token}; httpOnly; path=/; secure`);
 
       res.json("Done");
     } catch (error) {
-      console.log(error);
-
       res.json(error);
     }
   }
