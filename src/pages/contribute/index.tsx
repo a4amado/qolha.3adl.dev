@@ -43,20 +43,19 @@ export default function Page() {
       const { docs } = await getDocs(
         query(collection(db, "/" + Cols.WORDS), orderBy("audios"), limit(1))
       );
-  
+
       const data = docs[0]?.data();
       if (!data) return;
-  
+
       const w: WordType = {
         id: docs[0]?.id || "",
         ar: data.ar,
         en: data.en,
       };
-  
+
       setWord(w);
     } catch (error) {
       console.log(error);
-      
     }
   }
 

@@ -12,6 +12,7 @@ export const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   ALGO_API_ID: z.string(),
   ALOG_SEARCH_ONLY_KEY: z.string(),
+  JWT_SECRET: z.string()
 });
 
 /**

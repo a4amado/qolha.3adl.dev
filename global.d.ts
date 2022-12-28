@@ -1,3 +1,4 @@
+ 
 declare global {
     namespace NodeJS {
       interface ProcessEnv {
@@ -6,7 +7,8 @@ declare global {
         ALGO_API_ID:string;
         ALOG_SEARCH_ONLY_KEY:string;
         DATABASE_URL: string;
-      }
+        JWT_SECRET : string;
+       }
     }
   }
   

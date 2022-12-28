@@ -12,7 +12,7 @@ export default function Header({ isSearch }: { isSearch: boolean }) {
               <h1>قلها</h1>
             </Col>
             <Col className="flex flex-col justify-center">
-              <NextLink className="text-cyan-100" href="/">
+              <NextLink className="text-cyan-100" href="/admin/login">
                 تسجيل
               </NextLink>
             </Col>

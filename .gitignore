@@ -17,6 +17,7 @@
 /out/
 next-env.d.ts
 
+qolha-372817-firebase-adminsdk-xy46m-171f58298f.json
 # production
 /build
 
@@ -40,3 +41,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+.vercel
