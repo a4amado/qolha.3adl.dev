@@ -20,8 +20,6 @@ export const auth = getAuth(app);
 export const storage = getStorage(app);
 
 export const Cols = {
-  AUDIOS: "AUDIOS",
-  AUDIOS_TO_REVIEW: "AUDIOS_TO_REVIEW",
+  CLIPS: "CLIPS",
   WORDS: "WORDS",
-  WORDS_TO_REVIEW: "WORDS_TO_REVIEW",
 };

@@ -8,15 +8,8 @@ const algo = algoliasearch(
   process.env.ALOG_SEARCH_ONLY_KEY
 );
 
-export default nextConnect()
-  .use((req: NextApiRequest, res: NextApiResponse, next) => {
-    if (!isAdmin.isAdminMiddleware(req)) {
-      return res.json("Not Admin");
-    }
-
-    next();
-  })
-  .get(async (req: NextApiRequest, res: NextApiResponse) => {
+export default nextConnect().get(
+  async (req: NextApiRequest, res: NextApiResponse) => {
     const result = algo.initIndex("sait.3adl.dev");
 
     const q = Array.isArray(req.query.q) ? req.query.q[0] : req.query.q;
@@ -26,4 +19,5 @@ export default nextConnect()
       hitsPerPage: 6,
     });
     res.json(results.hits || []);
-  });
+  }
+);

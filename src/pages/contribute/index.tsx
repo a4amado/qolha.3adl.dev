@@ -5,7 +5,7 @@ import PageContainer from "../../components/PageContainer";
 import Header from "../../components/header";
 import { useToggle } from "react-use";
 import { v4 } from "uuid";
-import { Cols, db, storage } from "../../server/firebase";
+import { auth, Cols, db, storage } from "../../server/firebase";
 import { uploadBytes, ref as StorageRef } from "firebase/storage";
 import {
   updateDoc,
@@ -19,6 +19,7 @@ import {
   addDoc,
   DocumentReference,
 } from "firebase/firestore";
+import { signOut } from "firebase/auth";
 
 interface WordType {
   ar: string;
@@ -41,7 +42,7 @@ export default function Page() {
   async function getWord() {
     try {
       const { docs } = await getDocs(
-        query(collection(db, "/" + Cols.WORDS), orderBy("audios"), limit(1))
+        query(collection(db, "/" + Cols.WORDS), orderBy("clips"), limit(1))
       );
 
       const data = docs[0]?.data();
@@ -90,18 +91,21 @@ export default function Page() {
         recorder.mediaBlob
       );
 
-      const audios = await addDoc(collection(db, `/${Cols.AUDIOS_TO_REVIEW}`), {
+      const NewClip = await addDoc(collection(db, `/${Cols.CLIPS}`), {
         word: doc(
           collection(db, `/${Cols.WORDS}`),
           `/${word?.id}`
         ) as DocumentReference,
         path: clip.metadata.fullPath,
+        isReady: false,
       });
 
       const w = await updateDoc(
-        doc(collection(db, "/" + Cols.WORDS), `/${word?.id}`),
+        doc(collection(db, `/${Cols.WORDS}`), `/${word?.id}`),
         {
-          audios: arrayUnion(clip.metadata.fullPath),
+          clips: arrayUnion(
+            doc(collection(db, `${Cols.CLIPS}`), `${NewClip.id}`)
+          ),
         }
       );
 

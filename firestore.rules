@@ -1,47 +1,18 @@
-rules_version = '2';
+rules_version = '2'
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow admins to read and write all documents
-    match /{document=**} {
-      allow read, write: if hasAnyRole(["ADMIN", "OWNER"]);
-    }
-
-    // Rowy: Allow signed in users to read Rowy configuration and admins to write
-    match /_rowy_/{docId} {
-      allow read: if request.auth.token.roles.size() > 0;
-      allow write: if hasAnyRole(["ADMIN", "OWNER"]);
-    	match /{document=**} {
-        allow read: if request.auth.token.roles.size() > 0;
-        allow write: if hasAnyRole(["ADMIN", "OWNER"]);
-      }
-    }
-    // Rowy: Allow users to edit their settings
-    match /_rowy_/userManagement/users/{userId} {
-      allow get, update, delete: if isDocOwner(userId);
-      allow create: if request.auth.token.roles.size() > 0;
-    }
-    // Rowy: Allow public to read public Rowy configuration
-    match /_rowy_/publicSettings {
-      allow get: if true;
-    }
-
-    // Rowy: Utility functions
-    function isDocOwner(docId) {
-      return request.auth != null && (request.auth.uid == resource.id || request.auth.uid == docId);
-    }
-    function hasAnyRole(roles) {
-      return request.auth != null && request.auth.token.roles.hasAny(roles);
-    }
-
-
-match /accounts {
-    allow read, write: if false;
-}
-match /sessions {
-    allow read, write: if false;
-}
-match /users {
-    allow read, write: if false;
-}
+   match /WORDS/{docId} {
+    allow write: if true;
+    allow read: if true;
+    allow update: if  request.auth.token.admin == true;
+    allow delete: if  request.auth.token.admin == true;
+   }
+   
+   match /CLIPS/{docId} {
+    allow write: if true;
+    allow read: if true;
+    allow update: if  request.auth.token.admin == true;
+    allow delete: if  request.auth.token.admin == true;
+   }
   }
 }

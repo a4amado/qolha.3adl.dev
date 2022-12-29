@@ -51,15 +51,18 @@ function isAdminMiddleware(req: NextApiRequest): any {
     return false;
   }
 }
-export const middleware_auth_admin = async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+export const middleware_auth_admin = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: any
+) => {
   if (!isAdminMiddleware(req)) {
-    return res.status(500).send("NotAdmin")
-  };
+    return res.status(500).send("NotAdmin");
+  }
 
-  return next()
-}
+  return next();
+};
 export default {
   isAdminSSR,
-  middleware_auth_admin
+  middleware_auth_admin,
 };
-

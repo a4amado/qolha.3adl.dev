@@ -26,7 +26,12 @@ export default nextConnect().post(
         { expiresIn: "1h" }
       );
       const oneHourInMilliseconds = 60 * 1000 * 60;
-      res.setHeader("set-cookie", `token=${token}; httpOnly; path=/; secure; max-age=${Date() + oneHourInMilliseconds};`);
+      res.setHeader(
+        "set-cookie",
+        `token=${token}; httpOnly; path=/; secure; max-age=${
+          Date() + oneHourInMilliseconds
+        };`
+      );
 
       res.json("Done");
     } catch (error) {
