@@ -8,6 +8,8 @@ declare global {
         ALOG_SEARCH_ONLY_KEY:string;
         DATABASE_URL: string;
         JWT_SECRET : string;
+        ADMIN_EMAIL: string;
+        ADMIN_PASSWORD: string;
        }
     }
   }

@@ -5,6 +5,7 @@ import {
   GetServerSideProps,
   GetServerSidePropsContext,
   NextApiRequest,
+  NextApiResponse,
 } from "next";
 
 function getTokenInMiddleware(req: NextApiRequest) {
@@ -50,8 +51,15 @@ function isAdminMiddleware(req: NextApiRequest): any {
     return false;
   }
 }
+export const middleware_auth_admin = async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+  if (!isAdminMiddleware(req)) {
+    return res.status(500).send("NotAdmin")
+  };
 
+  return next()
+}
 export default {
   isAdminSSR,
-  isAdminMiddleware,
+  middleware_auth_admin
 };
+
