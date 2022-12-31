@@ -10,9 +10,11 @@ service cloud.firestore {
    
    match /CLIPS/{docId} {
     allow write: if true;
-    allow read: if true;
+    allow read: if request.resource.data.isReady == true || request.auth.token.admin == true;
     allow update: if  request.auth.token.admin == true;
     allow delete: if  request.auth.token.admin == true;
    }
+
+   
   }
 }

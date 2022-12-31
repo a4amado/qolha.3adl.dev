@@ -1,8 +1,9 @@
 import PageContainer from "../../components/PageContainer";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 import { auth } from "../../server/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Header from "../../components/header";
+import { FcGoogle } from "react-icons/fc";
 const gAuth = new GoogleAuthProvider();
 
 const LoginPage = () => {
@@ -10,14 +11,16 @@ const LoginPage = () => {
     <>
       <Header isSearch={false} />
       <PageContainer>
+        <Typography.Title>Login</Typography.Title>
         <Button
           onClick={() =>
             signInWithPopup(auth, gAuth).then(() => {
               window.location.replace("/contribute");
             })
           }
+          className="w-full h-auto"
         >
-          Register
+          <FcGoogle className="block mx-auto text-5xl" />
         </Button>
       </PageContainer>
     </>

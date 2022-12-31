@@ -41,6 +41,7 @@ export default function Page() {
           {(props) => (
             <Form>
               <Row>
+                <label>البريد الاكتروني</label>
                 <Field
                   {...FeildConf({
                     name: "email",
@@ -49,6 +50,7 @@ export default function Page() {
                 />
               </Row>
               <Row>
+                <label>كلمة المرور</label>
                 <Field
                   {...FeildConf({
                     name: "password",
@@ -58,7 +60,7 @@ export default function Page() {
                 />
               </Row>
               <Row>
-                <Button onClick={() => props.handleSubmit()}>s</Button>
+                <Button onClick={() => props.handleSubmit()}>أدخلني</Button>
               </Row>
             </Form>
           )}

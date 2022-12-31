@@ -5,7 +5,7 @@ import PageContainer from "../../components/PageContainer";
 import Header from "../../components/header";
 import { useToggle } from "react-use";
 import { v4 } from "uuid";
-import { auth, Cols, db, storage } from "../../server/firebase";
+import { Cols, db, storage } from "../../server/firebase";
 import { uploadBytes, ref as StorageRef } from "firebase/storage";
 import {
   updateDoc,
@@ -18,8 +18,8 @@ import {
   limit,
   addDoc,
   DocumentReference,
+  where,
 } from "firebase/firestore";
-import { signOut } from "firebase/auth";
 
 interface WordType {
   ar: string;
@@ -29,7 +29,7 @@ interface WordType {
 
 export default function Page() {
   ///////////////////////////////////////////////////////////
-  // Audiorecording instance
+  // Audio recording instance
   ///////////////////////////////////////////////////////////
   const recorder = useRecorder({
     blobOptions: { endings: "transparent", type: "audio/webm" },
@@ -42,8 +42,15 @@ export default function Page() {
   async function getWord() {
     try {
       const { docs } = await getDocs(
-        query(collection(db, "/" + Cols.WORDS), orderBy("clips"), limit(1))
+        query(
+          collection(db, "/" + Cols.WORDS),
+          orderBy("clips"),
+          limit(1),
+          where("clips.isReady", "==", true)
+        )
       );
+
+      console.log(docs[0]?.data().clips[0].path);
 
       const data = docs[0]?.data();
       if (!data) return;
