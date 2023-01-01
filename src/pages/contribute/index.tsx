@@ -42,12 +42,7 @@ export default function Page() {
   async function getWord() {
     try {
       const { docs } = await getDocs(
-        query(
-          collection(db, "/" + Cols.WORDS),
-          orderBy("clips"),
-          limit(1),
-          where("clips.isReady", "==", true)
-        )
+        query(collection(db, "/" + Cols.WORDS), orderBy("clips"), limit(1))
       );
 
       console.log(docs[0]?.data().clips[0].path);
@@ -84,13 +79,19 @@ export default function Page() {
 
   async function submit() {
     try {
+      if (recorder.status === "recording") {
+        return notification["warning"]({
+          type: "error",
+          message: "اوقف التسجيل اولا",
+        });
+      }
       if (recorder.mediaBlob?.size === 0) return false;
       if (!word?.id) return false;
 
-      OF(true);
       setError(false);
       if (!recorder.mediaBlob) return false;
-      if (recorder.status === "recording") recorder.stopRecording();
+
+      OF(true);
       setIsSubmitting(true);
 
       const clip = await uploadBytes(

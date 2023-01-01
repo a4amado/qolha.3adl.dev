@@ -11,7 +11,7 @@ const LoginPage = () => {
     <>
       <Header isSearch={false} />
       <PageContainer>
-        <Typography.Title>Login</Typography.Title>
+        <Typography.Title>الدخول</Typography.Title>
         <Button
           onClick={() =>
             signInWithPopup(auth, gAuth).then(() => {

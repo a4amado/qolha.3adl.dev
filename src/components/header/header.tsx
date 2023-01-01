@@ -12,23 +12,18 @@ export default function Header({ isSearch }: { isSearch: boolean }) {
     <Row className="w-full flex flex-col">
       <Row className="w-full  bg-slate-600 px-5">
         <Row className="w-full max-w-7xl flex flex-col mx-auto my-2 h-9">
-          <Row className="flex flex-row align-middle h-full gap-2">
-            <Col className="flex flex-col justify-center">
+          <Row className="flex flex-row items-center h-full gap-2">
+            <Col className="flex flex-col ">
               <h1>قلها</h1>
             </Col>
-            <Col className="flex flex-row justify-center">
-              <NextLink className="text-cyan-100" href="/admin/login">
-                تسجيل مسؤول
-              </NextLink>
 
-              <NextLink className="text-cyan-100" href="/auth">
-                تسجيل
-              </NextLink>
+            <NextLink className="text-cyan-100 flex flex-row" href="/auth">
+              تسجيل
+            </NextLink>
 
-              {!d[1] && d[0] && (
-                <Button onClick={() => signOut(auth)}>خروج</Button>
-              )}
-            </Col>
+            {!d[1] && d[0] && (
+              <Button onClick={() => signOut(auth)}>خروج</Button>
+            )}
           </Row>
         </Row>
       </Row>
