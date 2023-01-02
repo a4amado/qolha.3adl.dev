@@ -67,8 +67,8 @@ export default function Page(props: any) {
               </Typography.Text>
 
               <Typography.Text className="block w-full">
-                لما رأيت معناة أصدقائي الاجانب في تعلم العربية خاصة عندما
-                يتعبق الامر بالنطق قررت أن ابني هذا الموقع لتسهيل الامر عليهم،
+                لما رأيت معناة أصدقائي الاجانب في تعلم العربية خاصة عندما يتعبق
+                الامر بالنطق قررت أن ابني هذا الموقع لتسهيل الامر عليهم،
               </Typography.Text>
 
               <Typography.Text className="block w-full">
@@ -83,10 +83,7 @@ export default function Page(props: any) {
             </>
           )}
 
-
-          {
-            isWord && <AudioElement key="1" url="كلمة عربية." />
-          }
+          {isWord && <AudioElement key="1" url="كلمة عربية." />}
         </PageContainer>
       </Row>
     </>
