@@ -11,6 +11,8 @@ import Header from "../../../components/header";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const IsTheUserAdmin = isAdmin.isAdminSSR(ctx);
+  console.log(IsTheUserAdmin);
+
   if (!IsTheUserAdmin) return RedirectToHome();
 
   return {

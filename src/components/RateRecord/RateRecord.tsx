@@ -17,21 +17,21 @@ export default function RateRecord() {
         okType="default"
         cancelText="الغاء"
       >
-        {rate({ type: "BAD", text: "سئ", toogle })}
-        {rate({ type: "GOOD", text: "لا غٌبار علية", toogle })}
-        {rate({ type: "OK", text: "مقبول", toogle })}
+        <Rate type="BAD" text="سئ" toogle={toogle} />
+        <Rate type="GOOD" text="لا غٌبار علية" toogle={toogle} />
+        <Rate type="OK" text="مقبول" toogle={toogle} />
       </Modal>
     </>
   );
 }
 
-function rate({
+function Rate({
   type,
   toogle,
   text,
 }: {
   type: "GOOD" | "BAD" | "OK";
-  toogle: Function;
+  toogle: any;
   text: string;
 }) {
   const [isLoading, ToogleLoading] = useToggle(false);

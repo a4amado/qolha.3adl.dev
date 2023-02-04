@@ -1,5 +1,3 @@
-import { parse } from "cookie";
-import { IncomingMessage } from "http";
 import { verify } from "jsonwebtoken";
 import {
   GetServerSideProps,
@@ -9,6 +7,8 @@ import {
 } from "next";
 
 function getTokenInMiddleware(req: NextApiRequest) {
+  console.log(req.cookies);
+
   const { token } = req.cookies;
   return token;
 }
@@ -21,7 +21,7 @@ function getTokenInSSR(ctx: GetServerSidePropsContext) {
 function verifyToken(token: string) {
   try {
     const v: any = verify(token, process.env.JWT_SECRET);
-    if (!v || v.role != "admin") return false;
+    if (!v || v.role != "owner") return false;
     return v;
   } catch (error) {
     return false;
@@ -31,6 +31,8 @@ function verifyToken(token: string) {
 function isAdminSSR(ctx: GetServerSidePropsContext): any {
   try {
     const token = getTokenInSSR(ctx);
+    console.log(token);
+
     if (!token) return false;
     const parsedToken = verifyToken(token);
     if (!parsedToken) return false;

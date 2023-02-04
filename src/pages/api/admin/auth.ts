@@ -3,14 +3,16 @@ import * as jsonwebtoken from "jsonwebtoken";
 import * as yup from "yup";
 import { NextApiRequest, NextApiResponse } from "next";
 
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+});
+
+export { schema };
+
 export default nextConnect().post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-      const schema = yup.object().shape({
-        email: yup.string().email().required(),
-        password: yup.string().required(),
-      });
-
       await schema.validate(req.body);
 
       const isAdmin = req.body.email == process.env.ADMIN_EMAIL;

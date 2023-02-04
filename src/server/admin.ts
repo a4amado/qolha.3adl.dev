@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import * as serviceAccount from "../../qolha-372817-firebase-adminsdk-xy46m-4f0e3414cc.json";
+import * as serviceAccount from "../../qolha-372817-firebase-adminsdk-0gpbf-5b27d13e47.json";
 
 export const adminApp =
   admin.apps[0] ||
