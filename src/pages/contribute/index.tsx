@@ -5,7 +5,6 @@ import PageContainer from "../../components/PageContainer";
 import Header from "../../components/header";
 import { useToggle } from "react-use";
 import { v4 } from "uuid";
-import { Cols, db, storage } from "../../server/firebase";
 import { uploadBytes, ref as StorageRef } from "firebase/storage";
 import {
   updateDoc,
@@ -41,22 +40,7 @@ export default function Page() {
 
   async function getWord() {
     try {
-      const { docs } = await getDocs(
-        query(collection(db, "/" + Cols.WORDS), orderBy("clips"), limit(1))
-      );
-
-      console.log(docs[0]?.data().clips[0].path);
-
-      const data = docs[0]?.data();
-      if (!data) return;
-
-      const w: WordType = {
-        id: docs[0]?.id || "",
-        ar: data.ar,
-        en: data.en,
-      };
-
-      setWord(w);
+      // setWord(w);
     } catch (error) {
       console.log(error);
     }
@@ -93,29 +77,6 @@ export default function Page() {
 
       OF(true);
       setIsSubmitting(true);
-
-      const clip = await uploadBytes(
-        StorageRef(storage, `/clips/${v4()}`),
-        recorder.mediaBlob
-      );
-
-      const NewClip = await addDoc(collection(db, `/${Cols.CLIPS}`), {
-        word: doc(
-          collection(db, `/${Cols.WORDS}`),
-          `/${word?.id}`
-        ) as DocumentReference,
-        path: clip.metadata.fullPath,
-        isReady: false,
-      });
-
-      const w = await updateDoc(
-        doc(collection(db, `/${Cols.WORDS}`), `/${word?.id}`),
-        {
-          clips: arrayUnion(
-            doc(collection(db, `${Cols.CLIPS}`), `${NewClip.id}`)
-          ),
-        }
-      );
 
       await getWord();
 

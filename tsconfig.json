@@ -17,6 +17,6 @@
     "noUncheckedIndexedAccess": true,
   
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs", "src/server.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs", "src/server.ts", "src/pages/api/word/[wordID]"],
   "exclude": ["node_modules"]
 }

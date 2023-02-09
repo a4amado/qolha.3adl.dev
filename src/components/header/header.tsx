@@ -1,12 +1,10 @@
 import { Row, Col, Typography, Button } from "antd";
 import Search from "../search";
 import NextLink from "next/link";
-import { signOut } from "firebase/auth";
-import { auth } from "../../server/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Header({ isSearch }: { isSearch: boolean }) {
-  const d = useAuthState(auth);
+  const s = useSession();
 
   return (
     <Row className="w-full flex flex-col">
@@ -20,9 +18,9 @@ export default function Header({ isSearch }: { isSearch: boolean }) {
             <NextLink className="text-cyan-100 flex flex-row" href="/auth">
               تسجيل
             </NextLink>
-
-            {!d[1] && d[0] && (
-              <Button onClick={() => signOut(auth)}>خروج</Button>
+            {s.status === "loading" && "Loading"}
+            {s.status === "authenticated" && (
+              <Button onClick={() => signOut()}>خروج</Button>
             )}
           </Row>
         </Row>

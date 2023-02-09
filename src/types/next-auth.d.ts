@@ -1,3 +1,4 @@
+import { NextApiRequest } from "next";
 import { type DefaultSession } from "next-auth";
 
 declare module "next-auth" {
@@ -9,4 +10,10 @@ declare module "next-auth" {
       id: string;
     } & DefaultSession["user"];
   }
+}
+
+export interface RequestWithSession extends NextApiRequest {
+  session: {
+    id: string;
+  } & DefaultSession["user"];
 }
