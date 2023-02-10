@@ -61,7 +61,7 @@ model VerificationToken {
 model Word {
     id    String @unique @default(cuid())
     ar    String @unique
-    en    String
+    
     clips Clip[]
 
     createBy User   @relation(references: [id], fields: [userId])

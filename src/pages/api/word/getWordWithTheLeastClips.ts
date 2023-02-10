@@ -10,10 +10,10 @@ router.use(withAuth);
 
 router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const word = await prisma?.word.findMany({
-    select: { ar: true, en: true, clips: true },
+    select: { ar: true, id: true, createBy: {select: {name: true, id: true}} },
     orderBy: {
       clips: {
-        _count: "desc",
+        _count: "asc",
       },
     },
     take: 1,

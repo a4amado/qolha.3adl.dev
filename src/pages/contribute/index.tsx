@@ -5,6 +5,7 @@ import PageContainer from "../../components/PageContainer";
 import Header from "../../components/header";
 import { useToggle } from "react-use";
 import { v4 } from "uuid";
+import Axios from "axios";
 
 interface WordType {
   ar: string;
@@ -26,7 +27,12 @@ export default function Page() {
 
   async function getWord() {
     try {
-      // setWord(w);
+      const word = await Axios({
+        url: "/api/word/getWordWithTheLeastClips"
+      });
+      
+      
+      setWord(word.data[0]);
     } catch (error) {
       console.log(error);
     }
@@ -60,6 +66,18 @@ export default function Page() {
 
       setError(false);
       if (!recorder.mediaBlob) return false;
+
+      const form = new FormData();
+      form.append("clip", recorder.mediaBlob);
+
+      await Axios({
+        method: "POST",
+        url:`/api/word/${word.id}/clip/append`,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        data: form
+      })
 
       OF(true);
       setIsSubmitting(true);
@@ -99,7 +117,7 @@ export default function Page() {
         <Row className="flex flex-col w-full">
           <Row className=" flex justify-center align-middle">
             <Typography.Title className="text-7xl flex justify-center align-middle">
-              {word?.ar} - {word?.en}
+              {word?.ar} - {word?.id}
             </Typography.Title>
           </Row>
           <Row className="w-full">

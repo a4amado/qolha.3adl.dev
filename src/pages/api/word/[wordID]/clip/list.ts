@@ -30,7 +30,7 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
     },
     select: {
       ar: true,
-      en: true,
+      
       clips: {
         select: {
           createBy: {
