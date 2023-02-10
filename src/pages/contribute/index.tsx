@@ -5,20 +5,6 @@ import PageContainer from "../../components/PageContainer";
 import Header from "../../components/header";
 import { useToggle } from "react-use";
 import { v4 } from "uuid";
-import { uploadBytes, ref as StorageRef } from "firebase/storage";
-import {
-  updateDoc,
-  collection,
-  doc,
-  arrayUnion,
-  query,
-  orderBy,
-  getDocs,
-  limit,
-  addDoc,
-  DocumentReference,
-  where,
-} from "firebase/firestore";
 
 interface WordType {
   ar: string;

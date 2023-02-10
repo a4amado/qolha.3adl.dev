@@ -39,18 +39,14 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
             },
           },
           id: true,
+          path: true
         },
         take: 15,
       },
     },
   });
 
-
-  res.status(HttpStatus.OK).json(clips)
-
-
-
-
+  res.status(HttpStatus.OK).json(clips);
 });
 
 export default router;

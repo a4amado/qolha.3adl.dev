@@ -5,7 +5,7 @@ import PageContainer from "../components/PageContainer";
 import TargetWord from "../components/TargetWord/TargetWord";
 import { GetServerSideProps } from "next/types";
 import * as yup from "yup";
-import { auth } from "../server/firebase";
+
 import { onAuthStateChanged } from "firebase/auth";
 import AudioElement from "../components/audioElement";
 
@@ -17,9 +17,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     word: yup.string().required(),
   });
 
-  onAuthStateChanged(auth, (s) => {
-    console.log(s?.email);
-  });
   try {
     await quertSchema.validate(ctx.query);
   } catch (error: any) {

@@ -1,6 +1,6 @@
 import multer from "multer";
 import path from "path";
-import uuid from "uuid";
+import { v4 } from "uuid";
 import MimeType from "mime";
 
 const storage = multer.diskStorage({
@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     callback(null, path.join(process.cwd(), "files", "clips"));
   },
   filename: (req, file, callback) => {
-    callback(null, `${uuid.v4()}${MimeType.getExtension(file.mimetype)}`);
+    callback(null, `${v4()}.${MimeType.getExtension(file.mimetype)}`);
   },
 });
 

@@ -71,6 +71,8 @@ model Word {
 model Clip {
     id String @unique @default(cuid())
 
+    path String
+
     wordID String
     word   Word   @relation(references: [id], fields: [wordID])
 
