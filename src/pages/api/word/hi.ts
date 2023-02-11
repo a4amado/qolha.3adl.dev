@@ -11,27 +11,23 @@ const router = nextConnect();
 
 router.use(withAuth);
 
-const appendWordSchema = z.object({
-  word: z.string(),
-});
-
-router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
-  const checkAppendWord = appendWordSchema.safeParse(req.query);
-  if (!checkAppendWord.success) {
-    res
-      .status(HttpCodes.BAD_REQUEST)
-      .json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
-    return;
-  }
-
+router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const word = await prisma?.word.create({
     data: {
-      ar: getQueryItem(req.query.word),
+      ar: Math.random().toString(),
       userId: req.session.id,
     },
   });
 
-  return res.json(word);
+  const clip = await prisma?.clip.create({
+    data: {
+      userID: req.session.id,
+      path: "Path",
+      wordID: word?.id,
+    },
+  });
+
+  return res.json(clip);
 });
 
 export default router;

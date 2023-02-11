@@ -44,6 +44,8 @@ model User {
 
     role String @default("none")
 
+
+    rates Rate[]
     accounts Account[]
     sessions Session[]
     lips     Clip[]
@@ -75,6 +77,7 @@ model Clip {
     path String
 
     accepted Boolean @default(false)
+    rejected Boolean @default(false)
 
     wordID String
     word   Word   @relation(references: [id], fields: [wordID])
@@ -89,8 +92,12 @@ model Rate {
     id String @unique @default(cuid())
     rate Int
 
-    clipID String
+    clipID String 
     word Clip @relation(fields: [clipID], references: [id])
+
+    userID String
+
+    createdBy User @relation(fields: [userID], references: [id])
 
 }
 

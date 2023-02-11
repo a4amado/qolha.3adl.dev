@@ -30,7 +30,7 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
     },
     select: {
       ar: true,
-      
+
       clips: {
         select: {
           createBy: {
@@ -39,7 +39,7 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
             },
           },
           id: true,
-          path: true
+          path: true,
         },
         take: 15,
       },

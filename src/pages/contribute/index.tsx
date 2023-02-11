@@ -28,10 +28,9 @@ export default function Page() {
   async function getWord() {
     try {
       const word = await Axios({
-        url: "/api/word/getWordWithTheLeastClips"
+        url: "/api/word/getWordWithTheLeastClips",
       });
-      
-      
+
       setWord(word.data[0]);
     } catch (error) {
       console.log(error);
@@ -72,12 +71,12 @@ export default function Page() {
 
       await Axios({
         method: "POST",
-        url:`/api/word/${word.id}/clip/append`,
+        url: `/api/word/${word.id}/clip/append`,
         headers: {
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "multipart/form-data",
         },
-        data: form
-      })
+        data: form,
+      });
 
       OF(true);
       setIsSubmitting(true);

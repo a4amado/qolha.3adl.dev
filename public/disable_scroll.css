@@ -1,0 +1,4 @@
+body, html, #__next {
+    overflow: hidden!important;
+    height: 100vh;
+}
