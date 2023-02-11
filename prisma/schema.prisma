@@ -61,7 +61,8 @@ model VerificationToken {
 model Word {
     id    String @unique @default(cuid())
     ar    String @unique
-    
+    accepted Boolean @default(false)
+
     clips Clip[]
 
     createBy User   @relation(references: [id], fields: [userId])
@@ -73,9 +74,23 @@ model Clip {
 
     path String
 
+    accepted Boolean @default(false)
+
     wordID String
     word   Word   @relation(references: [id], fields: [wordID])
 
     userID   String
     createBy User   @relation(references: [id], fields: [userID])
+    
+    rate Rate[]
 }
+
+model Rate {
+    id String @unique @default(cuid())
+    rate Int
+
+    clipID String
+    word Clip @relation(fields: [clipID], references: [id])
+
+}
+
