@@ -29,6 +29,7 @@ specifiers:
   form-data: ^4.0.0
   formik: ^2.2.9
   http-status-codes: ^2.2.0
+  mime: ^3.0.0
   mime-types: ^2.1.35
   mimetype: ^0.0.8
   multer: 1.4.5-lts.1
@@ -68,6 +69,7 @@ dependencies:
   form-data: 4.0.0
   formik: 2.2.9_react@18.1.0
   http-status-codes: 2.2.0
+  mime: 3.0.0
   mimetype: 0.0.8
   multer: 1.4.5-lts.1
   next: 13.1.0_2q7l3o2s2f77g7novtsxtrhvne
@@ -2561,6 +2563,12 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.52.0
+
+  /mime/3.0.0:
+    resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    dev: false
 
   /mimetype/0.0.8:
     resolution: {integrity: sha512-6pRFUMC9A70v3W1d+dvrEJWuFagmHSIA6JF1rd3dkiEe9myrQUQMK1AUjKfrqGtpQww5Wk/mRBJHmIdn140NhA==}

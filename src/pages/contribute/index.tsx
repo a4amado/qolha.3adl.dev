@@ -24,6 +24,8 @@ export default function Page() {
   });
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const [word, setWord] = React.useState<WordType | null>();
+  
+
 
   async function getWord() {
     try {

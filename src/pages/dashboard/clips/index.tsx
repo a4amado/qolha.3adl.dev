@@ -21,7 +21,7 @@ const clipType = { word: { ar: "", id: "" }, id: "", path: "" };
 function Clips() {
   const [spinning, setSpinning] = useToggle(false);
   const [clips, setClips] = React.useState<Array<typeof clipType>>([]);
-
+  const [nothingLeft, setNothingLeft] = useToggle(false);
   const [activeClip, setActiveClip] = React.useState<typeof clipType>();
 
   React.useEffect(() => {
@@ -41,7 +41,7 @@ function Clips() {
       setSpinning(false);
     } catch (error) {}
   }, [activeClip, spinning]);
-
+  
   const getClip = React.useCallback(async () => {
     try {
       const s = await axios({
@@ -49,12 +49,20 @@ function Clips() {
         url: `/api/word/${cuid() /* Placeholder */}/clip/toBeReviewed`,
       });
 
-      console.log(s);
+
+      if (s.data.length === 0) {
+        console.log("Ddd");
+        
+        setNothingLeft(true)
+      }
 
       setActiveClip(s.data[0]);
       setClips(s.data);
-    } catch (error) {}
-  }, [activeClip, spinning]);
+    } catch (error) {
+      console.log("nothingLeft");
+      
+    }
+  }, [activeClip, spinning, nothingLeft]);
 
   return (
     <>
@@ -67,16 +75,24 @@ function Clips() {
         <Row className="flex flex-col">
           <Row className="h-56 flex flex-row p-5">
             <h1 className="h-full w-1/2 text-4xl grid">
-              <span className="place-items-center">{activeClip?.path}</span>
+              
+              {
+                nothingLeft && <span className="place-items-center">خلاص كدا شطبنا</span>
+              }
+              {
+                !nothingLeft && <span className="place-items-center">{activeClip?.path}</span>
+              }
+              
             </h1>
 
-            <Spin spinning={spinning || !activeClip?.id} className="w-1/2">
+            <Spin spinning={nothingLeft ? false:spinning || !activeClip?.id } className="w-1/2">
               <Row className="flex flex-row  gap-2 h-full w-full ">
-                <Button className="w-full h-1/3">
+                <Button className="w-full h-1/3" disabled={nothingLeft}>
                   <PlayCircleOutlined className="text-4xl" />
                   <PauseCircleOutlined className="text-4xl" />
                 </Button>
                 <Button
+                disabled={nothingLeft}
                   type="primary"
                   onClick={acceptClip}
                   className="w-full h-1/3 bg-green-500 hover:bg-green-400"
@@ -87,7 +103,7 @@ function Clips() {
                   />
                   قبول
                 </Button>
-                <Button type="primary" danger className="w-full h-1/3">
+                <Button type="primary" danger className="w-full h-1/3" disabled={nothingLeft}>
                   <CloseOutlined className="text-4xl" />
                   رفض
                 </Button>

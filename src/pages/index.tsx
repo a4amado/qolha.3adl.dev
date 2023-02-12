@@ -3,32 +3,29 @@ import React from "react";
 import Header from "../components/header";
 import PageContainer from "../components/PageContainer";
 import TargetWord from "../components/TargetWord/TargetWord";
-import { GetServerSideProps } from "next/types";
-import * as yup from "yup";
-
-import { onAuthStateChanged } from "firebase/auth";
+import { GetServerSideProps as G } from "next/types";
+import {z} from "zod";
 import AudioElement from "../components/audioElement";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: G = async (ctx) => {
   if (!ctx.query.q && !ctx.query.word) return { props: { home: true } };
 
-  const quertSchema = yup.object().shape({
-    q: yup.string().required(),
-    word: yup.string().required(),
-  });
+  const quertSchema = z.object({
+    q: z.string(),
+    word: z.string(),
+  })
 
-  try {
-    await quertSchema.validate(ctx.query);
-  } catch (error: any) {
-    const err: yup.ValidationError = error;
+  
+  const isValid =  quertSchema.safeParse(ctx.query);
+  if (!isValid.success) {
     return {
       props: {
         error: true,
-        msg: err.message,
+        msg: isValid.error.errors
       },
     };
   }
-
+  
   return {
     props: {
       word: true,
