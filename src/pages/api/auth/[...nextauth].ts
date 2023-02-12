@@ -18,7 +18,7 @@ export const authOptions: AuthOptions = {
         ...params.session,
         id: params.user.id,
         // @ts-ignore
-        role: params.user.role,
+        role: "owner" || "params.user.role",
       };
     },
   },
