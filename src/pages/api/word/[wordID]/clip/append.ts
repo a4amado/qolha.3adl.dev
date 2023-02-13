@@ -1,4 +1,4 @@
-import { NextApiResponse, NextConfig } from "next/types";
+import { NextApiRequest, NextApiResponse, NextConfig } from "next/types";
 import nextConnect from "next-connect";
 import { RequestWithSession } from "../../../../../types/next-auth";
 import withAuth from "../../../../../middleware/withAuth";
@@ -6,18 +6,23 @@ import isOwner from "../../../../../middleware/isOwner";
 import upload from "../../../../../middleware/upload";
 import { number, z } from "zod";
 import HttpStatus from "http-status-codes";
-import { Result } from "antd";
 import getQueryItem from "../../../../../lib/getQueryItem";
 
-const router = nextConnect();
+const router = nextConnect({
+  onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
+    console.error(err);
+    res.status(500).json(err);
+  },
+  onNoMatch: (req, res) => {
+    res.status(404).end("Page is not found");
+  },
+});
 
-function isCUID(cuid: any) {
-  const schema = z.string().cuid();
-  const result = schema.safeParse(cuid);
-  console.log(result);
-
-  return result.success;
-}
+router.use((req,res,next) => {
+  console.log("ss");
+  next()
+  
+})
 
 router.use(withAuth);
 
@@ -32,8 +37,7 @@ interface File {
   size: number;
 }
 
-router.use(withAuth);
-
+ 
 router.use(upload.single("clip"));
 
 router.post(
@@ -44,14 +48,14 @@ router.post(
     res: NextApiResponse,
     next
   ) => {
-    const isWordIdValid = isCUID(req.query.wordID);
+    console.log(req.file);
 
-    if (!isWordIdValid) {
-      res
-        .status(HttpStatus.BAD_REQUEST)
-        .send(HttpStatus.getStatusText(HttpStatus.BAD_REQUEST));
-      return;
-    }
+    // if (!isWordIdValid) {
+    //   res
+    //     .status(HttpStatus.BAD_REQUEST)
+    //     .send(HttpStatus.getStatusText(HttpStatus.BAD_REQUEST));
+    //   return;
+    // }
 
     const word = await prisma?.clip.create({
       data: {

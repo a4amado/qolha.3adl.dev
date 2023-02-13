@@ -13,9 +13,16 @@ const storage = multer.diskStorage({
 
 });
 
-const upload = multer({ storage, fileFilter: (...rest) => {
-  if (MimeType.getExtension(rest[1].mimetype) != "weba") {
-    rest[2](true);
+const upload = multer({ storage, fileFilter: (req, file, callback) => {
+
+  
+  if (MimeType.getExtension(file.mimetype) != "weba") {
+    callback({
+      message: "File Type is Not Allowed",
+      name: "ext error"
+    });
+  } else {
+    return callback(null, true)
   }
 }});
 

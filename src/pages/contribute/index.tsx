@@ -70,6 +70,8 @@ export default function Page() {
 
       const form = new FormData();
       form.append("clip", recorder.mediaBlob);
+      console.log(form.get("clip"));
+      
 
       await Axios({
         method: "POST",
