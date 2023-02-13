@@ -8,8 +8,8 @@ import { z } from "zod";
 import HttpStatus from "http-status-codes";
 const router = nextConnect();
 
-router.use(withAuth);
-router.use(isOwner);
+// router.use(withAuth);
+// router.use(isOwner);
 
 router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const clips = await prisma?.clip.findMany({
@@ -27,7 +27,7 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
       id: true,
       path: true,
     },
-    take: 35,
+    take: 5,
   });
 
   res.status(HttpStatus.OK).json(clips);

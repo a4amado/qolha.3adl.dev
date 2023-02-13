@@ -23,20 +23,29 @@ function Clips() {
   const [clips, setClips] = React.useState<Array<typeof clipType>>([]);
   const [nothingLeft, setNothingLeft] = useToggle(false);
   const [activeClip, setActiveClip] = React.useState<typeof clipType>();
-
+  
   React.useEffect(() => {
     getClip();
   }, []);
-
   const acceptClip = React.useCallback(async () => {
     try {
       setSpinning(true);
-
       const s = await axios({
         method: "POST",
         url: `/api/word/${activeClip?.word?.id}/clip/${activeClip?.id}/accept`,
       });
+      await getClip();
+      setSpinning(false);
+    } catch (error) {}
+  }, [activeClip, spinning]);
 
+  const rejectClip = React.useCallback(async () => {
+    try {
+      setSpinning(true);
+      const s = await axios({
+        method: "POST",
+        url: `/api/word/${activeClip?.word?.id}/clip/${activeClip?.id}/reject`,
+      });
       await getClip();
       setSpinning(false);
     } catch (error) {}
@@ -48,14 +57,10 @@ function Clips() {
         method: "GET",
         url: `/api/word/${cuid() /* Placeholder */}/clip/toBeReviewed`,
       });
-
-
       if (s.data.length === 0) {
         console.log("Ddd");
-        
         setNothingLeft(true)
       }
-
       setActiveClip(s.data[0]);
       setClips(s.data);
     } catch (error) {
@@ -73,7 +78,7 @@ function Clips() {
 
       <PageContainer>
         <Row className="flex flex-col">
-          <Row className="h-56 flex flex-row p-5">
+          <Row className="min-h-56 flex flex-row p-5">
             <h1 className="h-full w-1/2 text-4xl grid">
               
               {
@@ -103,34 +108,32 @@ function Clips() {
                   />
                   قبول
                 </Button>
-                <Button type="primary" danger className="w-full h-1/3" disabled={nothingLeft}>
+                <Button onClick={rejectClip} type="primary" danger className="w-full h-1/3" disabled={nothingLeft}>
                   <CloseOutlined className="text-4xl" />
                   رفض
                 </Button>
               </Row>
             </Spin>
           </Row>
-          <Row className="flex flex-col gap-2 p-5">
+          <Row className="flex flex-col gap-2 p-5 w-full">
             {clips.map((e, i) => {
               if (i === 0) return <></>;
 
               return (
                 <Row
-                  className={`flex flex-row border   rounded-md border-cyan-900 ${
+                  className={`flex flex-row border flex-nowrap whitespace-nowrap w-full  rounded-md border-cyan-900 ${
                     i === 1 ? "bg-green-500" : ""
                   }`}
                 >
                   {i === 1 && (
                     <DoubleLeftOutlined className="self-center p-2 text-2xl" />
                   )}
-                  <Row className="p-2">
-                    <p
-                      className={`text-2xl p-1 ${
+                  <Row className={`p-2 text-2xl overflow-hidden max-w-fit text-ellipsis ${
                         i === 1 ? "text-slate-50" : ""
-                      }`}
-                    >
+                      }`}>
+                    
                       {e.path}
-                    </p>
+                    
                   </Row>
                 </Row>
               );
