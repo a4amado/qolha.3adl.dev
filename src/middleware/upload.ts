@@ -10,8 +10,13 @@ const storage = multer.diskStorage({
   filename: (req, file, callback) => {
     callback(null, `${v4()}.${MimeType.getExtension(file.mimetype)}`);
   },
+
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage, fileFilter: (...rest) => {
+  if (MimeType.getExtension(rest[1].mimetype) != "weba") {
+    rest[2](true);
+  }
+}});
 
 export default upload;
