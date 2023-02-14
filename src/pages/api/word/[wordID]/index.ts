@@ -15,7 +15,7 @@ const router = nextConnect();
 
 const QueryWordSchema = z.object({
   query: z.object({
-    wordID: z.string().cuid("Invalid wordID"),
+    wordID: z.string().uuid("Invalid wordID"),
   }),
 });
 

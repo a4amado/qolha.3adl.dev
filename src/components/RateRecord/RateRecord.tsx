@@ -1,8 +1,9 @@
 import { Button, Modal } from "antd";
+import axios from "axios";
 import { useCallback } from "react";
 import { useToggle } from "react-use";
 
-export default function RateRecord() {
+export default function RateRecord({ id }: { id: string }) {
   const [open, toogle] = useToggle(false);
 
   const close = useCallback(() => toogle(false), [open]);
@@ -17,9 +18,9 @@ export default function RateRecord() {
         okType="default"
         cancelText="الغاء"
       >
-        <Rate type="BAD" text="سئ" toogle={toogle} />
-        <Rate type="GOOD" text="لا غٌبار علية" toogle={toogle} />
-        <Rate type="OK" text="مقبول" toogle={toogle} />
+        <Rate clipID={id} type="BAD" text="سئ" toogle={toogle} />
+        <Rate clipID={id} type="GOOD" text="لا غٌبار علية" toogle={toogle} />
+        <Rate clipID={id} type="OK" text="مقبول" toogle={toogle} />
       </Modal>
     </>
   );
@@ -29,19 +30,22 @@ function Rate({
   type,
   toogle,
   text,
+  clipID,
 }: {
   type: "GOOD" | "BAD" | "OK";
   toogle: any;
   text: string;
+  clipID: string;
 }) {
   const [isLoading, ToogleLoading] = useToggle(false);
-  function doRate() {
-    ToogleLoading(true);
-    setTimeout(() => {
-      ToogleLoading(false);
-      toogle(false);
-    }, 3000);
+  async function doRate() {
+    try {
+      await axios({
+        method: "POST",
+      });
+    } catch (error) {}
   }
+
   return (
     <Button loading={isLoading} onClick={doRate}>
       {type}

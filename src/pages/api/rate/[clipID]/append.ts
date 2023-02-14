@@ -1,18 +1,18 @@
 import { NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
-import { RequestWithSession } from "../../../../../../../types/next-auth";
-import withAuth from "../../../../../../../middleware/withAuth";
-import isOwner from "../../../../../../../middleware/isOwner";
+import { RequestWithSession } from "../../../../types/next-auth";
+import withAuth from "../../../../middleware/withAuth";
+import isOwner from "../../../../middleware/isOwner";
 import { z } from "zod";
 import HttpCodes from "http-status-codes";
-import getQueryItem from "../../../../../../../lib/getQueryItem";
+import getQueryItem from "../../../../lib/getQueryItem";
+import { v4 } from "uuid";
 
 const router = nextConnect();
 
 const appendRateSchema = z.object({
-  clipID: z.string().cuid(),
+  clipID: z.string().uuid(),
   rate: z.enum(["0", "50", "100"]),
-  wordID: z.string().cuid(),
 });
 
 router.use(withAuth);
@@ -41,6 +41,7 @@ router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
       clipID: getQueryItem(req.query.clipID),
       userID: req.session.id,
       rate: Number(getQueryItem(req.query.rate)),
+      id: v4(),
     },
     update: {
       rate: Number(getQueryItem(req.query.rate)),

@@ -6,6 +6,7 @@ import isOwner from "../../../middleware/isOwner";
 import { z } from "zod";
 import HttpCodes from "http-status-codes";
 import getQueryItem from "../../../lib/getQueryItem";
+import { v4 } from "uuid";
 
 const router = nextConnect();
 
@@ -16,6 +17,7 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
     data: {
       ar: Math.random().toString(),
       userId: req.session.id,
+      id: v4(),
     },
   });
 
@@ -24,6 +26,7 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
       userID: req.session.id,
       path: "Path",
       wordID: word?.id,
+      id: v4(),
     },
   });
 

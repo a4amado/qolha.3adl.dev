@@ -24,8 +24,6 @@ export default function Page() {
   });
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const [word, setWord] = React.useState<WordType | null>();
-  
-
 
   async function getWord() {
     try {
@@ -71,7 +69,6 @@ export default function Page() {
       const form = new FormData();
       form.append("clip", recorder.mediaBlob);
       console.log(form.get("clip"));
-      
 
       await Axios({
         method: "POST",

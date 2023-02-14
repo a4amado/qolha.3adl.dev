@@ -4,32 +4,61 @@ import Header from "../components/header";
 import PageContainer from "../components/PageContainer";
 import TargetWord from "../components/TargetWord/TargetWord";
 import { GetServerSideProps as G } from "next/types";
-import {z} from "zod";
-import AudioElement from "../components/audioElement";
+import { z } from "zod";
+import AudioHero from "../components/AudioHero";
+import getQueryItem from "../lib/getQueryItem";
+
+const quertSchema = z.object({
+  q: z.string().uuid(),
+  word: z.string(),
+});
 
 export const getServerSideProps: G = async (ctx) => {
-  if (!ctx.query.q && !ctx.query.word) return { props: { home: true } };
-
-  const quertSchema = z.object({
-    q: z.string(),
-    word: z.string(),
-  })
-
-  
-  const isValid =  quertSchema.safeParse(ctx.query);
+  const isValid = quertSchema.safeParse(ctx.query);
   if (!isValid.success) {
     return {
       props: {
         error: true,
-        msg: isValid.error.errors
+        msg: isValid.error.errors,
       },
     };
   }
-  
+
+  const word = await prisma?.word.findUnique({
+    where: {
+      id: getQueryItem(ctx.query.q),
+    },
+    select: {
+      ar: true,
+      clips: {
+        select: {
+          path: true,
+          createBy: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+        },
+        where: {
+          accepted: true,
+        },
+      },
+      id: true,
+    },
+  });
+
+  if (!word?.id) {
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+
   return {
     props: {
-      word: true,
-      query: ctx.query,
+      word: word,
     },
   };
 };
@@ -77,7 +106,7 @@ export default function Page(props: any) {
             </>
           )}
 
-          {isWord && <AudioElement key="1" url="كلمة عربية." />}
+          {isWord && <AudioHero key="1" word={props.word} />}
         </PageContainer>
       </Row>
     </>

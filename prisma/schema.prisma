@@ -28,7 +28,7 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid())
+    id           String   @id  @default(cuid())
     sessionToken String   @unique
     userId       String
     expires      DateTime
@@ -53,7 +53,7 @@ model User {
 }
 
 model VerificationToken {
-    identifier String
+    identifier String 
     token      String   @unique
     expires    DateTime
 
@@ -61,7 +61,7 @@ model VerificationToken {
 }
 
 model Word {
-    id    String @unique @default(cuid())
+    id    String @unique
     ar    String @unique
     accepted Boolean @default(false)
 
@@ -72,7 +72,7 @@ model Word {
 }
 
 model Clip {
-    id String @unique @default(cuid())
+    id String @unique
 
     path String
 
@@ -89,7 +89,7 @@ model Clip {
 }
 
 model Rate {
-    id String @unique @default(cuid())
+    id String @unique
     rate Int
 
     clipID String 

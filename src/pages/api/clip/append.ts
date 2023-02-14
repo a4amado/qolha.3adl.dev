@@ -1,12 +1,10 @@
 import { NextApiRequest, NextApiResponse, NextConfig } from "next/types";
 import nextConnect from "next-connect";
-import { RequestWithSession } from "../../../../../types/next-auth";
-import withAuth from "../../../../../middleware/withAuth";
-import isOwner from "../../../../../middleware/isOwner";
-import upload from "../../../../../middleware/upload";
-import { number, z } from "zod";
-import HttpStatus from "http-status-codes";
-import getQueryItem from "../../../../../lib/getQueryItem";
+import { RequestWithSession } from "../../../types/next-auth";
+import withAuth from "../../../middleware/withAuth";
+import upload from "../../../middleware/upload";
+import getQueryItem from "../../../lib/getQueryItem";
+import { v4 } from "uuid";
 
 const router = nextConnect({
   onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
@@ -17,12 +15,6 @@ const router = nextConnect({
     res.status(404).end("Page is not found");
   },
 });
-
-router.use((req,res,next) => {
-  console.log("ss");
-  next()
-  
-})
 
 router.use(withAuth);
 
@@ -37,7 +29,6 @@ interface File {
   size: number;
 }
 
- 
 router.use(upload.single("clip"));
 
 router.post(
@@ -62,6 +53,7 @@ router.post(
         path: req.file.filename,
         userID: req.session.id,
         wordID: getQueryItem(req.query.wordID),
+        id: v4(),
       },
     });
 

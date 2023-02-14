@@ -1,16 +1,16 @@
 import { NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
-import { RequestWithSession } from "../../../../../types/next-auth";
-import withAuth from "../../../../../middleware/withAuth";
-import isOwner from "../../../../../middleware/isOwner";
-import getQueryItem from "../../../../../lib/getQueryItem";
+import { RequestWithSession } from "../../../types/next-auth";
+import withAuth from "../../../middleware/withAuth";
+import isOwner from "../../../middleware/isOwner";
+import getQueryItem from "../../../lib/getQueryItem";
 import { z } from "zod";
 import HttpStatus from "http-status-codes";
 const router = nextConnect();
 
 const listClipsSchema = z.object({
   query: z.object({
-    wordID: z.string().cuid(),
+    wordID: z.string().uuid(),
   }),
 });
 

@@ -1,18 +1,17 @@
 import { NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
-import { RequestWithSession } from "../../../../../../types/next-auth";
-import withAuth from "../../../../../../middleware/withAuth";
-import isOwner from "../../../../../../middleware/isOwner";
+import { RequestWithSession } from "../../../../types/next-auth";
+import withAuth from "../../../../middleware/withAuth";
+import isOwner from "../../../../middleware/isOwner";
 
 import { z } from "zod";
 import HttpCodes from "http-status-codes";
-import getQueryItem from "../../../../../../lib/getQueryItem";
+import getQueryItem from "../../../../lib/getQueryItem";
 
 const router = nextConnect();
 
 const appendRateSchema = z.object({
-  clipID: z.string().cuid(),
-  wordID: z.string().cuid(),
+  clipID: z.string().uuid()
 });
 
 router.use(withAuth);
@@ -33,8 +32,8 @@ router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
       id: getQueryItem(req.query.clipID),
     },
     data: {
-      accepted: true,
-      rejected: false,
+      accepted: false,
+      rejected: true,
     },
   });
 
