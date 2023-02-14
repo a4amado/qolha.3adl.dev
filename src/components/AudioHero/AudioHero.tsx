@@ -33,10 +33,7 @@ const AudioElement = memo(({ e }: any) => {
   }, []);
 
   return (
-    <Row
-      className="flex w-full flex-row items-stretch align-middle gap-1 border p-1 rounded"
-      key={Math.random().toString()}
-    >
+    <Row className="flex w-full flex-row items-stretch align-middle gap-1 border p-1 rounded" key={Math.random().toString()}>
       <Button
         onClick={() => {
           if (s[0].paused) {

@@ -11,19 +11,21 @@ import { v4 } from "uuid";
 const router = nextConnect();
 
 const appendRateSchema = z.object({
-  clipID: z.string().uuid(),
-  rate: z.enum(["0", "50", "100"]),
+  query: z.object({
+    clipID: z.string().uuid(),
+  }),
+  body: z.object({
+    rate: z.enum(["0", "50", "100"]),
+  }),
 });
 
 router.use(withAuth);
 
 router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
-  const CheckAppendRateSchema = appendRateSchema.safeParse(req.query);
+  const CheckAppendRateSchema = appendRateSchema.safeParse(req);
 
   if (!CheckAppendRateSchema.success) {
-    res
-      .status(HttpCodes.BAD_REQUEST)
-      .json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
+    res.status(HttpCodes.BAD_REQUEST).json(CheckAppendRateSchema.error);
     return;
   }
 
@@ -40,11 +42,11 @@ router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
     create: {
       clipID: getQueryItem(req.query.clipID),
       userID: req.session.id,
-      rate: Number(getQueryItem(req.query.rate)),
+      rate: Number(getQueryItem(req.body.rate)),
       id: v4(),
     },
     update: {
-      rate: Number(getQueryItem(req.query.rate)),
+      rate: Number(getQueryItem(req.body.rate)),
     },
     where: {
       id: clipRate?.id || "",

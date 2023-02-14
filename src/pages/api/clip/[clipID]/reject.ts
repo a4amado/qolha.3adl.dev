@@ -11,7 +11,7 @@ import getQueryItem from "../../../../lib/getQueryItem";
 const router = nextConnect();
 
 const appendRateSchema = z.object({
-  clipID: z.string().uuid()
+  clipID: z.string().uuid(),
 });
 
 router.use(withAuth);
@@ -21,9 +21,7 @@ router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const CheckAppendRateSchema = appendRateSchema.safeParse(req.query);
 
   if (!CheckAppendRateSchema.success) {
-    res
-      .status(HttpCodes.BAD_REQUEST)
-      .json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
+    res.status(HttpCodes.BAD_REQUEST).json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
     return;
   }
 

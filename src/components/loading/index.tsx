@@ -17,9 +17,7 @@ const Loading = () => {
     <>
       <div className="active-loading" id="loading-container">
         <Row className="flex flex-col w-screen h-screen align-center justify-center">
-          <Row className="text-center font-bold text-6xl w-full block">
-            قٌلها
-          </Row>
+          <Row className="text-center font-bold text-6xl w-full block">قٌلها</Row>
           <Spin />
         </Row>
       </div>

@@ -18,9 +18,7 @@ router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const ChecklistClipsSchema = listClipsSchema.safeParse(req);
 
   if (!ChecklistClipsSchema.success) {
-    res
-      .status(HttpStatus.NOT_ACCEPTABLE)
-      .json(ChecklistClipsSchema.error.errors);
+    res.status(HttpStatus.NOT_ACCEPTABLE).json(ChecklistClipsSchema.error.errors);
     return;
   }
 

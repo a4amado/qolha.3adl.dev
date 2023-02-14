@@ -16,9 +16,7 @@ export interface AlogoliaHit {
 }
 
 export interface HitsReducerState {
-  hits:
-    | Array<{ label: React.ReactElement | string; value: string; key: string }>
-    | Array<never>;
+  hits: Array<{ label: React.ReactElement | string; value: string; key: string }> | Array<never>;
 }
 interface ReducerAction {
   type: "REPLACE_ITEMS" | "LOADING" | "NOT_FOUND";
@@ -38,10 +36,7 @@ const NotingFoundOption: HitsReducerState = {
   ],
 };
 
-export const handleReducer: Reducer<HitsReducerState, ReducerAction> = (
-  state,
-  action
-): HitsReducerState => {
+export const handleReducer: Reducer<HitsReducerState, ReducerAction> = (state, action): HitsReducerState => {
   switch (action.type) {
     case "LOADING":
       const IS_LOADING_STATE: HitsReducerState = SearchOption;
@@ -127,19 +122,8 @@ export default function Search() {
     <>
       <Row ref={containerRef} className="w-full">
         <Row ref={targetRef} className="w-full max-w-4xl px-4 py-4 mx-auto">
-          <AutoComplete
-            options={hits}
-            defaultActiveFirstOption
-            onSelect={handleSelect}
-            className="w-full"
-            onChange={search}
-            value={q[0]}
-          >
-            <Input.Search
-              className="w-full"
-              size="large"
-              placeholder="ورميت سهم الحب اقصد قلبها فأصاب سهمي عينها فاعورت"
-            />
+          <AutoComplete options={hits} defaultActiveFirstOption onSelect={handleSelect} className="w-full" onChange={search} value={q[0]}>
+            <Input.Search className="w-full" size="large" placeholder="ورميت سهم الحب اقصد قلبها فأصاب سهمي عينها فاعورت" />
           </AutoComplete>
         </Row>
       </Row>

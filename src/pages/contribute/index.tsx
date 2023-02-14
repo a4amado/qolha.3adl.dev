@@ -44,9 +44,7 @@ export default function Page() {
 
   const url = React.useMemo(() => {
     if (!recorder.mediaBlob) return "";
-    return typeof window !== "undefined"
-      ? URL.createObjectURL(recorder.mediaBlob)
-      : "";
+    return typeof window !== "undefined" ? URL.createObjectURL(recorder.mediaBlob) : "";
   }, [recorder.status, recorder.mediaBlob]);
 
   const [o, OF] = useToggle(false);
@@ -68,11 +66,13 @@ export default function Page() {
 
       const form = new FormData();
       form.append("clip", recorder.mediaBlob);
+      form.append("wordID", word.id);
+      
       console.log(form.get("clip"));
 
       await Axios({
         method: "POST",
-        url: `/api/word/${word.id}/clip/append`,
+        url: `/api/clip/append`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -132,24 +132,15 @@ export default function Page() {
             )}
 
             {recorder.status === "recording" ? (
-              <Button
-                className={`flex-grow border border-red-600`}
-                onClick={() => recorder.startRecording()}
-              >
+              <Button className={`flex-grow border border-red-600`} onClick={() => recorder.startRecording()}>
                 تَسجيل
               </Button>
             ) : (
-              <Button
-                className={`flex-grow`}
-                onClick={() => recorder.startRecording()}
-              >
+              <Button className={`flex-grow`} onClick={() => recorder.startRecording()}>
                 تَسجيل
               </Button>
             )}
-            <Button
-              onClick={() => recorder.stopRecording()}
-              className="flex-grow"
-            >
+            <Button onClick={() => recorder.stopRecording()} className="flex-grow">
               صَهِِ!
             </Button>
             <Button onClick={submit} className="flex-grow">

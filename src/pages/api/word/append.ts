@@ -26,9 +26,7 @@ const appendWordSchema = z.object({
 router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const checkAppendWord = appendWordSchema.safeParse(req.query);
   if (!checkAppendWord.success) {
-    res
-      .status(HttpCodes.BAD_REQUEST)
-      .json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
+    res.status(HttpCodes.BAD_REQUEST).json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
     return;
   }
 

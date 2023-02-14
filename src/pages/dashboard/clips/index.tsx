@@ -1,73 +1,44 @@
 import Header from "../../../components/header";
-import { AutoSizer, List } from "react-virtualized";
+
 import "react-virtualized/styles.css";
-import { Button, Row, Spin } from "antd";
+import { Button, Row, Spin, ButtonProps } from "antd";
 import Head from "next/head";
 import React from "react";
 import PageContainer from "../../../components/PageContainer";
-import {
-  PlayCircleOutlined,
-  PauseCircleOutlined,
-  CheckCircleTwoTone,
-  CloseOutlined,
-  DoubleLeftOutlined,
-} from "@ant-design/icons";
+import { PlayCircleOutlined, PauseCircleOutlined, CheckCircleTwoTone, CloseOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { useToggle } from "react-use";
 import axios from "axios";
-import uuid, { v4 } from "uuid";
+import HandleLoading from "../../../components/HandleLoading/HandleLoading";
+import useAxios from "axios-hooks";
 
-const clipType = { word: { ar: "", id: "" }, id: "", path: "" };
+const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
 
 function Clips() {
   const [spinning, setSpinning] = useToggle(false);
-  const [clips, setClips] = React.useState<Array<typeof clipType>>([]);
-  const [nothingLeft, setNothingLeft] = useToggle(false);
-  const [activeClip, setActiveClip] = React.useState<typeof clipType>();
+  const [clips, refetch, q] = useAxios<Array<typeof clipType>>({ url: "/api/clip/toBeReviewed", method: "GET" });
+  const activeClip = React.useMemo(() => {
+    if (!clips?.data) return;
+    if (typeof clips?.data[0] === "undefined") return {};
+    // @ts-ignore
+    return clips?.data[0]
+  }, [clips.data])
+  
 
-  React.useEffect(() => {
-    getClip();
-  }, []);
-  const acceptClip = React.useCallback(async () => {
-    try {
-      setSpinning(true);
-      const s = await axios({
-        method: "POST",
-        url: `/api/clip/${activeClip?.id}/accept`,
-      });
-      await getClip();
-      setSpinning(false);
-    } catch (error) {}
-  }, [activeClip, spinning]);
+  const acceptClip = async () => {
+    if (clips?.data?.length === 0) return;
+    // @ts-ignore
+    await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject`, });
+    refetch()
+  };
 
-  const rejectClip = React.useCallback(async () => {
-    try {
-      setSpinning(true);
-      const s = await axios({
-        method: "POST",
-        url: `/api/clip/${activeClip?.id}/reject`,
-      });
-      await getClip();
-      setSpinning(false);
-    } catch (error) {}
-  }, [activeClip, spinning]);
+  const rejectClip = async () => {
+    if (clips?.data?.length === 0) return;
+      // @ts-ignore
+      await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject`, });
+      refetch()
+  }
 
-  const getClip = React.useCallback(async () => {
-    try {
-      const s = await axios({
-        method: "GET",
-        url: `/api/clip/toBeReviewed`,
-      });
-      if (s.data.length === 0) {
-        console.log("Ddd");
-        setNothingLeft(true);
-      }
-      setActiveClip(s.data[0]);
-      setClips(s.data);
-    } catch (error) {
-      console.log("nothingLeft");
-    }
-  }, [activeClip, spinning, nothingLeft]);
-
+  
   return (
     <>
       <Head>
@@ -79,68 +50,38 @@ function Clips() {
         <Row className="flex flex-col">
           <Row className="min-h-56 flex flex-row p-5">
             <h1 className="h-full w-1/2 text-4xl grid">
-              {nothingLeft && (
-                <span className="place-items-center">خلاص كدا شطبنا</span>
-              )}
-              {!nothingLeft && (
+              <HandleLoading isDisabled={clips.loading}>
+                {/* @ts-ignore */}
                 <span className="place-items-center">{activeClip?.path}</span>
-              )}
+              </HandleLoading>
             </h1>
-
-            <Spin
-              spinning={nothingLeft ? false : spinning || !activeClip?.id}
-              className="w-1/2"
-            >
-              <Row className="flex flex-row  gap-2 h-full w-full ">
-                <Button className="w-full h-1/3" disabled={nothingLeft}>
+            
+            
+              <Row className="flex flex-row  gap-2 h-full w-1/2 ">
+              <HandleLoading isDisabled={clips.data?.length === 0 && !clips.error } isLoading={clips.loading}>
+                <Button className="w-full h-1/3" >
                   <PlayCircleOutlined className="text-4xl" />
                   <PauseCircleOutlined className="text-4xl" />
                 </Button>
-                <Button
-                  disabled={nothingLeft}
-                  type="primary"
-                  onClick={acceptClip}
-                  className="w-full h-1/3 bg-green-500 hover:bg-green-400"
-                >
-                  <CheckCircleTwoTone
-                    twoToneColor="#52c41a"
-                    className="text-4xl"
-                  />
+                <Button  type="primary" onClick={acceptClip} className="w-full h-1/3 bg-green-500 hover:bg-green-400">
+                  <CheckCircleTwoTone twoToneColor="#52c41a" className="text-4xl" />
                   قبول
                 </Button>
-                <Button
-                  onClick={rejectClip}
-                  type="primary"
-                  danger
-                  className="w-full h-1/3"
-                  disabled={nothingLeft}
-                >
+                <Button onClick={rejectClip} type="primary" danger className="w-full h-1/3">
                   <CloseOutlined className="text-4xl" />
                   رفض
                 </Button>
+                </HandleLoading>
               </Row>
-            </Spin>
+            
           </Row>
           <Row className="flex flex-col gap-2 p-5 w-full">
-            {clips.map((e, i) => {
+            {clips?.data?.map((e, i) => {
               if (i === 0) return <></>;
-
               return (
-                <Row
-                  className={`flex flex-row border flex-nowrap whitespace-nowrap w-full  rounded-md border-cyan-900 ${
-                    i === 1 ? "bg-green-500" : ""
-                  }`}
-                >
-                  {i === 1 && (
-                    <DoubleLeftOutlined className="self-center p-2 text-2xl" />
-                  )}
-                  <Row
-                    className={`p-2 text-2xl overflow-hidden max-w-fit text-ellipsis ${
-                      i === 1 ? "text-slate-50" : ""
-                    }`}
-                  >
-                    {e.path}
-                  </Row>
+                <Row className={`flex flex-row border flex-nowrap whitespace-nowrap w-full  rounded-md border-cyan-900 ${i === 1 && "bg-green-500"}`}>
+                  {i === 1 && <DoubleLeftOutlined className="self-center p-2 text-2xl" />}
+                  <Row className={`p-2 text-2xl overflow-hidden max-w-fit text-ellipsis ${i === 1 && "text-slate-50"}`}>{e.path}</Row>
                 </Row>
               );
             })}

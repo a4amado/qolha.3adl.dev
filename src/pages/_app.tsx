@@ -22,10 +22,7 @@ Router.events.on("routeChangeComplete", () => {
   }, 500);
 });
 
-const MyApp: AppType = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}: any) => {
+const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
   return (
     <Suspense>
       <SessionProvider session={session}>

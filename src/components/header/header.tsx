@@ -19,9 +19,7 @@ export default function Header({ isSearch }: { isSearch: boolean }) {
               تسجيل
             </NextLink>
             {s.status === "loading" && "Loading"}
-            {s.status === "authenticated" && (
-              <Button onClick={() => signOut()}>خروج</Button>
-            )}
+            {s.status === "authenticated" && <Button onClick={() => signOut()}>خروج</Button>}
           </Row>
         </Row>
       </Row>

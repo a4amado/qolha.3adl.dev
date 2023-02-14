@@ -21,10 +21,7 @@ const QueryWordSchema = z.object({
 
 router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const CheckQueryWordSchema = QueryWordSchema.safeParse(req);
-  if (!CheckQueryWordSchema.success)
-    return res
-      .status(HttpCode.NOT_ACCEPTABLE)
-      .send(CheckQueryWordSchema.error.errors);
+  if (!CheckQueryWordSchema.success) return res.status(HttpCode.NOT_ACCEPTABLE).send(CheckQueryWordSchema.error.errors);
 
   const word = await prisma?.word.findUnique({
     where: {

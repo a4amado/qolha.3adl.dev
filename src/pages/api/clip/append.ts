@@ -52,7 +52,7 @@ router.post(
       data: {
         path: req.file.filename,
         userID: req.session.id,
-        wordID: getQueryItem(req.query.wordID),
+        wordID: getQueryItem(req.body.wordID),
         id: v4(),
       },
     });

@@ -6,7 +6,7 @@ import HttpCodes from "http-status-codes";
 import { z } from "zod";
 import { createReadStream } from "fs";
 import path from "path";
-import getQueryItem from  "../../../../../lib/getQueryItem";
+import getQueryItem from "../../../../../lib/getQueryItem";
 const router = nextConnect({
   onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
     console.error(err);
@@ -22,14 +22,10 @@ const streamClipSchema = z.object({
 router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const clipCheck = streamClipSchema.safeParse(req.query);
   if (!clipCheck.success) {
-    res
-      .status(HttpCodes.BAD_REQUEST)
-      .json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
+    res.status(HttpCodes.BAD_REQUEST).json(HttpCodes.getStatusText(HttpCodes.BAD_REQUEST));
     return;
   }
-  const clip = createReadStream(
-    path.join(process.cwd(), "files", "clips", getQueryItem(req.query.clipPath))
-  );
+  const clip = createReadStream(path.join(process.cwd(), "files", "clips", getQueryItem(req.query.clipPath)));
   clip.on("error", (error) => {
     res.status(HttpCodes.BAD_REQUEST).send(error);
 

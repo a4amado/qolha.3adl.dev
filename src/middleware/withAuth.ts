@@ -4,11 +4,7 @@ import { RequestWithSession } from "../types/next-auth";
 import HttpCode from "http-status-codes";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 
-const withAuth = async (
-  req: RequestWithSession,
-  res: NextApiResponse,
-  next: any
-) => {
+const withAuth = async (req: RequestWithSession, res: NextApiResponse, next: any) => {
   try {
     // @ts-ignore
     const session = await getServerSession(req, res, authOptions);
@@ -19,9 +15,7 @@ const withAuth = async (
     req.session = session;
     next();
   } catch (error) {
-    res
-      .status(HttpCode.NON_AUTHORITATIVE_INFORMATION)
-      .json(HttpCode.getStatusText(HttpCode.NON_AUTHORITATIVE_INFORMATION));
+    res.status(HttpCode.NON_AUTHORITATIVE_INFORMATION).json(HttpCode.getStatusText(HttpCode.NON_AUTHORITATIVE_INFORMATION));
   }
 };
 
