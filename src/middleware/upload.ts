@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     callback(null, path.join(process.cwd(), "files", "clips"));
   },
   filename: (req, file, callback) => {
-    callback(null, v4());
+    callback(null, v4() +"."+ MimeType.getExtension(file.mimetype));
   },
 });
 
