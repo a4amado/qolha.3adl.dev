@@ -9,7 +9,7 @@ const router = nextConnect();
 router.use(withAuth);
 
 router.get(async (req: RequestWithSession, res: NextApiResponse, next) => {
-  const word = await prisma?.word.findMany({
+  const word = await prisma?.word.findFirst({
     select: {
       ar: true,
       id: true,

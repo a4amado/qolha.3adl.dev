@@ -20,25 +20,25 @@ function Clips() {
     if (!clips?.data) return;
     if (typeof clips?.data[0] === "undefined") return {};
     // @ts-ignore
-    return clips?.data[0]
-  }, [clips.data])
-  
+    return clips?.data[0];
+  }, [clips.data]);
 
   const acceptClip = async () => {
     if (clips?.data?.length === 0) return;
     // @ts-ignore
-    await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject`, });
-    refetch()
+    await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject` });
+    refetch();
   };
 
   const rejectClip = async () => {
     if (clips?.data?.length === 0) return;
-      // @ts-ignore
-      await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject`, });
-      refetch()
-  }
+    // @ts-ignore
+    await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject` });
+    refetch();
+  };
 
-  
+  const disabled = [!!clips.loading, !!clips.error, clips.data?.length === 0].includes(true);
+
   return (
     <>
       <Head>
@@ -50,30 +50,24 @@ function Clips() {
         <Row className="flex flex-col">
           <Row className="min-h-56 flex flex-row p-5">
             <h1 className="h-full w-1/2 text-4xl grid">
-              <HandleLoading isDisabled={clips.loading}>
-                {/* @ts-ignore */}
-                <span className="place-items-center">{activeClip?.path}</span>
-              </HandleLoading>
+              {/* @ts-ignore */}
+              <span className="place-items-center">{disabled ? "خلاص كدا" : activeClip?.path}</span>
             </h1>
-            
-            
-              <Row className="flex flex-row  gap-2 h-full w-1/2 ">
-              <HandleLoading isDisabled={clips.data?.length === 0 && !clips.error } isLoading={clips.loading}>
-                <Button className="w-full h-1/3" >
-                  <PlayCircleOutlined className="text-4xl" />
-                  <PauseCircleOutlined className="text-4xl" />
-                </Button>
-                <Button  type="primary" onClick={acceptClip} className="w-full h-1/3 bg-green-500 hover:bg-green-400">
-                  <CheckCircleTwoTone twoToneColor="#52c41a" className="text-4xl" />
-                  قبول
-                </Button>
-                <Button onClick={rejectClip} type="primary" danger className="w-full h-1/3">
-                  <CloseOutlined className="text-4xl" />
-                  رفض
-                </Button>
-                </HandleLoading>
-              </Row>
-            
+
+            <Row className="flex flex-row  gap-2 h-full w-1/2 ">
+              <Button disabled={disabled} className="w-full h-1/3">
+                <PlayCircleOutlined className="text-4xl" />
+                <PauseCircleOutlined className="text-4xl" />
+              </Button>
+              <Button disabled={disabled} type="primary" onClick={acceptClip} className="w-full h-1/3 bg-green-500 hover:bg-green-400">
+                <CheckCircleTwoTone twoToneColor="#52c41a" className="text-4xl" />
+                قبول
+              </Button>
+              <Button disabled={disabled} onClick={rejectClip} type="primary" danger className="w-full h-1/3">
+                <CloseOutlined className="text-4xl" />
+                رفض
+              </Button>
+            </Row>
           </Row>
           <Row className="flex flex-col gap-2 p-5 w-full">
             {clips?.data?.map((e, i) => {

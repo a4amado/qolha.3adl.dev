@@ -14,6 +14,13 @@ const quertSchema = z.object({
 });
 
 export const getServerSideProps: G = async (ctx) => {
+  if (!ctx.query.q && !ctx.query.word) {
+    return {
+      props: {
+        home: true,
+      },
+    };
+  }
   const isValid = quertSchema.safeParse(ctx.query);
   if (!isValid.success) {
     return {

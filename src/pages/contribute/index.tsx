@@ -6,6 +6,7 @@ import Header from "../../components/header";
 import { useToggle } from "react-use";
 import { v4 } from "uuid";
 import Axios from "axios";
+import useAxios from "axios-hooks";
 
 interface WordType {
   ar: string;
@@ -22,74 +23,54 @@ export default function Page() {
     mediaStreamConstraints: { audio: true, video: false },
     mediaRecorderOptions: { mime: "audio/webm" },
   });
-  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
-  const [word, setWord] = React.useState<WordType | null>();
 
-  async function getWord() {
-    try {
-      const word = await Axios({
-        url: "/api/word/getWordWithTheLeastClips",
-      });
-
-      setWord(word.data[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  // GET Word onMount
-  React.useEffect(() => {
-    getWord();
-  }, []);
+  const [word, refetch] = useAxios({ url: "/api/word/getWordWithTheLeastClips" }, { manual: false });
+  const [clip, submitClip] = useAxios({}, { manual: true });
 
   const url = React.useMemo(() => {
     if (!recorder.mediaBlob) return "";
     return typeof window !== "undefined" ? URL.createObjectURL(recorder.mediaBlob) : "";
   }, [recorder.status, recorder.mediaBlob]);
 
-  const [o, OF] = useToggle(false);
-  const [, setError] = React.useState(false);
-
   async function submit() {
     try {
       if (recorder.status === "recording") {
-        return notification["warning"]({
+        const uid = v4();
+        notification["warning"]({
           type: "error",
           message: "اوقف التسجيل اولا",
+          key: uid,
         });
+        setTimeout(() => {
+          notification["destroy"](uid);
+        }, 1000);
+        return;
       }
-      if (recorder.mediaBlob?.size === 0) return false;
-      if (!word?.id) return false;
 
-      setError(false);
+      if (recorder.mediaBlob?.size === 0) return false;
+      if (!word.data?.id) return false;
       if (!recorder.mediaBlob) return false;
 
       const form = new FormData();
       form.append("clip", recorder.mediaBlob);
-      form.append("wordID", word.id);
-      
-      console.log(form.get("clip"));
+      form.append("wordID", word.data.id);
 
-      await Axios({
+      await submitClip({
+        data: form,
         method: "POST",
         url: `/api/clip/append`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        data: form,
       });
+      await refetch();
 
-      OF(true);
-      setIsSubmitting(true);
-
-      await getWord();
-
-      OF(false);
-      setIsSubmitting(false);
+      
       recorder.clearMediaBlob();
       recorder.clearMediaStream();
+      
       const uid = v4();
-      const not = notification["success"]({
+      notification["success"]({
         message: "تَم الحِفظ.",
         closeIcon: true,
         duration: 40,
@@ -100,13 +81,16 @@ export default function Page() {
         notification["destroy"](uid);
       }, 1000);
     } catch {
-      OF(false);
-      setError(true);
+      const uid = v4();
       notification["error"]({
         message: "تَم الحِفظ.",
         closeIcon: true,
         duration: 4000,
+        key: uid,
       });
+      setTimeout(() => {
+        notification["destroy"](uid);
+      }, 1000);
     }
   }
 
@@ -117,30 +101,23 @@ export default function Page() {
         <Row className="flex flex-col w-full">
           <Row className=" flex justify-center align-middle">
             <Typography.Title className="text-7xl flex justify-center align-middle">
-              {word?.ar} - {word?.id}
+              {word?.data?.ar} - {word?.data?.id}
             </Typography.Title>
           </Row>
           <Row className="w-full">
             <audio src={url} preload="" controls className="w-full" />
           </Row>
           <Row className="flex flex-row justify-stretch h-80 gap-2 my-2 mx-0 relative">
-            {o && (
-              <Row className="flex flex-col absolute w-full h-full bg-slate-200 z-[9999]">
-                <Spin />
-                <Typography>إنتظر لحظة</Typography>
-              </Row>
-            )}
+            <Row className={`${clip.loading ? "flex flex-col absolute w-full h-full bg-slate-200 z-[9999]" : "hidden"}`}>
+              <Spin />
+              <Typography>إنتظر لحظة</Typography>
+            </Row>
 
-            {recorder.status === "recording" ? (
-              <Button className={`flex-grow border border-red-600`} onClick={() => recorder.startRecording()}>
-                تَسجيل
-              </Button>
-            ) : (
-              <Button className={`flex-grow`} onClick={() => recorder.startRecording()}>
-                تَسجيل
-              </Button>
-            )}
-            <Button onClick={() => recorder.stopRecording()} className="flex-grow">
+            <Button className={`flex-grow border ${["recording"].includes(recorder.status) && "border-red-600"}`} onClick={() => recorder.startRecording()}>
+              تَسجيل
+            </Button>
+
+            <Button onClick={recorder.stopRecording} className="flex-grow">
               صَهِِ!
             </Button>
             <Button onClick={submit} className="flex-grow">
