@@ -5,13 +5,10 @@ import Router from "next/router";
 
 const Loading = () => {
   React.useEffect(() => {
+    if (!Router.isReady) return;
     const loadingContainer = document.getElementById("loading-container");
-    if (Router.isReady) {
-      loadingContainer?.classList.add("out-loading");
-      setTimeout(() => {
-        loadingContainer?.classList.add("hide-loading");
-      }, 500);
-    }
+    loadingContainer?.classList.add("out-loading");
+    setTimeout(() => loadingContainer?.classList.add("hide-loading"), 500);
   }, []);
   return (
     <>

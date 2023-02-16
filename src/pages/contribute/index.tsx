@@ -3,21 +3,11 @@ import useRecorder from "@wmik/use-media-recorder";
 import React from "react";
 import PageContainer from "../../components/PageContainer";
 import Header from "../../components/header";
-import { useToggle } from "react-use";
 import { v4 } from "uuid";
-import Axios from "axios";
 import useAxios from "axios-hooks";
 
-interface WordType {
-  ar: string;
-  en: string;
-  id: string;
-}
-
 export default function Page() {
-  ///////////////////////////////////////////////////////////
-  // Audio recording instance
-  ///////////////////////////////////////////////////////////
+
   const recorder = useRecorder({
     blobOptions: { endings: "transparent", type: "audio/webm" },
     mediaStreamConstraints: { audio: true, video: false },
@@ -25,7 +15,7 @@ export default function Page() {
   });
 
   const [word, refetch] = useAxios({ url: "/api/word/getWordWithTheLeastClips" }, { manual: false });
-  const [clip, submitClip] = useAxios({}, { manual: true });
+  const [clip, submitClip] = useAxios({ method: "POST", url: `/api/clip/append`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
 
   const url = React.useMemo(() => {
     if (!recorder.mediaBlob) return "";
@@ -36,14 +26,8 @@ export default function Page() {
     try {
       if (recorder.status === "recording") {
         const uid = v4();
-        notification["warning"]({
-          type: "error",
-          message: "اوقف التسجيل اولا",
-          key: uid,
-        });
-        setTimeout(() => {
-          notification["destroy"](uid);
-        }, 1000);
+        notification["warning"]({ type: "error", message: "اوقف التسجيل اولا", key: uid });
+        setTimeout(() => notification["destroy"](uid), 1000);
         return;
       }
 
@@ -55,42 +39,19 @@ export default function Page() {
       form.append("clip", recorder.mediaBlob);
       form.append("wordID", word.data.id);
 
-      await submitClip({
-        data: form,
-        method: "POST",
-        url: `/api/clip/append`,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await submitClip({ data: form });
       await refetch();
 
-      
       recorder.clearMediaBlob();
       recorder.clearMediaStream();
-      
+
       const uid = v4();
-      notification["success"]({
-        message: "تَم الحِفظ.",
-        closeIcon: true,
-        duration: 40,
-        btn: true,
-        key: uid,
-      });
-      setTimeout(() => {
-        notification["destroy"](uid);
-      }, 1000);
+      notification["success"]({ message: "تَم الحِفظ.", closeIcon: true, duration: 40, btn: true, key: uid });
+      setTimeout(() => notification["destroy"](uid), 1000);
     } catch {
       const uid = v4();
-      notification["error"]({
-        message: "تَم الحِفظ.",
-        closeIcon: true,
-        duration: 4000,
-        key: uid,
-      });
-      setTimeout(() => {
-        notification["destroy"](uid);
-      }, 1000);
+      notification["error"]({ message: "تَم الحِفظ.", closeIcon: true, duration: 4000, key: uid });
+      setTimeout(() => notification["destroy"](uid), 1000);
     }
   }
 

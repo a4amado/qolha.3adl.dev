@@ -1,14 +1,14 @@
 import Header from "../../../components/header";
 
 import "react-virtualized/styles.css";
-import { Button, Row, Spin, ButtonProps } from "antd";
+import { Button, Row, } from "antd";
 import Head from "next/head";
 import React from "react";
 import PageContainer from "../../../components/PageContainer";
 import { PlayCircleOutlined, PauseCircleOutlined, CheckCircleTwoTone, CloseOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { useToggle } from "react-use";
 import axios from "axios";
-import HandleLoading from "../../../components/HandleLoading/HandleLoading";
+
 import useAxios from "axios-hooks";
 
 const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
