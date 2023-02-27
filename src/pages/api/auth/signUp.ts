@@ -6,7 +6,7 @@ import { z } from "zod";
 import HttpCodes from "http-status-codes";
 import bcrypt from "bcrypt";
 import prisma from "@utils/prismadb";
-import Prisma from "prisma";
+
 import sendTestMail from "@utils/mailersend";
 import { User } from "next-auth";
 
