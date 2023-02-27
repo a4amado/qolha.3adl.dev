@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
 import { RequestWithSession } from "../../../types/next-auth";
-import withAuth from "../../../middleware/withAuth";
-import isOwner from "../../../middleware/isOwner";
+import withAuth from "@middleware/withAuth";
 import { z } from "zod";
 import HttpCodes from "http-status-codes";
-import getQueryItem from "../../../lib/getQueryItem";
+import getQueryItem from "@utils/getQueryItem";
 import { v4 } from "uuid";
+import prisma from "@utils/prismadb";
 
 const router = nextConnect({
   onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {

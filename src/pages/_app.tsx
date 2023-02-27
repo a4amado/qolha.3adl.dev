@@ -1,9 +1,10 @@
 import "../styles/globals.css";
 import { type AppType } from "next/app";
-import GoToUp from "../components/gotToUp";
-import Loading from "../components/loading";
+import GoToUp from "@ui/GoToUp";
+import Loading from "@ui/Loading";
+
 import React, { Suspense } from "react";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, signIn, signOut } from "next-auth/react";
 import Router from "next/router";
 
 Router.events.on("routeChangeStart", () => {
@@ -15,7 +16,6 @@ Router.events.on("routeChangeStart", () => {
 
 Router.events.on("routeChangeComplete", () => {
   const loadingContainer = document.getElementById("loading-container");
-
   loadingContainer?.classList.add("out-loading");
   setTimeout(() => {
     loadingContainer?.classList.add("hide-loading");

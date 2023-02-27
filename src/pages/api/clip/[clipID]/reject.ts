@@ -1,12 +1,12 @@
 import { NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
 import { RequestWithSession } from "../../../../types/next-auth";
-import withAuth from "../../../../middleware/withAuth";
-import isOwner from "../../../../middleware/isOwner";
-
+import withAuth from "@middleware/withAuth";
+import verifyRole from "@middleware/verifyRole";
 import { z } from "zod";
 import HttpCodes from "http-status-codes";
-import getQueryItem from "../../../../lib/getQueryItem";
+import getQueryItem from "@utils/getQueryItem";
+import prisma from "@utils/prismadb";
 
 const router = nextConnect();
 
@@ -15,7 +15,7 @@ const appendRateSchema = z.object({
 });
 
 router.use(withAuth);
-router.use(isOwner);
+router.use((req: RequestWithSession, res: NextApiResponse, next) => verifyRole(req, res, next, { allowedRoles: ["owner"] }));
 
 router.post(async (req: RequestWithSession, res: NextApiResponse, next) => {
   const CheckAppendRateSchema = appendRateSchema.safeParse(req.query);

@@ -1,11 +1,13 @@
 import { NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
 import { RequestWithSession } from "../../../types/next-auth";
-import withAuth from "../../../middleware/withAuth";
-import isOwner from "../../../middleware/isOwner";
-import getQueryItem from "../../../lib/getQueryItem";
+import withAuth from "@middleware/withAuth";
+import isOwner from "@middleware/verifyRole";
+import getQueryItem from "@utils/getQueryItem";
 import { z } from "zod";
 import HttpStatus from "http-status-codes";
+import prisma from "@utils/prismadb";
+
 const router = nextConnect();
 
 // router.use(withAuth);

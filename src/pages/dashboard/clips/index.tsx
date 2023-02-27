@@ -1,12 +1,9 @@
-import Header from "../../../components/header";
-
-import "react-virtualized/styles.css";
-import { Button, Row, } from "antd";
+import Header from "@ui/header";
+import { Button, Row } from "antd";
 import Head from "next/head";
 import React from "react";
-import PageContainer from "../../../components/PageContainer";
+import PageContainer from "@ui/PageContainer";
 import { PlayCircleOutlined, PauseCircleOutlined, CheckCircleTwoTone, CloseOutlined, DoubleLeftOutlined } from "@ant-design/icons";
-import { useToggle } from "react-use";
 import axios from "axios";
 
 import useAxios from "axios-hooks";
@@ -14,27 +11,22 @@ import useAxios from "axios-hooks";
 const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
 
 function Clips() {
-  const [spinning, setSpinning] = useToggle(false);
   const [clips, refetch, q] = useAxios<Array<typeof clipType>>({ url: "/api/clip/toBeReviewed", method: "GET" });
   const activeClip = React.useMemo(() => {
-    if (!clips?.data) return;
-    if (typeof clips?.data[0] === "undefined") return {};
-    // @ts-ignore
+    if (!clips?.data || typeof clips?.data[0] === "undefined") return null;
     return clips?.data[0];
   }, [clips.data]);
 
   const acceptClip = async () => {
-    if (clips?.data?.length === 0) return;
-    // @ts-ignore
+    if (!activeClip) return;
     await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject` });
     refetch();
   };
 
   const rejectClip = async () => {
-    if (clips?.data?.length === 0) return;
-    // @ts-ignore
+    if (!activeClip) return;
     await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject` });
-    refetch();
+    await refetch();
   };
 
   const disabled = [!!clips.loading, !!clips.error, clips.data?.length === 0].includes(true);
@@ -73,7 +65,7 @@ function Clips() {
             {clips?.data?.map((e, i) => {
               if (i === 0) return <></>;
               return (
-                <Row className={`flex flex-row border flex-nowrap whitespace-nowrap w-full  rounded-md border-cyan-900 ${i === 1 && "bg-green-500"}`}>
+                <Row key={e.id} className={`flex flex-row border flex-nowrap whitespace-nowrap w-full  rounded-md border-cyan-900 ${i === 1 && "bg-green-500"}`}>
                   {i === 1 && <DoubleLeftOutlined className="self-center p-2 text-2xl" />}
                   <Row className={`p-2 text-2xl overflow-hidden max-w-fit text-ellipsis ${i === 1 && "text-slate-50"}`}>{e.path}</Row>
                 </Row>

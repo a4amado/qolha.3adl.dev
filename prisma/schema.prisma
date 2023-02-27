@@ -22,6 +22,8 @@ model Account {
     id_token          String?
     session_state     String?
 
+    hash String?
+    
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
@@ -41,7 +43,7 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
-
+    code String?
     role String @default("none")
 
 

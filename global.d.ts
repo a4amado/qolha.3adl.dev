@@ -9,6 +9,7 @@ declare global {
       DATABASE_URL: string;
       GOOGLE_CLIENT_ID: string;
       GOOGLE_SECRET: string;
+      MAILERSEND: string
     }
     
   };

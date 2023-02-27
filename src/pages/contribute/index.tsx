@@ -1,13 +1,12 @@
 import { Row, Button, Typography, Spin, notification } from "antd";
 import useRecorder from "@wmik/use-media-recorder";
 import React from "react";
-import PageContainer from "../../components/PageContainer";
-import Header from "../../components/header";
+import PageContainer from "@ui/PageContainer";
+import Header from "@ui/header";
 import { v4 } from "uuid";
 import useAxios from "axios-hooks";
 
 export default function Page() {
-
   const recorder = useRecorder({
     blobOptions: { endings: "transparent", type: "audio/webm" },
     mediaStreamConstraints: { audio: true, video: false },

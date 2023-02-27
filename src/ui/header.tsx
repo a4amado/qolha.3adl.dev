@@ -1,5 +1,5 @@
 import { Row, Col, Typography, Button } from "antd";
-import Search from "../search";
+import Search from "./search";
 import NextLink from "next/link";
 import { signOut, useSession } from "next-auth/react";
 

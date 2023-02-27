@@ -2,8 +2,8 @@ import { Button, Col, Row, Typography, Modal } from "antd";
 import { memo, useEffect, useState } from "react";
 import { BiPlay } from "react-icons/bi";
 import { useAudio, useToggle } from "react-use";
-import RateRecord from "../RateRecord";
-import URLQrCode from "../URLQrCode";
+import RateRecord from "./RateRecord";
+import URLQrCode from "./URLQrCode";
 
 function AudioHero({ word }: { word: any }) {
   return (
@@ -15,7 +15,7 @@ function AudioHero({ word }: { word: any }) {
 
       <Row className="flex gap-1">
         {word.clips.map((e: any, i: any) => (
-          <AudioElement e={e} />
+          <AudioElement e={e} key={i} />
         ))}
       </Row>
     </Row>
@@ -24,11 +24,11 @@ function AudioHero({ word }: { word: any }) {
 
 export default memo(AudioHero);
 
-const AudioElement = memo(({ e }: any) => {
+const AudioElement = ({ e }: any) => {
   const state = useToggle(false);
-  let s = useState<any>();
+  const s = useState<any>();
   useEffect(() => {
-    let f = new Audio(`/api/clip/stream/${e.path}`);
+    const f = new Audio(`/api/clip/stream/${e.path}`);
     s[1](f);
   }, []);
 
@@ -52,4 +52,4 @@ const AudioElement = memo(({ e }: any) => {
       <RateRecord id={e.id} />
     </Row>
   );
-});
+};

@@ -1,12 +1,13 @@
 import { Col, Row, Menu, Collapse, Typography } from "antd";
 import React from "react";
-import Header from "../components/header";
-import PageContainer from "../components/PageContainer";
-import TargetWord from "../components/TargetWord/TargetWord";
+import Header from "@ui/header";
+import PageContainer from "@ui/PageContainer";
+import TargetWord from "@ui/TargetWord";
 import { GetServerSideProps as G } from "next/types";
 import { z } from "zod";
-import AudioHero from "../components/AudioHero";
-import getQueryItem from "../lib/getQueryItem";
+import AudioHero from "@ui/AudioHero";
+import getQueryItem from "@utils/getQueryItem";
+import prisma from "@utils/prismadb";
 
 const quertSchema = z.object({
   q: z.string().uuid(),

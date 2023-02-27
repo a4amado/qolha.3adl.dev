@@ -5,11 +5,10 @@
 import { NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
 import { RequestWithSession } from "../../../../types/next-auth";
-import withAuth from "../../../../middleware/withAuth";
-import isOwner from "../../../../middleware/isOwner";
 import { z } from "zod";
 import HttpCode from "http-status-codes";
-import getQueryItem from "../../../../lib/getQueryItem";
+import getQueryItem from "@utils/getQueryItem";
+import prisma from "@utils/prismadb";
 
 const router = nextConnect();
 

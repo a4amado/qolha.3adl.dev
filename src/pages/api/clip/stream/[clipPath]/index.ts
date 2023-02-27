@@ -6,7 +6,9 @@ import HttpCodes from "http-status-codes";
 import { z } from "zod";
 import { createReadStream } from "fs";
 import path from "path";
-import getQueryItem from "../../../../../lib/getQueryItem";
+import getQueryItem from "@utils/getQueryItem";
+import prisma from "@utils/prismadb";
+
 const router = nextConnect({
   onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
     console.error(err);

@@ -1,6 +1,5 @@
-
 function Users() {
-  return <>s</>
+  return <>s</>;
 }
 
 export default Users;

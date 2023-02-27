@@ -1,8 +1,9 @@
 import { NextApiResponse } from "next/types";
 import nextConnect from "next-connect";
 import { RequestWithSession } from "../../../types/next-auth";
-import withAuth from "../../../middleware/withAuth";
-import isOwner from "../../../middleware/isOwner";
+import withAuth from "@middleware/withAuth";
+import isOwner from "@middleware/verifyRole";
+import prisma from "@utils/prismadb";
 
 const router = nextConnect();
 
