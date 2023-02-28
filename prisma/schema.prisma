@@ -68,6 +68,7 @@ model Word {
     accepted Boolean @default(false)
 
     clips Clip[]
+    reports WordReport[]
 
     createBy User   @relation(references: [id], fields: [userId])
     userId   String
@@ -88,6 +89,8 @@ model Clip {
     createBy User   @relation(references: [id], fields: [userID])
     
     rate Rate[]
+
+    reports ClipReport[]
 }
 
 model Rate {
@@ -103,3 +106,21 @@ model Rate {
 
 }
 
+model WordReport {
+    id String @unique @default(cuid())
+
+    wordID String
+    word Word @relation(references: [id], fields: [wordID])
+    reason String
+
+}
+
+
+model ClipReport {
+    id String @unique @default(cuid())
+
+    clipID String
+    clip Clip @relation(references: [id], fields: [clipID])
+    reason String
+
+}

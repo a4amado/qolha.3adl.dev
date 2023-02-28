@@ -2,14 +2,17 @@ import { Button, Col, Row, Typography, Modal } from "antd";
 import { memo, useEffect, useState } from "react";
 import { BiPlay } from "react-icons/bi";
 import { useAudio, useToggle } from "react-use";
-import RateRecord from "./RateRecord";
-import URLQrCode from "./URLQrCode";
+import ReportWord from "@ui/ReportWord";
+ import URLQrCode from "@ui/URLQrCode";
+import RateRecord from "@ui//RateRecord";
 
 function AudioHero({ word }: { word: any }) {
   return (
     <Row className="block border border-balck p-2 rounded max-w-xl w-full mx-auto">
+      <Col className="flex flex-row justify-end my-2"><ReportWord wordID={word.id} /></Col>
       <Col className="flex flex-row justify-between ">
         <Typography.Title className="block">{word.ar}</Typography.Title>
+        
         <URLQrCode />
       </Col>
 

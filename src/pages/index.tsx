@@ -32,31 +32,17 @@ export const getServerSideProps: G = async (ctx) => {
     };
   }
 
-  const word = await prisma?.word.findUnique({
-    where: {
-      id: getQueryItem(ctx.query.q),
-    },
-    select: {
-      ar: true,
-      clips: {
-        select: {
-          path: true,
-          createBy: {
-            select: {
-              name: true,
-              id: true,
-            },
-          },
-          id: true,
-        },
-        where: {
-          accepted: true,
-        },
-      },
-      id: true,
-    },
-  });
-
+  const word = {
+    ar: "أنا",
+    en: "I",
+    id: Math.random().toString(),
+    clips: [
+      {
+        path: "/ssssssssssssssssssssssssssssssssss",
+        id: Math.random().toString(),
+      }
+    ]
+  };
   if (!word?.id) {
     return {
       props: {
