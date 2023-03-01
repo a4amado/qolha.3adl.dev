@@ -1,0 +1,10 @@
+packages:
+  - 'packages/*'
+
+dependencies:
+  
+
+linkWorkspacePackages: false
+
+
+packageManager: 'pnpm'

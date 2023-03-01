@@ -1,0 +1,101 @@
+datasource db {
+    provider          = "sqlite"
+    url               = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    code String?
+    role String @default("none")
+    rates Rate[]
+    account  Account?
+    lips     Clip[]
+    words    Word[]
+}
+
+model Account {
+    id String @unique @default(cuid())
+    userID String @unique
+    user User  @relation(references: [id], fields: [userID], onDelete: Cascade)
+    hash String
+}
+model VerificationToken {
+    identifier String 
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model Word {
+    id    String @unique
+    ar    String @unique
+    accepted Boolean @default(false)
+
+    clips Clip[]
+    reports WordReport[]
+
+    createBy User   @relation(references: [id], fields: [userId])
+    userId   String
+}
+
+model Clip {
+    id String @unique
+
+    path String
+
+    accepted Boolean @default(false)
+    rejected Boolean @default(false)
+
+    wordID String
+    word   Word   @relation(references: [id], fields: [wordID])
+
+    userID   String
+    createBy User   @relation(references: [id], fields: [userID])
+    
+    rate Rate[]
+
+    reports ClipReport[]
+}
+
+model Rate {
+    id String @unique
+    rate Int
+
+    clipID String 
+    word Clip @relation(fields: [clipID], references: [id])
+
+    userID String
+
+    createdBy User @relation(fields: [userID], references: [id])
+
+}
+
+model WordReport {
+    id String @unique @default(cuid())
+
+    wordID String
+    word Word @relation(references: [id], fields: [wordID])
+    reason String
+
+}
+
+
+model ClipReport {
+    id String @unique @default(cuid())
+
+    clipID String
+    clip Clip @relation(references: [id], fields: [clipID])
+    reason String
+
+}
