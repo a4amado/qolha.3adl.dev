@@ -20,61 +20,55 @@ export async function listClipsForWord(req: Request, res: Response) {
         return;
     }
 
-    try {
-        const clips = await prisma?.word.findFirst({
-            where: {
-                id: getQueryItem(req.query.wordID),
-            },
-            select: {
-                ar: true,
+    const clips = await prisma?.word.findFirst({
+        where: {
+            id: getQueryItem(req.query.wordID),
+        },
+        select: {
+            ar: true,
 
-                clips: {
-                    select: {
-                        createBy: {
-                            select: {
-                                name: true,
-                            },
+            clips: {
+                select: {
+                    createBy: {
+                        select: {
+                            name: true,
                         },
-                        id: true,
-                        path: true,
                     },
-                    take: 15,
+                    id: true,
+                    path: true,
                 },
+                take: 15,
             },
-        });
+        },
+    });
 
-        res.status(Codes.OK).send(clips);
-    } catch (error) {
-        return res.status(Codes.INTERNAL_SERVER_ERROR).send(error);
-    }
+    res.status(Codes.OK).send(clips);
 };
 
 
 
 export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) {
-    try {
-        const clips = await prisma?.clip.findMany({
-            where: {
-                accepted: false,
-                rejected: false,
-            },
-            select: {
-                word: {
-                    select: {
-                        ar: true,
-                        id: true,
-                    },
-                },
-                id: true,
-                path: true,
-            },
-            take: 5,
-        });
 
-        res.status(Codes.OK).json(clips);
-    } catch (error) {
-        res.status(Codes.INTERNAL_SERVER_ERROR).json(error);
-    }
+    const clips = await prisma?.clip.findMany({
+        where: {
+            accepted: false,
+            rejected: false,
+        },
+        select: {
+            word: {
+                select: {
+                    ar: true,
+                    id: true,
+                },
+            },
+            id: true,
+            path: true,
+        },
+        take: 5,
+    });
+
+    res.status(Codes.OK).json(clips);
+
 }
 
 
@@ -118,20 +112,16 @@ export async function acceptClip(req: Request, res: Response) {
     if (!acceptClipSchemaResult.success) {
         return res.status(Codes.BAD_REQUEST).json(Codes.getStatusText(Codes.BAD_REQUEST));
     }
-    try {
-        const clipStatus = await prisma?.clip.update({
-            where: {
-                id: getQueryItem(req.query.clipID),
-            },
-            data: {
-                accepted: true,
-                rejected: false,
-            },
-        });
-        return res.status(Codes.OK).json(clipStatus);
-    } catch (error) {
-        return res.status(Codes.INTERNAL_SERVER_ERROR).json(error);
-    }
+    const clipStatus = await prisma?.clip.update({
+        where: {
+            id: getQueryItem(req.query.clipID),
+        },
+        data: {
+            accepted: true,
+            rejected: false,
+        },
+    });
+    return res.status(Codes.OK).json(clipStatus);
 }
 
 
@@ -141,20 +131,16 @@ export async function rejectClip(req: Request, res: Response) {
     if (!acceptClipSchemaResult.success) {
         return res.status(Codes.BAD_REQUEST).json(Codes.getStatusText(Codes.BAD_REQUEST));
     }
-    try {
-        const clipStatus = await prisma?.clip.update({
-            where: {
-                id: getQueryItem(req.query.clipID),
-            },
-            data: {
-                accepted: false,
-                rejected: true,
-            },
-        });
-        return res.status(Codes.OK).json(clipStatus);
-    } catch (error) {
-        return res.status(Codes.INTERNAL_SERVER_ERROR).json(error);
-    }
+    const clipStatus = await prisma?.clip.update({
+        where: {
+            id: getQueryItem(req.query.clipID),
+        },
+        data: {
+            accepted: false,
+            rejected: true,
+        },
+    });
+    return res.status(Codes.OK).json(clipStatus);
 }
 
 
@@ -171,16 +157,12 @@ export async function streamClip(req: Request, res: Response) {
         res.status(Codes.BAD_REQUEST).json(Codes.getStatusText(Codes.BAD_REQUEST));
         return;
     }
-    try {
-        const clip = await prisma?.clip.findUnique({ where: { id: getQueryItem(req.query.clipID) } })
-        if (!clip?.id) throw "Clip Not Found"
-        const stream = createReadStream(join(process.cwd(), "files", "clips", clip?.path));
-        stream.on("error", (error) => {
-            return res.status(Codes.BAD_REQUEST).send(error);
-            
-        });
-        stream.pipe(res);
-    } catch (error) {
+    const clip = await prisma?.clip.findUnique({ where: { id: getQueryItem(req.query.clipID) } })
+    if (!clip?.id) throw "Clip Not Found"
+    const stream = createReadStream(join(process.cwd(), "files", "clips", clip?.path));
+    stream.on("error", (error) => {
         return res.status(Codes.BAD_REQUEST).send(error);
-    }
+
+    });
+    stream.pipe(res);
 }

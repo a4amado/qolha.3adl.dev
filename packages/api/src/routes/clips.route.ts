@@ -1,17 +1,18 @@
 import { Router } from "express";
 import { acceptClip, appendClip, getClipThatNeedsToBeReviewed, listClipsForWord, rejectClip, streamClip } from "../controllers/clip.controller";
 import upload from "../middleware/upload";
+import catchError from "../utils/catchError";
 
 const route = Router();
 
 
 
-route.get("/:wordID/list", listClipsForWord)
-route.get("/toBeReviewed", getClipThatNeedsToBeReviewed)
-route.get("/:clipID", streamClip)
+route.get("/:wordID/list", catchError(listClipsForWord))
+route.get("/toBeReviewed", catchError(getClipThatNeedsToBeReviewed))
+route.get("/:clipID", catchError(streamClip))
 //@ts-ignore
-route.post("/:wordID/append", upload.single("clip"), appendClip);
-route.post("/:clipID/accept", acceptClip);
-route.post("/:clipID/reject", rejectClip);
+route.post("/:wordID/append", catchError(upload.single("clip"), appendClip));
+route.post("/:clipID/accept", catchError(acceptClip));
+route.post("/:clipID/reject", catchError(rejectClip));
 
 export default route;
