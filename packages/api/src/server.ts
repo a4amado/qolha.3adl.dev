@@ -9,7 +9,7 @@ const app = Express();
 import bodyParser from "body-parser";
 import CookieParser from "cookie-parser";
 
-
+import HitsRoute from "./routes/q.route"
 
 
 app.use(cors({
@@ -27,6 +27,7 @@ app.use("/rates", RateRouter);
 app.use("/words", WordRouter);
 app.use("/users", UserRouter);
 app.use("/auth", AuthRoute)
+app.use("/hits", HitsRoute)
 
 
 

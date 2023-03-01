@@ -25,34 +25,31 @@ export async function appendRate(req: Request, res: Response) {
         return;
     }
 
-    try {
-        const clipRate = await prisma?.rate.findFirst({
-            where: {
-                AND: {
-                    clipID: getQueryItem(req.query.clipID),
-                    // @ts-ignore
-                    userID: req.session.id,
-                },
-            },
-        });
 
-        const newClipRate = await prisma?.rate.upsert({
-            create: {
+    const clipRate = await prisma?.rate.findFirst({
+        where: {
+            AND: {
                 clipID: getQueryItem(req.query.clipID),
                 // @ts-ignore
                 userID: req.session.id,
-                rate: Number(getQueryItem(req.body.rate)),
-                id: v4(),
             },
-            update: {
-                rate: Number(getQueryItem(req.body.rate)),
-            },
-            where: {
-                id: clipRate?.id || "",
-            },
-        });
+        },
+    });
 
-    } catch (error) {
-        return res.status(Codes.BAD_REQUEST).json(error);
-    }
+    const newClipRate = await prisma?.rate.upsert({
+        create: {
+            clipID: getQueryItem(req.query.clipID),
+            // @ts-ignore
+            userID: req.session.id,
+            rate: Number(getQueryItem(req.body.rate)),
+            id: v4(),
+        },
+        update: {
+            rate: Number(getQueryItem(req.body.rate)),
+        },
+        where: {
+            id: clipRate?.id || "",
+        },
+    });
+
 }

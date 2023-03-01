@@ -2,7 +2,7 @@ import prisma from "../utils/prismadb";
 import * as yup from "yup"
 import { Request, Response, NextFunction } from "express";
 import Codes from "http-status-codes"
-import { Account, User } from "@prisma/client"
+
 import getQueryItem from "../utils/getQueryItem";
 
 

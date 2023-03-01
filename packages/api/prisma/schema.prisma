@@ -19,7 +19,7 @@ model User {
     role String @default("none")
     rates Rate[]
     account  Account?
-    lips     Clip[]
+    clips     Clip[]
     words    Word[]
 }
 

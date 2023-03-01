@@ -17,16 +17,12 @@ const appendWordSchema = z.object({
 export async function QueryWord(req: Request, res: Response) {
     const s = QueryWordSchema.safeParse(req.query);
     if (!s.success) return res.status(Codes.UNPROCESSABLE_ENTITY).send(s.error.errors);
-    try {
-        const word = await prisma.word.findFirst({
-            where: {
-                id: getQueryItem(req.query.wordID)
-            }
-        });
-        return res.status(Codes.OK).send(word)
-    } catch (error) {
-        return res.status(Codes.UNPROCESSABLE_ENTITY).send(error);
-    }
+    const word = await prisma.word.findFirst({
+        where: {
+            id: getQueryItem(req.query.wordID)
+        }
+    });
+    return res.status(Codes.OK).send(word)
 }
 
 
@@ -34,7 +30,7 @@ export async function appendWord(req: Request, res: Response) {
     const checkAppendWord = appendWordSchema.safeParse(req.query);
     if (!checkAppendWord.success) return res.status(Codes.BAD_REQUEST).json(checkAppendWord.error.errors);
 
-    try {
+    
         const word = await prisma?.word.create({
             data: {
                 ar: getQueryItem(req.query.word),
@@ -44,15 +40,11 @@ export async function appendWord(req: Request, res: Response) {
             },
         })
         return res.status(Codes.OK).send(word)
-    } catch (error) {
-        return res.status(Codes.UNPROCESSABLE_ENTITY).send(error);
-    }
+
 }
 
 
 export async function getWordWithTheLeastClips(req: Request, res: Response) {
-    try {
-
         const word = await prisma?.word.findFirst({
             select: {
                 ar: true,
@@ -68,7 +60,5 @@ export async function getWordWithTheLeastClips(req: Request, res: Response) {
         });
 
         return res.json(word);
-    } catch (error) {
-        return res.status(Codes.INTERNAL_SERVER_ERROR).send(error);
-    }
+    
 }
