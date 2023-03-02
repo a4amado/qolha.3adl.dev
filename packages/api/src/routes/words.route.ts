@@ -1,13 +1,14 @@
-import {Router} from "express";
-import { appendWord, getWordWithTheLeastClips, QueryWord } from "../controllers/word.controller";
+import { Router } from "express";
+import { appendWord, QueryWord, getWordWithTheLeastClips, listClipsForWord, appendClipToWord } from "../controllers/words.controller";
+
+import upload from "../middleware/upload";
 import catchError from "../utils/catchError";
 
-const router = Router();
+const route = Router();
 
-router.get("/:wordID", catchError(QueryWord))
-router.post("/append", catchError(appendWord))
-router.get("/getWordWithTheLeastClips", catchError(getWordWithTheLeastClips))
-
-
-
-export default router;
+route.post("/", catchError(appendWord));
+route.get("/:wordID", catchError(QueryWord));
+route.get("/getWordWithTheLeastClips", catchError(getWordWithTheLeastClips));
+route.get("/:wordID/clips", catchError(listClipsForWord));
+route.post("/:wordID/clip", catchError(upload.single("clip")), catchError(appendClipToWord));
+export default route;

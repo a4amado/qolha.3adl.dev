@@ -6,8 +6,6 @@ import TargetWord from "@ui/TargetWord";
 import { GetServerSideProps as G } from "next/types";
 import { z } from "zod";
 import AudioHero from "@ui/AudioHero";
-import getQueryItem from "@utils/getQueryItem";
-import prisma from "@utils/prismadb";
 
 const quertSchema = z.object({
   q: z.string().uuid(),
@@ -15,6 +13,7 @@ const quertSchema = z.object({
 });
 
 export const getServerSideProps: G = async (ctx) => {
+  
   if (!ctx.query.q && !ctx.query.word) {
     return {
       props: {
@@ -32,6 +31,13 @@ export const getServerSideProps: G = async (ctx) => {
     };
   }
 
+  
+  /**
+   *  const word = await Axios({
+   *    mathod: "GET",
+   *    url: "Backend_URL" + "/words/:wordID"
+   *  })
+   */
   const word = {
     ar: "أنا",
     en: "I",

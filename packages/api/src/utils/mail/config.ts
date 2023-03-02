@@ -5,9 +5,9 @@ const mailParams = new EmailParams();
 const mailersender = new Sender("no-reply@mail.qolha.3adl.dev", "Qolha Team");
 
 export default async function sendTestMail({ email, username, code, userID }: { email: string; username: string; code: number; userID: string }) {
-  const Recipients = [new Recipient(email, username)];
+    const Recipients = [new Recipient(email, username)];
 
-  const mail = mailParams.setFrom(mailersender).setTo(Recipients).setSubject("Qolha  Email Verify").setHtml(`
+    const mail = mailParams.setFrom(mailersender).setTo(Recipients).setSubject("Qolha  Email Verify").setHtml(`
 
 
     <div>
@@ -15,5 +15,5 @@ export default async function sendTestMail({ email, username, code, userID }: { 
     </div>
 
 `);
-  await MailerSendObject.email.send(mail);
+    await MailerSendObject.email.send(mail);
 }

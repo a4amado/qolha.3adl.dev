@@ -11,6 +11,7 @@ importers:
   packages/api:
     specifiers:
       '@prisma/client': ^4.10.1
+      '@types/bcrypt': ^5.0.0
       '@types/body-parser': ^1.19.2
       '@types/cookie-parser': ^1.4.3
       '@types/cors': ^2.8.13
@@ -23,12 +24,14 @@ importers:
       '@types/passport-google-oauth2': ^0.1.5
       '@types/passport-local': ^1.0.35
       '@types/uuid': ^9.0.1
+      bcrypt: ^5.1.0
       body-parser: ^1.20.2
       cookie-parser: ^1.4.6
       cors: ^2.8.5
       express: ^4.18.2
       express-session: ^1.17.3
       http-status-codes: ^2.2.0
+      mailersend: ^2.0.5
       mime: ^3.0.0
       multer: 1.4.5-lts.1
       nodemon: ^2.0.20
@@ -39,12 +42,14 @@ importers:
       zod: ^3.20.6
     dependencies:
       '@prisma/client': 4.11.0_prisma@4.11.0
+      bcrypt: 5.1.0
       body-parser: 1.20.2
       cookie-parser: 1.4.6
       cors: 2.8.5
       express: 4.18.2
       express-session: 1.17.3
       http-status-codes: 2.2.0
+      mailersend: 2.0.5
       mime: 3.0.0
       multer: 1.4.5-lts.1
       prisma: 4.11.0
@@ -52,6 +57,7 @@ importers:
       yup: 1.0.2
       zod: 3.20.6
     devDependencies:
+      '@types/bcrypt': 5.0.0
       '@types/body-parser': 1.19.2
       '@types/cookie-parser': 1.4.3
       '@types/cors': 2.8.13

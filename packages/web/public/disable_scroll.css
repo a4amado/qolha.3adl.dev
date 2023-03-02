@@ -1,4 +1,6 @@
-body, html, #__next {
-    overflow: hidden!important;
+body,
+html,
+#__next {
+    overflow: hidden !important;
     height: 100vh;
 }

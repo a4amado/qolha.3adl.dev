@@ -2,6 +2,7 @@ node_modules
 
 dist
 
+*/**/*.pdf
 
 /node_modules
 /.next

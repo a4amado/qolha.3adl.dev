@@ -74,7 +74,7 @@ export default function Search() {
 
         const { data } = await axios({
           method: "GET",
-          url: `/api/q/${e}`,
+          url: `http://localhost:3000/q/${e}`,
         });
         if (data.length === 0) {
           return dispatchHits({
