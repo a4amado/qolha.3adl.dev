@@ -5,7 +5,6 @@ import GoToUp from "@ui/GoToUp";
 import Loading from "@ui/Loading";
 
 import React, { Suspense } from "react";
-import { SessionProvider, signIn, signOut } from "next-auth/react";
 import Router from "next/router";
 
 Router.events.on("routeChangeStart", () => {
@@ -26,11 +25,9 @@ Router.events.on("routeChangeComplete", () => {
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
   return (
     <Suspense>
-      <SessionProvider session={session}>
         <Loading />
         <Component {...pageProps} />
         <GoToUp />
-      </SessionProvider>
     </Suspense>
   );
 };

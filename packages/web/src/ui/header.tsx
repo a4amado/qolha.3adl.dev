@@ -1,10 +1,10 @@
 import { Row, Col, Typography, Button } from "antd";
 import Search from "./search";
 import NextLink from "next/link";
-import { signOut, useSession } from "next-auth/react";
+
 
 export default function Header({ isSearch }: { isSearch: boolean }) {
-  const s = useSession();
+  
 
   return (
     <Row className="w-full flex flex-col">
@@ -18,8 +18,7 @@ export default function Header({ isSearch }: { isSearch: boolean }) {
             <NextLink className="text-cyan-100 flex flex-row" href="/auth">
               تسجيل
             </NextLink>
-            {s.status === "loading" && "Loading"}
-            {s.status === "authenticated" && <Button onClick={() => signOut()}>خروج</Button>}
+            
           </Row>
         </Row>
       </Row>

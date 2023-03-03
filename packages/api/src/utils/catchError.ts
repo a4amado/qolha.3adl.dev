@@ -5,6 +5,8 @@ const catchError = (func: any) => async (req: Request, res: Response, next: Next
     try {
         await func(req, res, next);
     } catch (error) {
+        console.log(error);
+
         return next({
             code: Codes.INTERNAL_SERVER_ERROR,
             msg: Codes.getStatusText(Codes.INTERNAL_SERVER_ERROR),

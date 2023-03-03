@@ -6,6 +6,7 @@ import catchError from "../utils/catchError";
 
 const route = Router();
 
+
 route.post("/", catchError(appendWord));
 route.get("/:wordID", catchError(QueryWord));
 route.get("/getWordWithTheLeastClips", catchError(getWordWithTheLeastClips));

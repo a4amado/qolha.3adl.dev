@@ -72,26 +72,29 @@ export default function Search() {
           type: "LOADING",
         });
 
-        const { data } = await axios({
-          method: "GET",
-          url: `http://localhost:3000/q/${e}`,
-        });
-        if (data.length === 0) {
-          return dispatchHits({
-            type: "NOT_FOUND",
+        // const { data } = await axios({
+        //   method: "GET",
+        //   url: `http://localhost:3000/q/${e}`,
+        // });
+        // if (data.length === 0) {
+        //   return dispatchHits({
+        //     type: "NOT_FOUND",
+        //   });
+        // }
+        
+        setTimeout(() => {
+          dispatchHits({
+            type: "REPLACE_ITEMS",
+            data: {
+              hits: [{ ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }].map((e: any) => ({
+                label: `${e.ar}`,
+                value: `${e.ar}`,
+                key: e.id,
+              })),
+            },
           });
-        }
-        dispatchHits({
-          type: "REPLACE_ITEMS",
-          data: {
-            hits: data.map((e: AlogoliaHit) => ({
-              label: `${e.ar}`,
-              value: `${e.ar}`,
-              key: e.id,
-            })),
-          },
-        });
-      } catch (error) {}
+        }, 2000);
+      } catch (error) { }
     },
     [q[0]]
   );

@@ -94,7 +94,6 @@ export async function listClipsForWord(req: Request, res: Response) {
 }
 
 export async function appendClipToWord(req: Request, res: Response, next: NextFunction) {
-
     if (typeof req.file === "undefined") {
         return next({
             code: Codes.UNPROCESSABLE_ENTITY,

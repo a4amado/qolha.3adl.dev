@@ -21,15 +21,15 @@ export const getServerSideProps: G = async (ctx) => {
       },
     };
   }
-  const isValid = quertSchema.safeParse(ctx.query);
-  if (!isValid.success) {
-    return {
-      props: {
-        error: true,
-        msg: isValid.error.errors,
-      },
-    };
-  }
+  // const isValid = quertSchema.safeParse(ctx.query);
+  // if (!isValid.success) {
+  //   return {
+  //     props: {
+  //       error: true,
+  //       msg: isValid.error.errors,
+  //     },
+  //   };
+  // }
 
   
   /**

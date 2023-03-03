@@ -11,7 +11,7 @@ export default async function sendTestMail({ email, username, code, userID }: { 
 
 
     <div>
-    <a href="https://qolha.3adl.dev/api/auth/verify/${code}?q=${userID}">Click here to verify your Account</a>
+    <a href="https://api.qolha.3adl.dev/auth/verify/${code}?q=${userID}">Click here to verify your Account</a>
     </div>
 
 `);

@@ -6,7 +6,8 @@ import AuthRoute from "./routes/auth.route";
 import cors from "cors";
 import bodyParser from "body-parser";
 import CookieParser from "cookie-parser";
-
+// @ts-ignore
+import responde from "express-respond";
 const app = Express();
 
 import HitsRoute from "./routes/q.route";
@@ -21,20 +22,8 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(CookieParser());
-
-/**
- * /words/:wordID /GET
- * /words/:wordID/clips /GET
- * /words/:wordID/clip /POST
- * /words/:wordID/
- *
- * /clips/:clipID/accept|reject /POST
- * /clips/toBeREviewed
- * /clips/:clipID
- *
- *
- *
- */
+app.use(responde);
+/
 
 app.use("/clips", ClipsRouter);
 
@@ -44,7 +33,7 @@ app.use("/auth", AuthRoute);
 app.use("/hits", HitsRoute);
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 app.use((err: any, req: Request, res: Response) => {
-    res.status(err.code || StatusCodes.INTERNAL_SERVER_ERROR).send(err.msg || JSON.stringify(err) || ReasonPhrases.INTERNAL_SERVER_ERROR);
+    res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
 });
 
 app.listen(4000, () => {

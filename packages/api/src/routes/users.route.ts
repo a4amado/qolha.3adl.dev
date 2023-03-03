@@ -4,6 +4,8 @@ import catchError from "../utils/catchError";
 
 const route = Router();
 
+
+
 route.get("/:userID", catchError(getUser));
 route.delete("/:userID", catchError(deleteUser));
 
