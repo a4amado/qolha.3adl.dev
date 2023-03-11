@@ -40,21 +40,25 @@ export async function appendWord(req: Request, res: Response) {
 }
 
 export async function getWordWithTheLeastClips(req: Request, res: Response) {
-    const word = await prisma?.word.findFirst({
-        select: {
-            ar: true,
-            id: true,
-            createBy: { select: { name: true, id: true } },
-        },
-        orderBy: {
-            clips: {
-                _count: "asc",
-            },
-        },
-        take: 1,
-    });
+    // const word = await prisma?.word.findFirst({
+    //     select: {
+    //         ar: true,
+    //         id: true,
+    //         createBy: { select: { name: true, id: true } },
+    //     },
+    //     orderBy: {
+    //         clips: {
+    //             _count: "asc",
+    //         },
+    //     },
+    //     take: 1,
+    // });
 
-    return res.json(word);
+    return res.json({
+        ar: "true",
+        id: "true",
+        createBy: { select: { name: "true", id: "true" } },
+    });
 }
 
 const listClipsSchema = z.object({
@@ -94,22 +98,21 @@ export async function listClipsForWord(req: Request, res: Response) {
 }
 
 export async function appendClipToWord(req: Request, res: Response, next: NextFunction) {
+    console.log(req.file?.destination);
+    
     if (typeof req.file === "undefined") {
-        return next({
-            code: Codes.UNPROCESSABLE_ENTITY,
-            msg: Codes.getStatusText(Codes.UNPROCESSABLE_ENTITY),
-        });
+        return res.status(Codes.UNPROCESSABLE_ENTITY).end()
     }
 
-    const word = await prisma?.clip.create({
-        data: {
-            path: req.file.filename,
-            // @ts-ignore
-            userID: req.session.id,
-            wordID: getQueryItem(req.body.wordID),
-            id: v4(),
-        },
-    });
+    // const word = await prisma?.clip.create({
+    //     data: {
+    //         path: req.file.filename,
+    //         // @ts-ignore
+    //         userID: req.session.id,
+    //         wordID: getQueryItem(req.body.wordID),
+    //         id: v4(),
+    //     },
+    // });
 
-    return res.status(Codes.OK).json(word);
+    return res.status(Codes.OK).json("ss");
 }

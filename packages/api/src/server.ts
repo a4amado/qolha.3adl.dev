@@ -14,8 +14,8 @@ import HitsRoute from "./routes/q.route";
 
 app.use(
     cors({
-        origin: ["qolha.3adl.dev", "localhost:5000"],
-        methods: ["POST", "GET"],
+        origin: "*",
+        methods: ["POST", "GET", "DELETE"],
     })
 );
 
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(CookieParser());
 app.use(responde);
-/
+
 
 app.use("/clips", ClipsRouter);
 
@@ -32,7 +32,8 @@ app.use("/users", UserRouter);
 app.use("/auth", AuthRoute);
 app.use("/hits", HitsRoute);
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
-app.use((err: any, req: Request, res: Response) => {
+
+app.use((req: Request, res: Response) => {
     res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
 });
 

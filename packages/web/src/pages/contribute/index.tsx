@@ -13,8 +13,8 @@ export default function Page() {
     mediaRecorderOptions: { mime: "audio/webm" },
   });
 
-  const [word, refetch] = useAxios({ url: "/api/word/getWordWithTheLeastClips" }, { manual: false });
-  const [clip, submitClip] = useAxios({ method: "POST", url: `/api/clip/append`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
+  const [word, refetch] = useAxios({ url: "http://localhost:4000/words/getWordWithTheLeastClips", method: "GET" }, { manual: false });
+  const [clip, submitClip] = useAxios({ method: "POST", url: `http://localhost:4000/words/sss/clip`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
 
   const url = React.useMemo(() => {
     if (!recorder.mediaBlob) return "";
@@ -36,7 +36,7 @@ export default function Page() {
 
       const form = new FormData();
       form.append("clip", recorder.mediaBlob);
-      form.append("wordID", word.data.id);
+    
 
       await submitClip({ data: form });
       await refetch();

@@ -1,30 +1,40 @@
 import multer from "multer";
-import path from "path";
+import convert from "convert"
 import { v4 } from "uuid";
-import MimeType from "mime";
-import { Request } from "express";
 
-const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, path.join(process.cwd(), "files", "clips"));
+
+import { v2 as cloudinary } from "cloudinary"
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+
+cloudinary.config({
+    cloud_name: "dqupwj1l6",
+    api_key: "415148447655815",
+    api_secret: "ZgN9zFFQcJIGQmpGMULRzSyo6-Q",
+    
+})
+
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary ,
+    params: {
+        public_id: (req, file) => v4()+ ".weba",
+        // @ts-ignore
+        folder: 'some-folder-name',
+        // @ts-ignore
+        // format: async (req, file) => 'weba', // supports promises as well
+        resource_type : "raw"
+        
     },
-    filename: (req, file, callback) => {
-        callback(null, v4() + "." + MimeType.getExtension(file.mimetype));
-    },
+
+
 });
+
+
+
 
 const upload = multer({
     storage,
-    // fileFilter: (req: Request, file, callback) => {
-    //     if (MimeType.getExtension(file.mimetype) != "weba") {
-    //         callback({
-    //             message: "File Type is Not Allowed",
-    //             name: "ext error",
-    //         });
-    //     } else {
-    //         return callback(null, true);
-    //     }
-    // },
+ 
 });
 
 export default upload;
