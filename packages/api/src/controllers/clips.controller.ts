@@ -1,23 +1,18 @@
+import * as  yup from "yup"
+
+import { InternalException, YupException } from "../utils/exception";
 import { Request, Response } from "express";
+
 import Codes from "http-status-codes";
+import { createReadStream } from "node:fs";
 import getQueryItem from "../utils/getQueryItem";
-import { v4 } from "uuid";
 import { join } from "node:path";
 import prisma from "../utils/prismadb";
-import { createReadStream } from "node:fs";
-import * as  yup from "yup"
+import { v4 } from "uuid";
 import validateYupSchema from "../utils/validate.yup";
-import { InternalException, YupException } from "../utils/exception";
-const streamClipSchema = yup.object().shape({
-    clipID: yup.string().uuid().required(),
-});
 
 export async function streamClip(req: Request, res: Response) {
-    const clipCheck = validateYupSchema(streamClipSchema, req.query);
-    if (clipCheck.errors.length > 0) {
-        return YupException(res, clipCheck.errors)
-    }
-
+    
     try {
 
         const clip = await prisma?.clip.findUniqueOrThrow({ where: { id: getQueryItem(req.query.clipID) } });
@@ -59,16 +54,8 @@ export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) 
     }
 }
 
-const acceptClipSchema = yup.object().shape({
-    clipID: yup.string().uuid().required(),
-})
-
 export async function acceptClip(req: Request, res: Response) {
-    const acceptClipSchemaResult = validateYupSchema(acceptClipSchema, req.query)
-
-    if (acceptClipSchemaResult.errors.length > 0) {
-        return YupException(res, acceptClipSchemaResult.errors)
-    }
+ 
     try {
         const clipStatus = await prisma?.clip.update({
             where: {
@@ -86,12 +73,7 @@ export async function acceptClip(req: Request, res: Response) {
 }
 
 export async function rejectClip(req: Request, res: Response) {
-    const acceptClipSchemaResult = validateYupSchema(acceptClipSchema, req.query)
-
-    if (acceptClipSchemaResult.errors.length > 0) {
-        return YupException(res, acceptClipSchemaResult.errors)
-    }
-
+ 
     try {
         const clipStatus = await prisma?.clip.update({
             where: {
@@ -108,21 +90,10 @@ export async function rejectClip(req: Request, res: Response) {
     }
 }
 
-const appendRateSchema = yup.object().shape({
-    query: yup.object().shape({
-        clipID: yup.string().uuid(),
-    }),
-    body: yup.object().shape({
-        rate: yup.string().oneOf(["0", "50", "100"]),
-    }),
-});
+
 
 export async function appendRate(req: Request, res: Response) {
-    const CheckAppendRateSchema = validateYupSchema(appendRateSchema, req)
-
-    if (CheckAppendRateSchema.errors.length > 0) {
-        return YupException(res, CheckAppendRateSchema.errors)
-    }
+ 
 
     try {
         const clipRate = await prisma?.rate.findFirst({

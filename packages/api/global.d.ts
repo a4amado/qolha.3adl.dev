@@ -9,6 +9,9 @@ declare global {
             GOOGLE_CLIENT_ID: string;
             GOOGLE_SECRET: string;
             MAILERSEND: string;
+            CLOUDINARY_CLOUD_NAME: string;
+            CLOUDINARY_API_KEY: string;
+            CLOUDINARY_API_SECRET: string;
         }
     }
 }

@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import { v4 } from "uuid";
+import { NextFunction, Request, Response } from "express";
+
 import Codes from "http-status-codes";
+import { v4 } from "uuid";
 
 export async function queryHits(req: Request, res: Response, next: NextFunction) {
     return new Promise((reso) => {

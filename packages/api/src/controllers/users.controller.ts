@@ -1,15 +1,13 @@
-import { NextFunction, Request, Response } from "express";
 import * as yup from "yup";
+
+import { NextFunction, Request, Response } from "express";
+
+import Codes from "http-status-codes";
 import getQueryItem from "../utils/getQueryItem";
 import prisma from "../utils/prismadb";
-import Codes from "http-status-codes";
-
-const getUserShema = yup.object().shape({
-    userID: yup.string().required().uuid(),
-});
 
 export async function getUser(req: Request, res: Response, next: NextFunction) {
-    getUserShema.validateSync(req.query);
+    
 
     const user = await prisma.user.findUnique({
         where: {

@@ -1,16 +1,18 @@
-import Express, { Request, Response, Errback } from "express";
-import ClipsRouter from "./routes/clips.route";
-import UserRouter from "./routes/users.route";
-import WordRouter from "./routes/words.route";
-import AuthRoute from "./routes/auth.route";
-import cors from "cors";
-import bodyParser from "body-parser";
+import Express, { Request, Response } from "express";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
+
 import CookieParser from "cookie-parser";
-// @ts-ignore
-import responde from "express-respond";
+import bodyParser from "body-parser";
+import cors from "cors";
+import routes from "./routes";
+
 const app = Express();
 
-import HitsRoute from "./routes/q.route";
+
+
+
+
+
 
 app.use(
     cors({
@@ -22,21 +24,17 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(CookieParser());
-app.use(responde);
 
 
-app.use("/clips", ClipsRouter);
-
-app.use("/words", WordRouter);
-app.use("/users", UserRouter);
-app.use("/auth", AuthRoute);
-app.use("/hits", HitsRoute);
-import { StatusCodes, ReasonPhrases } from "http-status-codes";
+app.use(routes)
 
 app.use((req: Request, res: Response) => {
     res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
 });
 
-app.listen(4000, () => {
+
+app.listen(process.env.PORT || 4000, () => {
     console.log("Server is Up");
 });
+
+export default app;

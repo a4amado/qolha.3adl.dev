@@ -1,30 +1,17 @@
-import prisma from "../utils/prismadb";
 import * as yup from "yup";
-import { Request, Response, NextFunction } from "express";
-import Codes from "http-status-codes";
-import { compareSync, hashSync } from "bcrypt";
-import getQueryItem from "../utils/getQueryItem";
-import { sign } from "jsonwebtoken";
 
-import validateYupSchema from "../utils/validate.yup";
 import { InternalException, YupException } from "../utils/exception";
-import { User } from "@prisma/client";
+import { NextFunction, Request, Response } from "express";
+import { compareSync, hashSync } from "bcrypt";
 
-const singUpSchema = yup.object().shape({
-    username: yup.string().required().min(4),
-    password: yup.string().min(10).required(),
-    vPassword: yup
-        .string()
-        .oneOf([yup.ref("password")], "passwords does not match")
-        .required(),
-    email: yup.string().email().required(),
-});
+import Codes from "http-status-codes";
+import getQueryItem from "../utils/getQueryItem";
+import prisma from "../utils/prismadb";
+import { sign } from "jsonwebtoken";
+import validateYupSchema from "../utils/validate.yup";
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
-    const isDataValid = validateYupSchema(singUpSchema, req.body);
-    if (isDataValid.errors.length > 0) {
-        return YupException(res, isDataValid.errors);
-    }
+    
 
     try {
         let user = await prisma.user.findFirst({
@@ -39,7 +26,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
         return InternalException(res);
     }
 
-    let new_user: User;
+    let new_user: any;
     try {
         new_user = await prisma.user.create({
             data: {
@@ -62,17 +49,9 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
     res.status(Codes.OK).end();
 }
 
-const singInSchema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().required().min(10),
-});
 
 export async function signIn(req: Request, res: Response) {
-    const isDataVlaid = validateYupSchema(singInSchema, req.body);
-    if (isDataVlaid.errors.length > 0) {
-        return YupException(res, isDataVlaid.errors);
-    }
-
+    
     let user;
     try {
         user = await prisma.user.findUniqueOrThrow({

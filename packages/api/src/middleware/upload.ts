@@ -1,27 +1,26 @@
-import multer from "multer";
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { v2 as cloudinary } from "cloudinary"
 import convert from "convert"
+import multer from "multer";
 import { v4 } from "uuid";
 
-
-import { v2 as cloudinary } from "cloudinary"
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
-
 cloudinary.config({
-    cloud_name: "dqupwj1l6",
-    api_key: "415148447655815",
-    api_secret: "ZgN9zFFQcJIGQmpGMULRzSyo6-Q",
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
     
 })
+
 
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary ,
     params: {
-        public_id: (req, file) => v4()+ ".weba",
+        public_id: (_req, _file) => v4()+ ".weba",
         // @ts-ignore
-        folder: 'some-folder-name',
+        folder: 'qolha-clips',
         // @ts-ignore
-        // format: async (req, file) => 'weba', // supports promises as well
+        format: async (_req, _file) => 'weba', // supports promises as well
         resource_type : "raw"
         
     },
@@ -34,7 +33,9 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({
     storage,
- 
+    limits: {
+        fileSize: convert(20, "kilobytes").to("byte")
+    }
 });
 
 export default upload;
