@@ -41,7 +41,7 @@ model Word {
     ar    String @unique
     id    String @unique @default(uuid())
 
-    accepted Boolean @default(false)
+    accepted Boolean @default(true)
 
     skipped Boolean @default(false)
     clips Clip[]
