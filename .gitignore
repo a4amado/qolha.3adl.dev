@@ -20,7 +20,7 @@ files/clips/**.weba
 # database
 **/prisma/db.sqlite
 **/prisma/db.sqlite-journal
-**/*.db
+# **/*.db
 **/migrations
 
 # next.js
