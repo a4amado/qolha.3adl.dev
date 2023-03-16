@@ -1,8 +1,17 @@
 import { NextFunction, Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 
-const verifyRole = async (req: Request, res: Response, next: NextFunction, { allowedRoles }: { allowedRoles: Array<"owner" | "admin" | "user"> }) => {
+type roles = "admin" | "all";
 
-    next();
+const verifyRole = (allowedRoles: Array<roles>) => async (req: Request, res: Response, next: NextFunction) => {
+    if (allowedRoles.includes("all")) {
+        return next();
+    }
+    // @ts-ignore
+    if (allowedRoles.includes(req.user.role)) {
+        return next();
+    }
+    res.status(StatusCodes.UNAUTHORIZED).end();
 };
 
 export default verifyRole;

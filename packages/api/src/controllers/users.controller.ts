@@ -7,8 +7,6 @@ import getQueryItem from "../utils/getQueryItem";
 import prisma from "../utils/prismadb";
 
 export async function getUser(req: Request, res: Response, next: NextFunction) {
-    
-
     const user = await prisma.user.findUnique({
         where: {
             id: getQueryItem(req.query.userID),
@@ -18,7 +16,6 @@ export async function getUser(req: Request, res: Response, next: NextFunction) {
             id: true,
             _count: {
                 select: {
-                    words: true,
                     clips: true,
                 },
             },
@@ -27,6 +24,8 @@ export async function getUser(req: Request, res: Response, next: NextFunction) {
     if (!user) {
         return res.status(Codes.NOT_FOUND).send(Codes.getStatusText(Codes.NOT_FOUND));
     }
+    console.log(user);
+    
     res.status(Codes.OK).send(user);
 }
 

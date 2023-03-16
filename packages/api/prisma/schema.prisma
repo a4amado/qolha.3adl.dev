@@ -10,7 +10,7 @@ generator client {
 
 
 model User {
-    id            String    @id @default(cuid())
+    id            String    @id @default(uuid())
     name          String?
     email         String?   @unique
     emailVerified DateTime?
@@ -20,11 +20,11 @@ model User {
     rates Rate[]
     account  Account?
     clips     Clip[]
-    words    Word[]
+    // words    Word[]
 }
 
 model Account {
-    id String @unique @default(cuid())
+    id String @unique @default(uuid())
     userID String @unique
     user User  @relation(references: [id], fields: [userID], onDelete: Cascade)
     hash String
@@ -38,15 +38,17 @@ model VerificationToken {
 }
 
 model Word {
-    id    String @unique
     ar    String @unique
+    id    String @unique @default(uuid())
+
     accepted Boolean @default(false)
 
+    skipped Boolean @default(false)
     clips Clip[]
     reports WordReport[]
 
-    createBy User   @relation(references: [id], fields: [userId])
-    userId   String
+    // createBy User?   @relation(references: [id], fields: [userId])
+    // userId   String?
 }
 
 model Clip {
@@ -82,7 +84,7 @@ model Rate {
 }
 
 model WordReport {
-    id String @unique @default(cuid())
+    id String @unique @default(uuid())
 
     wordID String
     word Word @relation(references: [id], fields: [wordID])
@@ -92,7 +94,7 @@ model WordReport {
 
 
 model ClipReport {
-    id String @unique @default(cuid())
+    id String @unique @default(uuid())
 
     clipID String
     clip Clip @relation(references: [id], fields: [clipID])

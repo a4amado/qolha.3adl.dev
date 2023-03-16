@@ -5,12 +5,12 @@ declare global {
 }
 
 // @ts-ignore
-const client = globalThis.prisma || new PrismaClient({
-    log: ["error", "info", "query", "warn"],
-    errorFormat: "minimal"
-});
+const client = globalThis.prisma ||
+    new PrismaClient({
+        log: ["error"],
+        errorFormat: "pretty",
+    });
 // @ts-ignore
 if (process.env.NODE_ENV !== "production") globalThis.prisma = client;
 
 export default client as PrismaClient;
-

@@ -1,6 +1,4 @@
-import * as  yup from "yup"
-
-import { InternalException, YupException } from "../utils/exception";
+import { InternalException } from "../utils/exception";
 import { Request, Response } from "express";
 
 import Codes from "http-status-codes";
@@ -9,23 +7,19 @@ import getQueryItem from "../utils/getQueryItem";
 import { join } from "node:path";
 import prisma from "../utils/prismadb";
 import { v4 } from "uuid";
-import validateYupSchema from "../utils/validate.yup";
 
 export async function streamClip(req: Request, res: Response) {
-    
     try {
-
         const clip = await prisma?.clip.findUniqueOrThrow({ where: { id: getQueryItem(req.query.clipID) } });
-
 
         const stream = createReadStream(join(process.cwd(), "files", "clips", clip?.path));
 
         stream.on("error", (error) => {
-            return InternalException(res)
+            return InternalException(res);
         });
         stream.pipe(res);
     } catch (error) {
-        res.status(404).end()
+        res.status(404).end();
     }
 }
 export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) {
@@ -47,15 +41,14 @@ export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) 
             },
             take: 5,
         });
-    
+
         res.status(Codes.OK).json(clips);
     } catch (error) {
-        InternalException(res)
+        InternalException(res);
     }
 }
 
 export async function acceptClip(req: Request, res: Response) {
- 
     try {
         const clipStatus = await prisma?.clip.update({
             where: {
@@ -68,12 +61,11 @@ export async function acceptClip(req: Request, res: Response) {
         });
         return res.status(Codes.OK).json(clipStatus);
     } catch (error) {
-        return InternalException(res)
+        return InternalException(res);
     }
 }
 
 export async function rejectClip(req: Request, res: Response) {
- 
     try {
         const clipStatus = await prisma?.clip.update({
             where: {
@@ -86,15 +78,11 @@ export async function rejectClip(req: Request, res: Response) {
         });
         return res.status(Codes.OK).json(clipStatus);
     } catch (error) {
-        return InternalException(res)
+        return InternalException(res);
     }
 }
 
-
-
 export async function appendRate(req: Request, res: Response) {
- 
-
     try {
         const clipRate = await prisma?.rate.findFirst({
             where: {
@@ -105,7 +93,7 @@ export async function appendRate(req: Request, res: Response) {
                 },
             },
         });
-    
+
         const newClipRate = await prisma?.rate.upsert({
             create: {
                 clipID: getQueryItem(req.query.clipID),
@@ -121,7 +109,5 @@ export async function appendRate(req: Request, res: Response) {
                 id: clipRate?.id || "",
             },
         });
-    } catch (error) {
-        
-    }
+    } catch (error) {}
 }

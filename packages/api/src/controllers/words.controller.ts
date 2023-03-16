@@ -5,9 +5,7 @@ import getQueryItem from "../utils/getQueryItem";
 import prisma from "../utils/prismadb";
 import { v4 } from "uuid";
 
-
 export async function QueryWord(req: Request, res: Response) {
-    
     const word = await prisma.word.findFirst({
         where: {
             id: getQueryItem(req.query.wordID),
@@ -17,7 +15,6 @@ export async function QueryWord(req: Request, res: Response) {
 }
 
 export async function appendWord(req: Request, res: Response) {
-    
     const word = await prisma?.word.create({
         data: {
             ar: getQueryItem(req.query.word),
@@ -30,31 +27,37 @@ export async function appendWord(req: Request, res: Response) {
 }
 
 export async function getWordWithTheLeastClips(req: Request, res: Response) {
-    // const word = await prisma?.word.findFirst({
-    //     select: {
-    //         ar: true,
-    //         id: true,
-    //         createBy: { select: { name: true, id: true } },
-    //     },
-    //     orderBy: {
-    //         clips: {
-    //             _count: "asc",
-    //         },
-    //     },
-    //     take: 1,
-    // });
-
-    return res.json({
-        ar: "مثال لكلمة عربية",
-        id: Math.random().toString(),
-        createBy: { select: { name: "احمد", id: Math.random().toString(),} },
+    
+    const word = await prisma?.word.findFirst({
+        select: {
+            ar: true,
+            id: true,
+            
+            // createBy: { select: { name: true, id: true } },
+        },
+        orderBy: {
+            clips: {
+                _count: "asc",
+            },
+        },
+        take: 1,
+        where: {
+            skipped: false
+        }
+        
     });
+
+    console.log(word);
+    
+    res.json(word);
+    // return res.json({
+    //     ar: "مثال لكلمة عربية",
+    //     id: Math.random().toString(),
+    //     createBy: { select: { name: "احمد", id: Math.random().toString() } },
+    // });
 }
 
-
 export async function listClipsForWord(req: Request, res: Response) {
-    
-
     const clips = await prisma?.word.findFirst({
         where: {
             id: getQueryItem(req.query.wordID),
@@ -80,20 +83,31 @@ export async function listClipsForWord(req: Request, res: Response) {
     res.status(Codes.OK).send(clips);
 }
 
-
 export async function appendClipToWord(req: Request, res: Response, next: NextFunction) {
-    
-
-
-    // const word = await prisma?.clip.create({
-    //     data: {
-    //         path: req.file.filename,
-    //         // @ts-ignore
-    //         userID: req.session.id,
-    //         wordID: getQueryItem(req.body.wordID),
-    //         id: v4(),
-    //     },
-    // });
+    const word = await prisma?.clip.create({
+        // @ts-ignore
+        data: {
+            // @ts-ignore
+            path: req.file?.filename || "",
+            // @ts-ignore
+            userID: req.user.id,
+            wordID: getQueryItem(req.params.wordID),
+            id: v4(),
+        },
+    });
 
     return res.status(Codes.OK).json("ss");
 }
+
+export async function skipWord(req: Request, res: Response, next: NextFunction) {
+    const word = await prisma?.word.update({
+        where: {
+            id: getQueryItem(req.params.wordID)
+        },
+        data: {
+            skipped: true
+        }
+    })
+    return res.status(303).redirect("/words/getWordWithTheLeastClips")
+}
+ 

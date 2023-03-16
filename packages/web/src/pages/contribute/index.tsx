@@ -1,11 +1,14 @@
 import { Row, Button, Typography, Spin, notification } from "antd";
 import useRecorder from "@wmik/use-media-recorder";
-import React from "react";
+import React, { ReactElement } from "react";
 import PageContainer from "@ui/PageContainer";
 import Header from "@ui/header";
 import { v4 } from "uuid";
 import useAxios from "axios-hooks";
+import useHotkeys from "@reecelucas/react-use-hotkeys";
 
+
+// words/:wordID/skip
 export default function Page() {
   const recorder = useRecorder({
     blobOptions: { endings: "transparent", type: "audio/webm" },
@@ -14,13 +17,31 @@ export default function Page() {
   });
 
   const [word, refetch] = useAxios({ url: "http://localhost:4000/words/getWordWithTheLeastClips", method: "GET" }, { manual: false });
-  const [clip, submitClip] = useAxios({ method: "POST", url: `http://localhost:4000/words/sss/clip`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
+  const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true , url: `http://localhost:4000/words/${word?.data?.id}/clip`, headers: { "Content-Type": "multipart/form-data" }}, { manual: true });
+  const [skip, skipClip] = useAxios({ method: "POST", url: `http://localhost:4000/words/${word?.data?.id}/skip` }, { manual: true });
+  const controller = React.useRef<HTMLAudioElement>()
 
   const url = React.useMemo(() => {
     if (!recorder.mediaBlob) return "";
     return typeof window !== "undefined" ? URL.createObjectURL(recorder.mediaBlob) : "";
   }, [recorder.status, recorder.mediaBlob]);
 
+
+  useHotkeys("1", (e) => {
+recorder.startRecording()
+recorder.stopRecording()
+
+  });
+  useHotkeys("2", () => {
+    controller.current?.play()
+    controller.current?.pause()
+
+  })
+  
+
+    
+
+        
   async function submit() {
     try {
       if (recorder.status === "recording") {
@@ -54,6 +75,12 @@ export default function Page() {
     }
   }
 
+  async function skipWord( ) {
+    skipClip({
+      withCredentials: true
+    })
+  }
+
   return (
     <>
       <Header isSearch={false} />
@@ -61,11 +88,13 @@ export default function Page() {
         <Row className="flex flex-col w-full">
           <Row className=" flex justify-center align-middle">
             <Typography.Title className="text-7xl flex justify-center align-middle">
-              {word?.data?.ar} - {word?.data?.id}
+              {word?.data?.ar}
             </Typography.Title>
           </Row>
+          
           <Row className="w-full">
-            <audio src={url} preload="" controls className="w-full" />
+            {/* @ts-ignore */}
+            <audio ref={controller} src={url} preload="true" controls className="w-full" />
           </Row>
           <Row className="flex flex-row justify-stretch h-80 gap-2 my-2 mx-0 relative">
             <Row className={`${clip.loading ? "flex flex-col absolute w-full h-full bg-slate-200 z-[9999]" : "hidden"}`}>
@@ -83,9 +112,12 @@ export default function Page() {
             <Button onClick={submit} className="flex-grow">
               ارسل
             </Button>
+            <Button onClick={skipWord} className="flex-grow">
+              تخط
+            </Button>
           </Row>
         </Row>
       </PageContainer>
     </>
   );
-}
+} 

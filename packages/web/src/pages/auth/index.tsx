@@ -13,12 +13,13 @@ import * as yup from "yup";
 import { useToggle } from "react-use";
 import Head from "next/head";
 import Router from "next/router";
+import  axios from "axios";
 
 const LoginModal = () => {
   const [{ loading, data, error }, refetch] = useAxios(
     {
       method: "POST",
-      url: "/auth/signUp",
+      withCredentials: true
     },
     { manual: true }
   );
@@ -32,6 +33,7 @@ const LoginModal = () => {
         vPassword: e.vPassword,
         username: e.username,
       },
+      url: `http://localhost:4000/auth/signUp?no-cach=${Math.random()}`
     }).catch((e) => {
       (e?.response?.data?.errors || []).map((e: any) => {
         notification["error"]({
@@ -122,8 +124,13 @@ const AuthPage = () => {
           <FcGoogle className="block mx-auto text-5xl" />
         </Button>
         <Formik
-          onSubmit={(e) => signIn("credentials", { ...e })}
-          initialValues={{ email: "", username: "", password: "", vPassword: "" }}
+          onSubmit={(e) => axios({
+            method: "POST",
+            url: "http://localhost:4000/auth/logIn",
+            data: e,
+            withCredentials: true
+          })}
+          initialValues={{ email: "",password: ""}}
           validationSchema={yup.object().shape({
             email: yup.string().email().required(),
 

@@ -1,28 +1,27 @@
-import * as yup from "yup";
-
-import { InternalException, YupException } from "../utils/exception";
+import { InternalException } from "../utils/exception";
 import { NextFunction, Request, Response } from "express";
 import { compareSync, hashSync } from "bcrypt";
 
 import Codes from "http-status-codes";
-import getQueryItem from "../utils/getQueryItem";
+
 import prisma from "../utils/prismadb";
 import { sign } from "jsonwebtoken";
-import validateYupSchema from "../utils/validate.yup";
+
+import { serialize } from "cookie"
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
-    
-
     try {
         let user = await prisma.user.findFirst({
             where: {
-                email: getQueryItem(req.body.email),
+                email: req.body.email,
             },
         });
         if (user) {
-            res.status(Codes.CONFLICT).send(["Email Already in Use"]);
+            return res.status(Codes.CONFLICT).send(["Email Already in Use"]);
         }
     } catch (error) {
+        console.log(error);
+        
         return InternalException(res);
     }
 
@@ -30,28 +29,49 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
     try {
         new_user = await prisma.user.create({
             data: {
-                email: getQueryItem(req.body.email),
+                email: req.body.email,
                 role: "none",
             },
+            select: {
+                id: true
+
+            }
         });
+
 
         await prisma.account.create({
             // @ts-ignore
             data: {
                 // @ts-ignore
-                userID: user?.id,
+                userID: new_user?.id,
                 hash: hashSync(req.body.password, 11),
             },
         });
     } catch (error) {
+        console.log(error);
+        
         return InternalException(res);
     }
-    res.status(Codes.OK).end();
+
+    const token = sign(
+        {
+            role: new_user.role,
+            id: new_user.id,
+        },
+        process.env.JWT_SECRET || "",
+        {
+            expiresIn: "12h",
+        }
+    );
+    
+    res.cookie(
+        "token",
+        token
+    );
+    res.status(Codes.OK).send(token);
 }
 
-
 export async function signIn(req: Request, res: Response) {
-    
     let user;
     try {
         user = await prisma.user.findUniqueOrThrow({
@@ -69,31 +89,39 @@ export async function signIn(req: Request, res: Response) {
                 id: true,
             },
         });
+        console.log(user);
+        
         if (!user?.account?.hash) {
             return res.status(Codes.NOT_FOUND).end();
         }
     } catch (error) {
         return InternalException(res);
     }
-    
-    const is_password_correct = compareSync(req.body.data, user?.account?.hash);
+
+    const is_password_correct = compareSync(req.body.password, user?.account?.hash);
 
     if (!is_password_correct) {
         return res.status(Codes.NOT_ACCEPTABLE).send("wrong password or email");
     }
 
+    const token = sign(
+        {
+            role: user.role,
+            id: user.id,
+        },
+        process.env.JWT_SECRET || "",
+        {
+            expiresIn: "12h",
+        }
+    ,)
+    
+    
     res.cookie(
         "token",
-        sign(
-            {
-                role: user.role,
-                id: user.id,
-            },
-            "sadsd ",
-            {
-                expiresIn: "12h",
-            }
-        )
+        token, {
+            httpOnly: true,
+            path: "/"
+        }
     );
-    res.status(Codes.OK).send(Codes.getStatusText(Codes.OK));
+    res.status(Codes.OK).end()
 }

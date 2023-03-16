@@ -7,5 +7,5 @@ export function InternalException(res: Response) {
 }
 
 export function YupException(res: Response, errors: String[]) {
-    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).send(errors).end()
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).send(errors).end();
 }
