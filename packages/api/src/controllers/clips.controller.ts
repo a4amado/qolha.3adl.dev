@@ -44,7 +44,7 @@ export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) 
 
         res.status(Codes.OK).json(clips);
     } catch (error) {
-        InternalException(res);
+        InternalException(res, error);
     }
 }
 
