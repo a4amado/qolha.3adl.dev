@@ -15,7 +15,7 @@ export async function streamClip(req: Request, res: Response) {
         const stream = createReadStream(join(process.cwd(), "files", "clips", clip?.path));
 
         stream.on("error", (error) => {
-            return InternalException(res);
+            return InternalException(res, error);
         });
         stream.pipe(res);
     } catch (error) {
@@ -61,7 +61,7 @@ export async function acceptClip(req: Request, res: Response) {
         });
         return res.status(Codes.OK).json(clipStatus);
     } catch (error) {
-        return InternalException(res);
+        return InternalException(res, error);
     }
 }
 
@@ -78,7 +78,7 @@ export async function rejectClip(req: Request, res: Response) {
         });
         return res.status(Codes.OK).json(clipStatus);
     } catch (error) {
-        return InternalException(res);
+        return InternalException(res, error);
     }
 }
 

@@ -13,7 +13,7 @@ const app = Express();
 
 app.use(
     cors({
-        origin: ["http://localhost:5000"],
+        origin: ["http://localhost:5000", "https://qolha.3adl.dev"],
         methods: ["POST", "GET", "DELETE", "OPTIONS"],
         credentials: true
         

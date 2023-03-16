@@ -22,7 +22,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
     } catch (error) {
         console.log(error);
         
-        return InternalException(res);
+        return InternalException(res, error);
     }
 
     let new_user: any;
@@ -50,7 +50,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
     } catch (error) {
         console.log(error);
         
-        return InternalException(res);
+        return InternalException(res, error);
     }
 
     const token = sign(
@@ -95,7 +95,7 @@ export async function signIn(req: Request, res: Response) {
             return res.status(Codes.NOT_FOUND).end();
         }
     } catch (error) {
-        return InternalException(res);
+        return InternalException(res, error);
     }
 
     const is_password_correct = compareSync(req.body.password, user?.account?.hash);
