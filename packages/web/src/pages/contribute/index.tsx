@@ -1,12 +1,21 @@
 import { Row, Button, Typography, Spin, notification } from "antd";
 import useRecorder from "@wmik/use-media-recorder";
-import React, { ReactElement } from "react";
+import React from "react";
 import PageContainer from "@ui/PageContainer";
 import Header from "@ui/header";
-import { v4 } from "uuid";
+
 import useAxios from "axios-hooks";
 import useHotkeys from "@reecelucas/react-use-hotkeys";
 
+type NotificationProps = {
+  message: string,
+  destroyAfter: number,
+  type: keyof typeof notification
+}
+function showNotification(Props: NotificationProps) {
+  notification[Props.type]({ type: "error", message: Props.message, duration: Props.destroyAfter });
+  return;
+}
 
 // words/:wordID/skip
 export default function Page() {
@@ -17,7 +26,7 @@ export default function Page() {
   });
 
   const [word, refetch] = useAxios({ url: "http://localhost:4000/words/getWordWithTheLeastClips", method: "GET" }, { manual: false });
-  const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true , url: `http://localhost:4000/words/${word?.data?.id}/clip`, headers: { "Content-Type": "multipart/form-data" }}, { manual: true });
+  const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `http://localhost:4000/words/${word?.data?.id}/clip`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
   const [skip, skipClip] = useAxios({ method: "POST", url: `http://localhost:4000/words/${word?.data?.id}/skip` }, { manual: true });
   const controller = React.useRef<HTMLAudioElement>()
 
@@ -28,36 +37,39 @@ export default function Page() {
 
 
   useHotkeys("1", (e) => {
-recorder.startRecording()
-recorder.stopRecording()
+    recorder.startRecording()
+    recorder.stopRecording()
 
   });
+
   useHotkeys("2", () => {
     controller.current?.play()
     controller.current?.pause()
 
   })
-  
 
-    
 
-        
+
+
+
   async function submit() {
     try {
-      if (recorder.status === "recording") {
-        const uid = v4();
-        notification["warning"]({ type: "error", message: "اوقف التسجيل اولا", key: uid });
-        setTimeout(() => notification["destroy"](uid), 1000);
-        return;
-      }
+      if (recorder.status === "recording") return showNotification({
+        destroyAfter: 1000,
+        message: "اوقف التسجيل اولا",
+        type: "error"
+      })
 
-      if (recorder.mediaBlob?.size === 0) return false;
-      if (!word.data?.id) return false;
-      if (!recorder.mediaBlob) return false;
+
+      if (recorder.mediaBlob?.size === 0 || !word.data?.id || !recorder.mediaBlob) return showNotification({
+        message: "Noting to Submit",
+        destroyAfter: 1500,
+        type: "error"
+      })
+
 
       const form = new FormData();
       form.append("clip", recorder.mediaBlob);
-    
 
       await submitClip({ data: form });
       await refetch();
@@ -65,17 +77,22 @@ recorder.stopRecording()
       recorder.clearMediaBlob();
       recorder.clearMediaStream();
 
-      const uid = v4();
-      notification["success"]({ message: "تَم الحِفظ.", closeIcon: true, duration: 40, btn: true, key: uid });
-      setTimeout(() => notification["destroy"](uid), 1000);
+      showNotification({
+        destroyAfter: 40,
+        message: "تَم الحِفظ.",
+        type: "success"
+      })
+
     } catch {
-      const uid = v4();
-      notification["error"]({ message: "تَم الحِفظ.", closeIcon: true, duration: 4000, key: uid });
-      setTimeout(() => notification["destroy"](uid), 1000);
+      showNotification({
+        message: "Something went wrong",
+        destroyAfter: 800,
+        type: "error"
+      })
     }
   }
 
-  async function skipWord( ) {
+  async function skipWord() {
     skipClip({
       withCredentials: true
     })
@@ -91,12 +108,12 @@ recorder.stopRecording()
               {word?.data?.ar}
             </Typography.Title>
           </Row>
-          
+
           <Row className="w-full">
             {/* @ts-ignore */}
             <audio ref={controller} src={url} preload="true" controls className="w-full" />
           </Row>
-          <Row className="flex flex-row justify-stretch h-80 gap-2 my-2 mx-0 relative">
+          <Row className="flex flex-row justify-stretch h-80 gap-2 mx-0 relative">
             <Row className={`${clip.loading ? "flex flex-col absolute w-full h-full bg-slate-200 z-[9999]" : "hidden"}`}>
               <Spin />
               <Typography>إنتظر لحظة</Typography>
