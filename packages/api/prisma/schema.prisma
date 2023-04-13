@@ -1,6 +1,6 @@
 datasource db {
-    provider          = "postgresql"
-    url               = env("DATABASE_URL")
+    provider          = "sqlite"
+    url               = "file:./dev.db"
     shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
@@ -29,13 +29,7 @@ model Account {
     user User  @relation(references: [id], fields: [userID], onDelete: Cascade)
     hash String
 }
-model VerificationToken {
-    identifier String 
-    token      String   @unique
-    expires    DateTime
 
-    @@unique([identifier, token])
-}
 
 model Word {
     ar    String @unique

@@ -7,7 +7,7 @@ import Codes from "http-status-codes";
 import prisma from "../utils/prismadb";
 import { sign } from "jsonwebtoken";
 
-import { serialize } from "cookie"
+import { serialize } from "cookie";
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
     try {
@@ -21,7 +21,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
         }
     } catch (error) {
         console.log(error);
-        
+
         return InternalException(res, error);
     }
 
@@ -33,11 +33,9 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
                 role: "none",
             },
             select: {
-                id: true
-
-            }
+                id: true,
+            },
         });
-
 
         await prisma.account.create({
             // @ts-ignore
@@ -49,7 +47,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
         });
     } catch (error) {
         console.log(error);
-        
+
         return InternalException(res, error);
     }
 
@@ -63,11 +61,8 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
             expiresIn: "12h",
         }
     );
-    
-    res.cookie(
-        "token",
-        token
-    );
+
+    res.cookie("token", token);
     res.status(Codes.OK).send(token);
 }
 
@@ -90,7 +85,7 @@ export async function signIn(req: Request, res: Response) {
             },
         });
         console.log(user);
-        
+
         if (!user?.account?.hash) {
             return res.status(Codes.NOT_FOUND).end();
         }
@@ -113,15 +108,11 @@ export async function signIn(req: Request, res: Response) {
         {
             expiresIn: "12h",
         }
-    ,)
-    
-    
-    res.cookie(
-        "token",
-        token, {
-            httpOnly: true,
-            path: "/"
-        }
     );
-    res.status(Codes.OK).end()
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        path: "/",
+    });
+    res.status(Codes.OK).end();
 }

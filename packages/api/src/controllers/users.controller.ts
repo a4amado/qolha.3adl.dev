@@ -25,7 +25,7 @@ export async function getUser(req: Request, res: Response, next: NextFunction) {
         return res.status(Codes.NOT_FOUND).send(Codes.getStatusText(Codes.NOT_FOUND));
     }
     console.log(user);
-    
+
     res.status(Codes.OK).send(user);
 }
 
@@ -42,4 +42,13 @@ export async function deleteUser(req: Request, res: Response, next: NextFunction
     });
 
     res.status(Codes.OK).end();
+}
+
+export async function searchForUserWithEmailAddress(req: Request, res: Response, next: NextFunction) {
+    const user = await prisma.user.findUnique({
+        where: {
+            email: getQueryItem(req.query.email),
+        },
+    });
+    res.json(user);
 }

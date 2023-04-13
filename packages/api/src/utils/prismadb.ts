@@ -4,8 +4,9 @@ declare global {
     let prisma: PrismaClient | undefined;
 }
 
-// @ts-ignore
-const client = globalThis.prisma ||
+const client =
+    // @ts-ignore
+    globalThis.prisma ||
     new PrismaClient({
         log: ["error"],
         errorFormat: "pretty",

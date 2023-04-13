@@ -27,12 +27,11 @@ export async function appendWord(req: Request, res: Response) {
 }
 
 export async function getWordWithTheLeastClips(req: Request, res: Response) {
-    
     const word = await prisma?.word.findFirst({
         select: {
             ar: true,
             id: true,
-            
+
             // createBy: { select: { name: true, id: true } },
         },
         orderBy: {
@@ -42,13 +41,12 @@ export async function getWordWithTheLeastClips(req: Request, res: Response) {
         },
         take: 1,
         where: {
-            skipped: false
-        }
-        
+            skipped: false,
+        },
     });
 
     console.log(word);
-    
+
     res.json(word);
     // return res.json({
     //     ar: "مثال لكلمة عربية",
@@ -102,12 +100,11 @@ export async function appendClipToWord(req: Request, res: Response, next: NextFu
 export async function skipWord(req: Request, res: Response, next: NextFunction) {
     const word = await prisma?.word.update({
         where: {
-            id: getQueryItem(req.params.wordID)
+            id: getQueryItem(req.params.wordID),
         },
         data: {
-            skipped: true
-        }
-    })
-    return res.status(303).redirect("/words/getWordWithTheLeastClips")
+            skipped: true,
+        },
+    });
+    return res.status(303).redirect("/words/getWordWithTheLeastClips");
 }
- 

@@ -1,7 +1,7 @@
 import { NextFunction, Router } from "express";
 import { QueryWord, appendClipToWord, appendWord, getWordWithTheLeastClips, listClipsForWord, skipWord } from "./controllers/words.controller";
 import { acceptClip, appendRate, getClipThatNeedsToBeReviewed, rejectClip, streamClip } from "./controllers/clips.controller";
-import { deleteUser, getUser } from "./controllers/users.controller";
+import { deleteUser, getUser, searchForUserWithEmailAddress } from "./controllers/users.controller";
 import { signIn, signUp } from "./controllers/auth.controller";
 
 import Validate from "./middleware/validate";
@@ -24,18 +24,16 @@ routes.delete("/auth/account");
  */
 routes.post("/words/word", Validate("appendWord"), catchError(appendWord));
 routes.get("/words/getWordWithTheLeastClips", catchError(getWordWithTheLeastClips));
-routes.post("/words/:wordID/skip", withAuth,  Validate("skipWord"), catchError(skipWord));
-
+routes.post("/words/:wordID/skip", withAuth, Validate("skipWord"), catchError(skipWord));
 routes.get("/words/:wordID", Validate("QueryWord"), catchError(QueryWord));
 
-
-
 routes.get("/words/:wordID/clips", Validate("listClipsForWord"), catchError(listClipsForWord));
-routes.post("/words/:wordID/clip", withAuth, upload.single("clip"), Validate("appendClipToWord"), appendClipToWord);
+routes.post("/words/:wordID/clip", withAuth, verifyRole(["admin"]), upload.single("clip"), Validate("appendClipToWord"), appendClipToWord);
 
 /**
  * Users Routes
  */
+routes.get("/users/q", withAuth, verifyRole(["admin"]), Validate("searchForUserWithEmailAddress"), catchError(searchForUserWithEmailAddress));
 routes.get("/users/:userID", Validate("getOrDeleteUser"), catchError(getUser));
 routes.delete("/users/:userID", Validate("getOrDeleteUser"), catchError(deleteUser));
 

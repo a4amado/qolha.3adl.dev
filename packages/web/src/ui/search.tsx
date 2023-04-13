@@ -4,132 +4,142 @@ import axios from "axios";
 import Router from "next/router";
 
 export interface AutoComeleteOption {
-  label: any;
-  value: string;
-  key: string;
+    label: any;
+    value: string;
+    key: string;
 }
 
 export interface AlogoliaHit {
-  ar: string;
-  en: string;
-  id: string;
+    ar: string;
+    en: string;
+    id: string;
 }
 
 export interface HitsReducerState {
-  hits: Array<{ label: React.ReactElement | string; value: string; key: string }> | Array<never>;
+    hits: Array<{ label: React.ReactElement | string; value: string; key: string }> | Array<never>;
 }
 interface ReducerAction {
-  type: "REPLACE_ITEMS" | "LOADING" | "NOT_FOUND";
-  data?: HitsReducerState;
+    type: "REPLACE_ITEMS" | "LOADING" | "NOT_FOUND";
+    data?: HitsReducerState;
 }
 
 const SearchOption: HitsReducerState = {
-  hits: [{ label: <Spin />, value: "Searching", key: "asd" }],
+    hits: [{ label: <Spin />, value: "Searching", key: "asd" }],
 };
 const NotingFoundOption: HitsReducerState = {
-  hits: [
-    {
-      label: <Typography>لم نجد شيئاََ</Typography>,
-      value: "Searching",
-      key: "Asdasdasda",
-    },
-  ],
+    hits: [
+        {
+            label: <Typography>لم نجد شيئاََ</Typography>,
+            value: "Searching",
+            key: "Asdasdasda",
+        },
+    ],
 };
 
 export const handleReducer: Reducer<HitsReducerState, ReducerAction> = (state, action): HitsReducerState => {
-  switch (action.type) {
-    case "LOADING":
-      const IS_LOADING_STATE: HitsReducerState = SearchOption;
-      return IS_LOADING_STATE;
-    case "NOT_FOUND":
-      const NOT_FOUND_STATE = NotingFoundOption;
-      return NOT_FOUND_STATE;
-    case "REPLACE_ITEMS":
-      const NEW_STATE: HitsReducerState = { hits: action.data?.hits || [] };
-      return NEW_STATE;
-    default:
-      const STATE = { hits: [] };
-      return STATE;
-  }
+    switch (action.type) {
+        case "LOADING":
+            const IS_LOADING_STATE: HitsReducerState = SearchOption;
+            return IS_LOADING_STATE;
+        case "NOT_FOUND":
+            const NOT_FOUND_STATE = NotingFoundOption;
+            return NOT_FOUND_STATE;
+        case "REPLACE_ITEMS":
+            const NEW_STATE: HitsReducerState = { hits: action.data?.hits || [] };
+            return NEW_STATE;
+        default:
+            const STATE = { hits: [] };
+            return STATE;
+    }
 };
 const initialState: HitsReducerState = { hits: [] };
 
 export default function Search() {
-  const q = React.useState("");
-  const [{ hits }, dispatchHits] = useReducer(handleReducer, initialState);
+    const q = React.useState("");
+    const [{ hits }, dispatchHits] = useReducer(handleReducer, initialState);
 
-  const containerRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
-  const targetRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
+    const containerRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
+    const targetRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
-  const search = React.useCallback(
-    async (e: string) => {
-      try {
-        q[1](e);
-        if (!e) {
-          return dispatchHits({ type: "REPLACE_ITEMS", data: { hits: [] } });
+    const search = React.useCallback(
+        async (e: string) => {
+            try {
+                q[1](e);
+                if (!e) {
+                    return dispatchHits({ type: "REPLACE_ITEMS", data: { hits: [] } });
+                }
+                dispatchHits({
+                    type: "LOADING",
+                });
+
+                // const { data } = await axios({
+                //   method: "GET",
+                //   url: `http://localhost:3000/q/${e}`,
+                // });
+                // if (data.length === 0) {
+                //   return dispatchHits({
+                //     type: "NOT_FOUND",
+                //   });
+                // }
+
+                setTimeout(() => {
+                    dispatchHits({
+                        type: "REPLACE_ITEMS",
+                        data: {
+                            hits: [
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: Math.random() },
+                            ].map((e: any) => ({
+                                label: `${e.ar}`,
+                                value: `${e.ar}`,
+                                key: e.id,
+                            })),
+                        },
+                    });
+                }, 2000);
+            } catch (error) {}
+        },
+        [q[0]]
+    );
+
+    React.useEffect(() => {
+        function tooglePosition() {
+            if (window.scrollY > containerRef.current.offsetTop) {
+                targetRef.current.classList.add("fixed");
+                targetRef.current.classList.add("top-0");
+                targetRef.current.classList.add("left-1/2");
+                targetRef.current.classList.add("-translate-x-1/2");
+            } else {
+                targetRef.current.classList.remove("fixed");
+                targetRef.current.classList.remove("top-0");
+                targetRef.current.classList.remove("left-1/2");
+                targetRef.current.classList.remove("-translate-x-1/2");
+            }
         }
-        dispatchHits({
-          type: "LOADING",
-        });
+        document.addEventListener("scroll", tooglePosition);
+        return () => document.removeEventListener("scroll", tooglePosition);
+    });
 
-        // const { data } = await axios({
-        //   method: "GET",
-        //   url: `http://localhost:3000/q/${e}`,
-        // });
-        // if (data.length === 0) {
-        //   return dispatchHits({
-        //     type: "NOT_FOUND",
-        //   });
-        // }
-        
-        setTimeout(() => {
-          dispatchHits({
-            type: "REPLACE_ITEMS",
-            data: {
-              hits: [{ ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }, { ar: "كلمة", id: Math.random() }].map((e: any) => ({
-                label: `${e.ar}`,
-                value: `${e.ar}`,
-                key: e.id,
-              })),
-            },
-          });
-        }, 2000);
-      } catch (error) { }
-    },
-    [q[0]]
-  );
-
-  React.useEffect(() => {
-    function tooglePosition() {
-      if (window.scrollY > containerRef.current.offsetTop) {
-        targetRef.current.classList.add("fixed");
-        targetRef.current.classList.add("top-0");
-        targetRef.current.classList.add("left-1/2");
-        targetRef.current.classList.add("-translate-x-1/2");
-      } else {
-        targetRef.current.classList.remove("fixed");
-        targetRef.current.classList.remove("top-0");
-        targetRef.current.classList.remove("left-1/2");
-        targetRef.current.classList.remove("-translate-x-1/2");
-      }
+    function handleSelect(_: any, s: AutoComeleteOption) {
+        return Router.push({ pathname: "/", query: { q: s.key, word: s.value } });
     }
-    document.addEventListener("scroll", tooglePosition);
-    return () => document.removeEventListener("scroll", tooglePosition);
-  });
 
-  function handleSelect(_: any, s: AutoComeleteOption) {
-    return Router.push({ pathname: "/", query: { q: s.key, word: s.value } });
-  }
-
-  return (
-    <>
-      <Row ref={containerRef} className="w-full bg-white">
-        <Row ref={targetRef} className="w-full max-w-4xl px-4 py-4 mx-auto bg-slate-50">
-          <AutoComplete options={hits} defaultActiveFirstOption onSelect={handleSelect} className="w-full" onChange={search} value={q[0]}>
-            <Input.Search className="w-full" size="large" placeholder="ورميت سهم الحب اقصد قلبها فأصاب سهمي عينها فاعورت" />
-          </AutoComplete>
-        </Row>
-      </Row>
-    </>
-  );
+    return (
+        <>
+            <Row ref={containerRef} className="w-full bg-white">
+                <Row ref={targetRef} className="w-full max-w-4xl px-4 py-4 mx-auto bg-slate-50">
+                    <AutoComplete options={hits} defaultActiveFirstOption onSelect={handleSelect} className="w-full" onChange={search} value={q[0]}>
+                        <Input.Search className="w-full" size="large" placeholder="ورميت سهم الحب اقصد قلبها فأصاب سهمي عينها فاعورت" />
+                    </AutoComplete>
+                </Row>
+            </Row>
+        </>
+    );
 }

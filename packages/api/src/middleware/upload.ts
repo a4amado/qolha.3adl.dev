@@ -5,8 +5,7 @@ import multer from "multer";
 import { v4 } from "uuid";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
-import { extension} from "mime-types"
-
+import { extension } from "mime-types";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -26,13 +25,10 @@ const _Cloudinary_MULTER_Storage = new CloudinaryStorage({
     },
 });
 
-
 const MULTER_Storage = multer.diskStorage({
     destination: (_req, _file, _callback) => _callback(null, join(process.cwd(), "files", "clips")),
     filename: (_req, _file, _callback) => _callback(null, randomUUID() + "." + extension(_file.mimetype)),
-})
-
-
+});
 
 const upload = multer({
     storage: MULTER_Storage,

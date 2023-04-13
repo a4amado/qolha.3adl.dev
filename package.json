@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "format": "prettier --write \"./packages/**/*.{ts, tsx,css,html}\""
+    "format": "prettier --write \"./packages/**/*.{ts, tsx,css,html}\"",
+    "dev:both": "nodemon ./packages/api/"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,9 @@
   },
   "workspaces": [
     "packages/**"
-  ]
+  ],
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "nodemon": "^2.0.22"
+  }
 }

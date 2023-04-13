@@ -82,6 +82,12 @@ const getOrDeleteClip = yup.object().shape({
     }),
 });
 
+const searchForUserWithEmailAddress = yup.object().shape({
+    query: yup.object({
+        email: yup.string().required().email(),
+    }),
+});
+
 const schema = {
     signIn,
     signUp,
@@ -94,7 +100,8 @@ const schema = {
     appendRate,
     getOrDeleteUser,
     getOrDeleteClip,
-    skipWord
+    skipWord,
+    searchForUserWithEmailAddress,
 };
 
 export type schemaName = keyof typeof schema;

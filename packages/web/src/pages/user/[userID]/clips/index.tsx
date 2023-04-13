@@ -1,7 +1,7 @@
 import Header from "@ui/header";
 import PageContainer from "@ui/PageContainer";
 import { GetServerSideProps as GSSP } from "next/types";
-import { List, Alert, Typography } from "antd"
+import { List, Alert, Typography } from "antd";
 // import prisma from "@utils/prismadb"
 // import getQueryItem from "@utils/getQueryItem";
 
@@ -38,8 +38,8 @@ export default function UserWordsPage({ words }: any) {
         <>
             <Header isSearch={true} />
             <PageContainer>
-                <Typography.Title className="text-4xl">اصوات  ساهم بها المستخدم</Typography.Title>
-                <List className="gap-2 flex flex-col" dataSource={words} renderItem={(e: { ar: string, id: string }) => <Alert className="my-2" message={e?.ar} type="info" />} />
+                <Typography.Title className="text-4xl">اصوات ساهم بها المستخدم</Typography.Title>
+                <List className="gap-2 flex flex-col" dataSource={words} renderItem={(e: { ar: string; id: string }) => <Alert className="my-2" message={e?.ar} type="info" />} />
             </PageContainer>
         </>
     );
