@@ -1,5 +1,5 @@
-**/node_modules
-**/.next
+/node_modules
+/.next
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -11,6 +11,7 @@
 qolha-372817-firebase-adminsdk-xy46m-4f0e3414cc.json
 qolha-372817-firebase-adminsdk-xy46m-171f58298f.json
 qolha-372817-firebase-adminsdk-0gpbf-5b27d13e47.json
+qolha-372817-firebase-adminsdk-3j4lx-dbd1d6cfa9.json
 
 files/clips/**.weba
 
@@ -18,10 +19,8 @@ files/clips/**.weba
 /coverage
 .firebase
 # database
-**/prisma/db.sqlite
-**/prisma/db.sqlite-journal
-# **/*.db
-**/migrations
+/prisma/db.sqlite
+/prisma/db.sqlite-journal
 
 # next.js
 /.next/
@@ -56,4 +55,3 @@ yarn-error.log*
 
 
 /.next
-
