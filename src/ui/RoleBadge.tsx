@@ -1,17 +1,15 @@
 import { Badge, BadgeProps, Alert, AlertProps } from "antd";
 import { rolesKeys, roles, rolesType } from "../../../../global/roles";
 
-
-
 export default function RoleBadge({ role }: { role: rolesType }) {
     let badgeStatusAccordingToTheRole: AlertProps["type"] = "info";
 
     switch (role) {
         case "admin":
-            badgeStatusAccordingToTheRole = "success"
+            badgeStatusAccordingToTheRole = "success";
             break;
         case "owner":
-            badgeStatusAccordingToTheRole = "error"
+            badgeStatusAccordingToTheRole = "error";
             break;
     }
 
@@ -26,6 +24,5 @@ export default function RoleBadge({ role }: { role: rolesType }) {
             break;
     }
 
-
-    return <Alert className="w-max" message={role} banner={false} closable={false} type={badgeStatusAccordingToTheRole} />
+    return <Alert className="w-max" message={role} banner={false} closable={false} type={badgeStatusAccordingToTheRole} />;
 }

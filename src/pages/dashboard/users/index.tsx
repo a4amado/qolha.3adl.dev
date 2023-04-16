@@ -53,7 +53,6 @@ function Users() {
                         <ChangeRole currentRole={user.data?.role} email={user.data?.email} />
                     </div>
                 </div>
-                
             </PageContainer>
         </>
     );

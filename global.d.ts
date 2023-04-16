@@ -6,6 +6,7 @@ declare global {
       PORT: string;
       NODE_ENV: 'development' | 'production';
       MAILERSEND: string;
+      DB_URL: string;
     }
   }
 }
