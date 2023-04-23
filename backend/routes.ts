@@ -1,4 +1,4 @@
-import { NextFunction, Router } from "express";
+import { Router } from "express";
 import { QueryWord, appendClipToWord, appendWord, getWordWithTheLeastClips, listClipsForWord, skipWord } from "./controllers/words.controller";
 import { acceptClip, appendRate, getClipThatNeedsToBeReviewed, rejectClip, streamClip } from "./controllers/clips.controller";
 import { deleteUser, getUser, searchForUserWithEmailAddress } from "./controllers/users.controller";

@@ -1,60 +1,45 @@
 import { InternalException } from "../utils/exception";
 import { NextFunction, Request, Response } from "express";
 import { compareSync, hashSync } from "bcrypt";
-
 import Codes from "http-status-codes";
 
 import prisma from "../utils/prismadb";
 import { sign } from "jsonwebtoken";
 
 import { serialize } from "cookie";
+import * as sequelize from "../../db";
 
+import butters from "a-promise-wrapper"
+ 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
-    try {
-        let user = await prisma.user.findFirst({
-            where: {
-                email: req.body.email,
-            },
-        });
-        if (user) {
-            return res.status(Codes.CONFLICT).send(["Email Already in Use"]);
+    let user = await butters(sequelize.User.findOne({
+        where: {
+            email: req.body.email,
         }
-    } catch (error) {
-        console.log(error);
+    }));
 
-        return InternalException(res, error);
-    }
+    if (user.error) return InternalException(res, "Internal Server Error")
+    if (user.data) return res.status(Codes.CONFLICT).send(["Email Already in Use"]);
 
-    let new_user: any;
-    try {
-        new_user = await prisma.user.create({
-            data: {
-                email: req.body.email,
-                role: "none",
-            },
-            select: {
-                id: true,
-            },
-        });
+    
 
-        await prisma.account.create({
-            // @ts-ignore
-            data: {
-                // @ts-ignore
-                userID: new_user?.id,
-                hash: hashSync(req.body.password, 11),
-            },
-        });
-    } catch (error) {
-        console.log(error);
+    let new_user = await butters(sequelize.User.create({
+        email: req.body.email,
+        role: "user",
+        name: req.body.email
+    }));
 
-        return InternalException(res, error);
-    }
+    if (new_user.error) return InternalException(res, "Internal Server Error")
+    
+    await sequelize.Account.create({
+        userId: new_user?.data.id,
+        password: req.body.password
+    });
 
     const token = sign(
         {
-            role: new_user.role,
-            id: new_user.id,
+            role: new_user.data.role,
+            id: new_user.data.id,
         },
         process.env.JWT_SECRET || "",
         {
@@ -63,7 +48,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
     );
 
     res.cookie("token", token);
-    res.status(Codes.OK).send(token);
+    res.sendStatus(Codes.OK).send(token);
 }
 
 export async function signIn(req: Request, res: Response) {

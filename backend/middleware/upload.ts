@@ -1,10 +1,6 @@
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { v2 as cloudinary } from "cloudinary";
-
 import convert from "convert";
 import multer from "multer";
-import { v4 } from "uuid";
-import { join } from "node:path";
+import path, { join } from "node:path";
 import { randomUUID } from "node:crypto";
 import { extension } from "mime-types";
 
@@ -12,17 +8,18 @@ import { extension } from "mime-types";
 import FirebaseStorage from 'multer-firebase-storage';
 
 
-import * as FirebaseServiceAccount from "../../qolha-372817-firebase-adminsdk-3j4lx-dbd1d6cfa9.json";
+import { readFile } from "fs"
+
+const FirebaseServiceAccount = readFile(path.join(__dirname, "..", "..", "qolha-372817-firebase-adminsdk-3j4lx-dbd1d6cfa9.json"), "utf-8")
+
+
 
 const FirebaseMulter = multer.diskStorage({
     // @ts-ignore
     storage: FirebaseStorage({
       bucketName: 'clip',
-      credentials: {
-        clientEmail: FirebaseServiceAccount.client_email,
-        privateKey: FirebaseServiceAccount.private_key,
-        projectId: FirebaseServiceAccount.project_id
-      }
+      credentials: FirebaseServiceAccount,
+      unique: true
     })
   })
 
@@ -33,7 +30,7 @@ const MULTER_Storage = multer.diskStorage({
 });
 
 const upload = multer({
-    storage: MULTER_Storage,
+    storage: FirebaseMulter,
     limits: {
         fileSize: convert(20, "kilobytes").to("byte"),
     },
