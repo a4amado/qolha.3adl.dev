@@ -3,14 +3,13 @@ import { NextFunction, Request, Response } from "express";
 import { compareSync, hashSync } from "bcrypt";
 import Codes from "http-status-codes";
 
-import prisma from "../utils/prismadb";
 import { sign } from "jsonwebtoken";
 
 import { serialize } from "cookie";
 import * as sequelize from "../../db";
 
 import butters from "a-promise-wrapper"
-import { NOTFOUND } from "dns";
+
  
 export async function signUp(req: Request, res: Response, next: NextFunction) {
     let user = await butters(sequelize.User.findOne({
