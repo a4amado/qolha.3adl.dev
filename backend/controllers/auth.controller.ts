@@ -10,6 +10,7 @@ import { serialize } from "cookie";
 import * as sequelize from "../../db";
 
 import butters from "a-promise-wrapper"
+import { NOTFOUND } from "dns";
  
 export async function signUp(req: Request, res: Response, next: NextFunction) {
     let user = await butters(sequelize.User.findOne({
@@ -52,33 +53,17 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function signIn(req: Request, res: Response) {
-    let user;
-    try {
-        user = await prisma.user.findUniqueOrThrow({
-            where: {
-                email: req.body.email,
-            },
-            select: {
-                account: {
-                    select: {
-                        hash: true,
-                    },
-                },
-                email: true,
-                role: true,
-                id: true,
-            },
-        });
-        console.log(user);
-
-        if (!user?.account?.hash) {
-            return res.status(Codes.NOT_FOUND).end();
+    let user = await butters(sequelize.User.findOne({
+        where: {
+            email: req.body.email
         }
-    } catch (error) {
-        return InternalException(res, error);
-    }
+    }));
 
-    const is_password_correct = compareSync(req.body.password, user?.account?.hash);
+    
+    if (user.error) return InternalException(res, "Internals Server Error");
+    if (!user.data) return res.sendStatus(Codes.NOT_FOUND).send("Email is not Regesterd")
+
+    const is_password_correct = compareSync(req.body.password, user.data?.account.password);
 
     if (!is_password_correct) {
         return res.status(Codes.NOT_ACCEPTABLE).send("wrong password or email");
@@ -86,8 +71,8 @@ export async function signIn(req: Request, res: Response) {
 
     const token = sign(
         {
-            role: user.role,
-            id: user.id,
+            role: user.data.role,
+            id: user.data.id,
         },
         process.env.JWT_SECRET || "",
         {
