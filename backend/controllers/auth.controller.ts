@@ -1,39 +1,39 @@
 import { InternalException } from "../utils/exception";
 import { NextFunction, Request, Response } from "express";
-import { compareSync, hashSync } from "bcrypt";
+import { compareSync } from "bcrypt";
 import Codes from "http-status-codes";
 
 import { sign } from "jsonwebtoken";
 
-import { serialize } from "cookie";
 import * as sequelize from "../../db";
 
-import butters from "a-promise-wrapper"
+import butters from "a-promise-wrapper";
 
- 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
-    let user = await butters(sequelize.User.findOne({
-        where: {
-            email: req.body.email,
-        }
-    }));
+    let user = await butters(
+        sequelize.User.findOne({
+            where: {
+                email: req.body.email,
+            },
+        })
+    );
 
-    if (user.error) return InternalException(res, "Internal Server Error")
+    if (user.error) return InternalException(res, "Internal Server Error");
     if (user.data) return res.status(Codes.CONFLICT).send(["Email Already in Use"]);
 
-    
+    let new_user = await butters(
+        sequelize.User.create({
+            email: req.body.email,
+            role: "user",
+            name: req.body.email,
+        })
+    );
 
-    let new_user = await butters(sequelize.User.create({
-        email: req.body.email,
-        role: "user",
-        name: req.body.email
-    }));
+    if (new_user.error) return InternalException(res, "Internal Server Error");
 
-    if (new_user.error) return InternalException(res, "Internal Server Error")
-    
     await sequelize.Account.create({
         userId: new_user?.data.id,
-        password: req.body.password
+        password: req.body.password,
     });
 
     const token = sign(
@@ -52,15 +52,16 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function signIn(req: Request, res: Response) {
-    let user = await butters(sequelize.User.findOne({
-        where: {
-            email: req.body.email
-        }
-    }));
+    let user = await butters(
+        sequelize.User.findOne({
+            where: {
+                email: req.body.email,
+            },
+        })
+    );
 
-    
     if (user.error) return InternalException(res, "Internals Server Error");
-    if (!user.data) return res.sendStatus(Codes.NOT_FOUND).send("Email is not Regesterd")
+    if (!user.data) return res.sendStatus(Codes.NOT_FOUND).send("Email is not Regesterd");
 
     const is_password_correct = compareSync(req.body.password, user.data?.account.password);
 

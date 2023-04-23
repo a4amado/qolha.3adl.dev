@@ -7,20 +7,19 @@ import getQueryItem from "../utils/getQueryItem";
 import { join } from "node:path";
 import prisma from "../utils/prismadb";
 import { v4 } from "uuid";
+import butters from "a-promise-wrapper";
+import * as sequelize from "../../db";
 
 export async function streamClip(req: Request, res: Response) {
-    try {
-        const clip = await prisma?.clip.findUniqueOrThrow({ where: { id: getQueryItem(req.query.clipID) } });
-
-        const stream = createReadStream(join(process.cwd(), "files", "clips", clip?.path));
+    const clip = await butters(sequelize.Clip.findByPk( getQueryItem(req.query.clipID)));
+        if (clip.error) return InternalException(res, "Internal Server Error");
+        if (!clip.data) return res.sendStatus(Codes.NOT_FOUND).send("clip Not Found")
+        const stream = createReadStream(join(process.cwd(), "files", "clips", clip.data.clipName));
 
         stream.on("error", (error) => {
             return InternalException(res, error);
         });
         stream.pipe(res);
-    } catch (error) {
-        res.status(404).end();
-    }
 }
 export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) {
     try {

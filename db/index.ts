@@ -1,4 +1,3 @@
-
 import { Account } from "./models/Account.model";
 import { Clip } from "./models/Clip.model";
 import { User } from "./models/User.model";
@@ -8,22 +7,20 @@ import sequelize from "./sequelize";
 import { WordReport } from "./models/WordReport.model";
 import { ClipReport } from "./models/ClipReport.model";
 
-
-
 /**
  * USER
  */
 User.hasMany(Clip, {
-    foreignKey: "userId"
+    foreignKey: "userId",
 });
 User.hasMany(ClipReport, {
     foreignKey: "userId",
-    sourceKey: "id"
-})
+    sourceKey: "id",
+});
 
 ClipReport.belongsTo(User, {
-    foreignKey: "userId"
-})
+    foreignKey: "userId",
+});
 
 User.hasMany(Word, {
     sourceKey: "id",
@@ -31,66 +28,52 @@ User.hasMany(Word, {
 });
 User.hasMany(Rate, {
     sourceKey: "id",
-    foreignKey: "userId"
+    foreignKey: "userId",
 });
 User.hasMany(WordReport, {
     sourceKey: "id",
-    foreignKey: "userId"
+    foreignKey: "userId",
 });
 User.hasOne(Account, {
     sourceKey: "id",
-    foreignKey: "userId"
-})
+    foreignKey: "userId",
+});
 
 Account.belongsTo(User, {
-    foreignKey: "userId"
-})
+    foreignKey: "userId",
+});
 Word.hasMany(Clip, {
     sourceKey: "id",
-    foreignKey: "wordId"
-})
-Word.belongsTo(User, { foreignKey: "userId" })
+    foreignKey: "wordId",
+});
+Word.belongsTo(User, { foreignKey: "userId" });
 Word.hasOne(WordReport, {
     sourceKey: "id",
-    foreignKey: "wordId"
-})
+    foreignKey: "wordId",
+});
 
 Clip.belongsTo(User, { foreignKey: "userId" });
 Clip.belongsTo(Word, { foreignKey: "wordId" });
 
-
 Clip.hasMany(Rate, {
     foreignKey: "clipId",
-    sourceKey: "id"
+    sourceKey: "id",
 });
 
 Clip.hasMany(ClipReport, {
     sourceKey: "id",
-    foreignKey: "clipId"
-})
+    foreignKey: "clipId",
+});
 
 ClipReport.belongsTo(Clip, {
-    foreignKey: "clipId"
-})
+    foreignKey: "clipId",
+});
 
+Rate.belongsTo(Clip, { foreignKey: "clipId" });
+Rate.belongsTo(User, { foreignKey: "userId" });
 
-Rate.belongsTo(Clip, { foreignKey: "clipId" })
-Rate.belongsTo(User, { foreignKey: "userId" })
+WordReport.belongsTo(User, { foreignKey: "userId" });
+WordReport.belongsTo(Word, { foreignKey: "wordId" });
 
-WordReport.belongsTo(User, { foreignKey: "userId" })
-WordReport.belongsTo(Word, { foreignKey: "wordId" })
-
-
-
-
-
-export default sequelize
-export {
-    Account,
-    Clip,
-    User,
-    Word,
-    Rate,
-    WordReport,
-    ClipReport
-};
+export default sequelize;
+export { Account, Clip, User, Word, Rate, WordReport, ClipReport };
