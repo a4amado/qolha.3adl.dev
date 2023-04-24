@@ -7,7 +7,7 @@ import { randomUUID } from "crypto";
 
 export class Rate extends Model<InferAttributes<Rate>, InferCreationAttributes<Rate>> {
     declare id: CreationOptional<string>;
-    declare rate: 1 | 2 | 3;
+    declare rate: number;
 
     declare clipId: ForeignKey<Clip["id"]>;
     declare word: NonAttribute<Word>;
@@ -33,7 +33,8 @@ Rate.init(
         rate: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        },
+        }
+    
     },
     { sequelize }
 );

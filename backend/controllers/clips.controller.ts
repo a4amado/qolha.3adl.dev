@@ -50,65 +50,41 @@ export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) 
 }
 
 export async function acceptClip(req: Request, res: Response) {
-    try {
-        const clipStatus = await prisma?.clip.update({
+    
+        const clipStatus = await butters(sequelize.Clip.update({
+            reject: false,
+            accept: true
+        }, {
             where: {
                 id: getQueryItem(req.query.clipID),
-            },
-            data: {
-                accepted: true,
-                rejected: false,
-            },
-        });
-        return res.status(Codes.OK).json(clipStatus);
-    } catch (error) {
-        return InternalException(res, error);
-    }
+            }
+        }))
+
+        if (clipStatus.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).end();
+        return res.status(Codes.OK).json(clipStatus.data);
+    
 }
 
 export async function rejectClip(req: Request, res: Response) {
-    try {
-        const clipStatus = await prisma?.clip.update({
+    
+        const clipStatus = await butters(sequelize.Clip.destroy(  {
             where: {
                 id: getQueryItem(req.query.clipID),
             },
-            data: {
-                accepted: false,
-                rejected: true,
-            },
-        });
-        return res.status(Codes.OK).json(clipStatus);
-    } catch (error) {
-        return InternalException(res, error);
-    }
+            force: true
+        }))
+
+        if (clipStatus.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).end();
+        return res.status(Codes.OK).json(clipStatus.data);
 }
 
 export async function appendRate(req: Request, res: Response) {
-    try {
-        const clipRate = await prisma?.rate.findFirst({
-            where: {
-                AND: {
-                    clipID: getQueryItem(req.query.clipID),
-                    // @ts-ignore
-                    userID: req.session.id,
-                },
-            },
-        });
-
-        const newClipRate = await prisma?.rate.upsert({
-            create: {
-                clipID: getQueryItem(req.query.clipID),
-                // @ts-ignore
-                userID: req.session.id,
-                rate: Number(getQueryItem(req.body.rate)),
-                id: v4(),
-            },
-            update: {
-                rate: Number(getQueryItem(req.body.rate)),
-            },
-            where: {
-                id: clipRate?.id || "",
-            },
-        });
-    } catch (error) {}
+    const clipRate = await butters(sequelize.Rate.upsert({
+            clipId: getQueryItem(req.query.clipID),
+            // @ts-ignore
+            userId: req.session.id,
+            rate: Number(getQueryItem(req.body.rate)),
+    }));
+    if (clipRate.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).end();
+    res.sendStatus(Codes.OK).send(clipRate)
 }
