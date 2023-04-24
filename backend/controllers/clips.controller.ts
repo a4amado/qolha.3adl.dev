@@ -11,7 +11,9 @@ import butters from "a-promise-wrapper";
 import * as sequelize from "../../db";
 
 export async function streamClip(req: Request, res: Response) {
-    const clip = await butters(sequelize.Clip.findByPk( getQueryItem(req.query.clipID)));
+    const clip = await butters(sequelize.Clip.findByPk(getQueryItem(req.query.clipID), {
+        attributes: []
+    }));
         if (clip.error) return InternalException(res, "Internal Server Error");
         if (!clip.data) return res.sendStatus(Codes.NOT_FOUND).send("clip Not Found")
         const stream = createReadStream(join(process.cwd(), "files", "clips", clip.data.clipName));
@@ -22,29 +24,29 @@ export async function streamClip(req: Request, res: Response) {
         stream.pipe(res);
 }
 export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) {
-    try {
-        const clips = await prisma?.clip.findMany({
-            where: {
-                accepted: false,
-                rejected: false,
-            },
-            select: {
-                word: {
-                    select: {
-                        ar: true,
-                        id: true,
-                    },
-                },
-                id: true,
-                path: true,
-            },
-            take: 5,
-        });
+    const clips = await  butters(sequelize.Clip.findAll({
+        limit: 5,
+        where: {
+            reject: false,
+            accept: false,
 
-        res.status(Codes.OK).json(clips);
-    } catch (error) {
-        InternalException(res, error);
-    }
+        }, 
+        include: [
+            {
+                model: sequelize.User,
+                attributes:["id", "email", "image"]
+            },
+            {
+                model: sequelize.Word,
+                attributes:["id", "ar"]
+            }
+        ],
+        attributes: ["clipName","id"]
+    }));
+
+    if (clips.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).send("Internal Server Error");
+    
+    res.sendStatus(Codes.OK).send(clips.data)
 }
 
 export async function acceptClip(req: Request, res: Response) {

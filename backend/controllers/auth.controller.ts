@@ -26,15 +26,16 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
             email: req.body.email,
             role: "user",
             name: req.body.email,
-        })
+
+        }, {returning: ["id"]})
     );
 
     if (new_user.error) return InternalException(res, "Internal Server Error");
-
+    
     await sequelize.Account.create({
         userId: new_user?.data.id,
         password: req.body.password,
-    });
+    }, {returning: []});
 
     const token = sign(
         {
@@ -57,6 +58,10 @@ export async function signIn(req: Request, res: Response) {
             where: {
                 email: req.body.email,
             },
+            include: {
+                model: sequelize.Account,
+                as: "account"
+            }
         })
     );
 
