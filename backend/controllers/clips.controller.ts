@@ -5,13 +5,11 @@ import Codes from "http-status-codes";
 import { createReadStream } from "node:fs";
 import getQueryItem from "../utils/getQueryItem";
 import { join } from "node:path";
-import prisma from "../utils/prismadb";
-import { v4 } from "uuid";
 import butters from "a-promise-wrapper";
-import * as sequelize from "../../db";
+import * as db from "@db";
 
 export async function streamClip(req: Request, res: Response) {
-    const clip = await butters(sequelize.Clip.findByPk(getQueryItem(req.query.clipID), {
+    const clip = await butters(db.Clip.findByPk(getQueryItem(req.query.clipID), {
         attributes: []
     }));
         if (clip.error) return InternalException(res, "Internal Server Error");
@@ -24,7 +22,7 @@ export async function streamClip(req: Request, res: Response) {
         stream.pipe(res);
 }
 export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) {
-    const clips = await  butters(sequelize.Clip.findAll({
+    const clips = await  butters(db.Clip.findAll({
         limit: 5,
         where: {
             reject: false,
@@ -33,11 +31,11 @@ export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) 
         }, 
         include: [
             {
-                model: sequelize.User,
+                model: db.User,
                 attributes:["id", "email", "image"]
             },
             {
-                model: sequelize.Word,
+                model: db.Word,
                 attributes:["id", "ar"]
             }
         ],
@@ -51,7 +49,7 @@ export async function getClipThatNeedsToBeReviewed(req: Request, res: Response) 
 
 export async function acceptClip(req: Request, res: Response) {
     
-        const clipStatus = await butters(sequelize.Clip.update({
+        const clipStatus = await butters(db.Clip.update({
             reject: false,
             accept: true
         }, {
@@ -67,7 +65,7 @@ export async function acceptClip(req: Request, res: Response) {
 
 export async function rejectClip(req: Request, res: Response) {
     
-        const clipStatus = await butters(sequelize.Clip.destroy(  {
+        const clipStatus = await butters(db.Clip.destroy(  {
             where: {
                 id: getQueryItem(req.query.clipID),
             },
@@ -79,7 +77,7 @@ export async function rejectClip(req: Request, res: Response) {
 }
 
 export async function appendRate(req: Request, res: Response) {
-    const clipRate = await butters(sequelize.Rate.upsert({
+    const clipRate = await butters(db.Rate.upsert({
             clipId: getQueryItem(req.query.clipID),
             // @ts-ignore
             userId: req.session.id,

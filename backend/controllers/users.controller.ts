@@ -4,29 +4,27 @@ import { NextFunction, Request, Response } from "express";
 
 import Codes from "http-status-codes";
 import getQueryItem from "../utils/getQueryItem";
-import prisma from "../utils/prismadb";
+ 
+import butters from "a-promise-wrapper";
+import * as db from "@db";
 
 export async function getUser(req: Request, res: Response, next: NextFunction) {
-    const user = await prisma.user.findUnique({
-        where: {
-            id: getQueryItem(req.query.userID),
-        },
-        select: {
-            name: true,
-            id: true,
-            _count: {
-                select: {
-                    clips: true,
-                },
-            },
-        },
-    });
-    if (!user) {
-        return res.status(Codes.NOT_FOUND).send(Codes.getStatusText(Codes.NOT_FOUND));
-    }
-    console.log(user);
+    const user = await butters(db.User.findByPk(getQueryItem(req.query.userID), {
+        attributes: [
+            "id",
+            "name",
+            [db.default.fn("COUNT", db.default.col("clips")), "n_clips"]
+        ],
+        include: {
+            model: db.Clip,
+            as: "clips",
+            attributes: ["id", "clipName"]
+        }
+    }));
 
-    res.status(Codes.OK).send(user);
+    if (user.error) return res.status(Codes.INTERNAL_SERVER_ERROR).send(Codes.getStatusText(Codes.INTERNAL_SERVER_ERROR));
+
+    res.status(Codes.OK).send(user.data);
 }
 
 const deleteAccountSchema = yup.object().shape({
@@ -35,20 +33,27 @@ const deleteAccountSchema = yup.object().shape({
 export async function deleteUser(req: Request, res: Response, next: NextFunction) {
     deleteAccountSchema.validateSync(req.query);
 
-    await prisma.user.delete({
+    const deletedAccount = await butters(db.User.destroy({
         where: {
-            id: req.body.userID,
+            id: req.body.userID
         },
-    });
+        force: true
+    }));
 
-    res.status(Codes.OK).end();
+    if (deletedAccount.error) return res.status(Codes.INTERNAL_SERVER_ERROR).send(Codes.getStatusText(Codes.INTERNAL_SERVER_ERROR));
+
+    res.status(Codes.OK).send(deletedAccount.data)
 }
 
 export async function searchForUserWithEmailAddress(req: Request, res: Response, next: NextFunction) {
-    const user = await prisma.user.findUnique({
+
+    const user = await butters(db.User.findOne({
         where: {
-            email: getQueryItem(req.query.email),
-        },
-    });
-    res.json(user);
+            email: getQueryItem(req.query.email)
+        }
+    }))
+    
+    if (user.error) return res.status(Codes.INTERNAL_SERVER_ERROR).send(Codes.getStatusText(Codes.INTERNAL_SERVER_ERROR));
+
+    res.sendStatus(Codes.OK).json(user);
 }

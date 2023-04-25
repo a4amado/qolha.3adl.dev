@@ -20,6 +20,8 @@
       "@ui/*": ["./src/ui/*"],
       "@utils/*": ["./src/utils/*"],
       "@middleware/*": ["./src/middleware/*"],
+      "@db": ["./db/index"],
+      "@backen/*": ["./backend/*"],
     }
   
   },

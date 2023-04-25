@@ -4,107 +4,103 @@ import Codes from "http-status-codes";
 import getQueryItem from "../utils/getQueryItem";
 import prisma from "../utils/prismadb";
 import { v4 } from "uuid";
+import butters from "a-promise-wrapper";
+import * as db from "@db";
 
 export async function QueryWord(req: Request, res: Response) {
-    const word = await prisma.word.findFirst({
-        where: {
-            id: getQueryItem(req.query.wordID),
-        },
-    });
+    const word = await butters(db.Word.findByPk(getQueryItem(req.query.wordID), {
+        attributes: ["id", "ar"]
+    }))
+    if (word.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR)
     return res.status(Codes.OK).send(word);
 }
 
 export async function appendWord(req: Request, res: Response) {
-    const word = await prisma?.word.create({
-        data: {
-            ar: getQueryItem(req.query.word),
-            // @ts-ignore
-            userId: req?.session?.id,
-            id: v4(),
-        },
-    });
-    return res.status(Codes.OK).send(word);
+    const word = await butters(db.Word.create({
+        ar: getQueryItem(req.query.word),
+        // @ts-ignore
+        userId: req?.session?.id,
+        id: v4(),
+        accepted: false
+    }));
+
+    if (word.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR)
+    return res.status(Codes.OK).send(word.data);
 }
 
 export async function getWordWithTheLeastClips(req: Request, res: Response) {
-    const word = await prisma?.word.findFirst({
-        select: {
-            ar: true,
-            id: true,
 
-            // createBy: { select: { name: true, id: true } },
-        },
-        orderBy: {
-            clips: {
-                _count: "asc",
-            },
-        },
-        take: 1,
-        where: {
-            skipped: false,
-        },
-    });
+    const word = await butters(db.Word.findOne({
+        attributes: ["id", "ar",
+            [db.default.fn("COUNT", db.default.col("clips")), "n_clips"]
+        ],
+        order: [
+            ["n_clips", "ASC"]
+        ],
+        limit: 1,
+        include: {
+            model: db.User,
+            attributes: ["id", "name", "image"]
+        }
+    }));
 
-    console.log(word);
+    if (word.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).end();
 
-    res.json(word);
-    // return res.json({
-    //     ar: "مثال لكلمة عربية",
-    //     id: Math.random().toString(),
-    //     createBy: { select: { name: "احمد", id: Math.random().toString() } },
-    // });
+    res.json(word.data);
 }
 
 export async function listClipsForWord(req: Request, res: Response) {
-    const clips = await prisma?.word.findFirst({
+    const clips = await butters(db.Word.findOne({
         where: {
             id: getQueryItem(req.query.wordID),
         },
-        select: {
-            ar: true,
+        attributes: ["ar"],
+        include: [{
+            model: db.Clip,
+            as: "clips",
+            attributes: ["id", "clipName"],
+            limit: 15,
+        }, {
+            model: db.User,
+            as: "user",
+            attributes: ["name", "id", "image"],
+        }],
 
-            clips: {
-                select: {
-                    createBy: {
-                        select: {
-                            name: true,
-                        },
-                    },
-                    id: true,
-                    path: true,
-                },
-                take: 15,
-            },
-        },
-    });
 
-    res.status(Codes.OK).send(clips);
+    }));
+
+    if (clips.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).end();
+
+    res.status(Codes.OK).send(clips.data);
+
 }
 
 export async function appendClipToWord(req: Request, res: Response, next: NextFunction) {
-    const word = await prisma?.clip.create({
+    const clip = await butters(db.Clip.create({
+        clipName: req.file?.filename || "",
         // @ts-ignore
-        data: {
-            // @ts-ignore
-            path: req.file?.filename || "",
-            // @ts-ignore
-            userID: req.user.id,
-            wordID: getQueryItem(req.params.wordID),
-            id: v4(),
-        },
-    });
+        userId: req.user.id,
+        wordId: getQueryItem(req.params.wordID),
+        accept: false,
+        reject: false
+    }));
+
+    if (clip.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).end();
 
     return res.status(Codes.OK).json("ss");
+
 }
 
 export async function skipWord(req: Request, res: Response, next: NextFunction) {
-    const word = await prisma?.word.update({
+    const word = await butters(db.Word.destroy({
         where: {
-            id: getQueryItem(req.params.wordID),
+            id: getQueryItem(req.params.wordID)
         },
-        data: {
-            skipped: true,
-        },
-    });
+        force: true
+    }));
+
+    if (word.error) return res.sendStatus(Codes.INTERNAL_SERVER_ERROR).end();
+
     return res.status(303).redirect("/words/getWordWithTheLeastClips");
+
 }

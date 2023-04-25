@@ -4,14 +4,13 @@ import { compareSync } from "bcrypt";
 import Codes from "http-status-codes";
 
 import { sign } from "jsonwebtoken";
-
-import * as sequelize from "../../db";
+import * as db from "@db";
 
 import butters from "a-promise-wrapper";
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
     let user = await butters(
-        sequelize.User.findOne({
+        db.User.findOne({
             where: {
                 email: req.body.email,
             },
@@ -22,7 +21,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
     if (user.data) return res.status(Codes.CONFLICT).send(["Email Already in Use"]);
 
     let new_user = await butters(
-        sequelize.User.create({
+        db.User.create({
             email: req.body.email,
             role: "user",
             name: req.body.email,
@@ -32,7 +31,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
 
     if (new_user.error) return InternalException(res, "Internal Server Error");
     
-    await sequelize.Account.create({
+    await db.Account.create({
         userId: new_user?.data.id,
         password: req.body.password,
     }, {returning: []});
@@ -54,12 +53,12 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
 
 export async function signIn(req: Request, res: Response) {
     let user = await butters(
-        sequelize.User.findOne({
+        db.User.findOne({
             where: {
                 email: req.body.email,
             },
             include: {
-                model: sequelize.Account,
+                model: db.Account,
                 as: "account"
             }
         })
