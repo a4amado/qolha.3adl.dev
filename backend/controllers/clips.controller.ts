@@ -10,7 +10,7 @@ import * as db from "@db";
 
 export async function streamClip(req: Request, res: Response) {
     const clip = await butters(db.Clip.findByPk(getQueryItem(req.query.clipID), {
-        attributes: []
+        attributes: ["id", "clipName"]
     }));
         if (clip.error) return InternalException(res, "Internal Server Error");
         if (!clip.data) return res.sendStatus(Codes.NOT_FOUND).send("clip Not Found")
