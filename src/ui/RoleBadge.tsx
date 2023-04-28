@@ -1,7 +1,7 @@
 import { Badge, BadgeProps, Alert, AlertProps } from "antd";
-import { rolesKeys, roles, rolesType } from "../../../../global/roles";
+import { roles } from "./ChangeRole";
 
-export default function RoleBadge({ role }: { role: rolesType }) {
+export default function RoleBadge({ role }: { role: roles }) {
     let badgeStatusAccordingToTheRole: AlertProps["type"] = "info";
 
     switch (role) {
@@ -13,7 +13,7 @@ export default function RoleBadge({ role }: { role: rolesType }) {
             break;
     }
 
-    let badgeNumberAccordingToTheRole: number = 10;
+    let badgeNumberAccordingToTheRole = 10;
 
     switch (role) {
         case "admin":

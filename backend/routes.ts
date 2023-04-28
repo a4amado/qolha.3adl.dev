@@ -2,7 +2,7 @@ import { Router } from "express";
 import { QueryWord, appendClipToWord, appendWord, getWordWithTheLeastClips, listClipsForWord, skipWord } from "./controllers/words.controller";
 import { acceptClip, appendRate, getClipThatNeedsToBeReviewed, rejectClip, streamClip } from "./controllers/clips.controller";
 import { deleteUser, getUser, searchForUserWithEmailAddress } from "./controllers/users.controller";
-import { signIn, signUp } from "./controllers/auth.controller";
+import { signIn, signUp, verifyAccount } from "./controllers/auth.controller";
 
 import Validate from "./middleware/validate";
 import catchError from "./utils/catchError";
@@ -10,13 +10,20 @@ import { queryHits } from "./controllers/q.controller";
 import upload from "./middleware/upload";
 import withAuth from "./middleware/withAuth";
 import verifyRole from "./middleware/verifyRole";
+import sequelize from "@db";
+
+
 
 const routes = Router();
+ 
+
+
 /**
  * Auth Routes
  */
 routes.post("/auth/signUp", Validate("signUp"), catchError(signUp));
 routes.post("/auth/logIn", Validate("signIn"), catchError(signIn));
+routes.get("/auth/account/:userID/code/:code", Validate("verifyAccount"), catchError(verifyAccount));
 routes.delete("/auth/account");
 
 /**

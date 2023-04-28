@@ -1,8 +1,8 @@
-import PageContainer from "@ui/PageContainer";
+import PageContainer from "../../ui/PageContainer";
 import { Button, Typography, Col, Input, notification, Modal, Alert, Row } from "antd";
 import { signIn } from "next-auth/react";
 
-import Header from "@ui/header";
+import Header from "../../ui/header";
 import { FcGoogle } from "react-icons/fc";
 
 import useAxios from "axios-hooks";

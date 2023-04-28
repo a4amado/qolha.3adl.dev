@@ -1,31 +1,35 @@
 import { Button, Modal, Select, SelectProps } from "antd";
+
 import React from "react";
 import { useToggle } from "react-use";
-import { rolesType, roles, rolesKeys } from "../../global/roles";
 
-type RoleProps = {
-    currentRole: rolesType;
-    email: string;
-};
+export type roles = "owner" | "admin" | "user" | "CHOOSE";
 
-export default function ChangeRole(props: RoleProps) {
+const roles: roles[] = ["owner", "admin", "user"];
+function isDisabled(role: roles) {
+    return role === "owner";
+}
+
+export default function ChangeRole(props: { currentRole: roles; email: string }) {
     const [open, toggle] = useToggle(false);
-    const options: SelectProps["options"] = rolesKeys.map((e, i) => ({
-        label: e,
-        value: e,
-        /* @ts-ignore */
-    }));
+    const options: SelectProps["options"] = roles
+        .map((role) => ({
+            label: role,
+            value: role,
+        })) // @ts-ignore
 
+        .concat([{ label: "CHOOSE", value: "CHOOSE", disabled: true }]);
+
+    const isDisabledBcItsOwner = isDisabled(props.currentRole);
     return (
         <>
-            <Button disabled={props.currentRole === "owner"} onClick={() => toggle(true)}>
+            <Button disabled={isDisabledBcItsOwner} onClick={() => toggle(true)}>
                 تعديل الدور
             </Button>
             <Modal open={open} onOk={() => toggle(false)} onCancel={() => toggle(false)}>
                 <div className="flex flex-row">
                     <div className=" align-middle">أختر</div>
-                    {/* @ts-ignore */}
-                    <Select defaultValue="title" className="w-full" disabled={props.currentRole == "owner"} options={[{ label: "اختر الدور", value: "title", disabled: true }].concat(options)}>
+                    <Select defaultValue="title" className="w-full" disabled={isDisabledBcItsOwner} options={options}>
                         s
                     </Select>
                 </div>

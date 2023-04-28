@@ -88,6 +88,15 @@ const searchForUserWithEmailAddress = yup.object().shape({
     }),
 });
 
+
+const verifyAccount = yup.object().shape({
+    params: yup.object({
+        userID: yup.string().required().uuid(),
+        code: yup.string().required().uuid(),
+    }),
+});
+
+
 const schema = {
     signIn,
     signUp,
@@ -102,6 +111,7 @@ const schema = {
     getOrDeleteClip,
     skipWord,
     searchForUserWithEmailAddress,
+    verifyAccount
 };
 
 export type schemaName = keyof typeof schema;

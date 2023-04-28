@@ -1,11 +1,11 @@
-import PageContainer from "@ui/PageContainer";
+import PageContainer from "../../../ui/PageContainer";
 import { Alert, Input } from "antd";
 import useAxios from "axios-hooks";
 import React, { useState } from "react";
-import Header from "@ui/header";
-import ChangeRole from "@ui/ChangeRole";
+import Header from "../../../ui/header";
+import ChangeRole from "../../../ui/ChangeRole";
 import NextImage from "next/image";
-import RoleBadge from "@ui/RoleBadge";
+import RoleBadge from "../../../ui/RoleBadge";
 
 function Users() {
     const [email, setEmail] = useState("");

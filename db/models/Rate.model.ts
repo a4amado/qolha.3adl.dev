@@ -33,8 +33,7 @@ Rate.init(
         rate: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        }
-    
+        },
     },
     { sequelize }
 );

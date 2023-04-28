@@ -2,9 +2,9 @@ import { Button, Col, Row, Typography, Modal } from "antd";
 import { memo, useEffect, useState } from "react";
 import { BiPlay } from "react-icons/bi";
 import { useAudio, useToggle } from "react-use";
-import ReportWord from "@ui/ReportWord";
-import URLQrCode from "@ui/URLQrCode";
-import RateRecord from "@ui//RateRecord";
+import ReportWord from "./ReportWord";
+import URLQrCode from "./URLQrCode";
+import RateRecord from "./RateRecord";
 
 function AudioHero({ word }: { word: any }) {
     return (

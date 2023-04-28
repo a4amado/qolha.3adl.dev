@@ -1,8 +1,8 @@
 import { Row, Button, Typography, Spin, notification } from "antd";
 import useRecorder from "@wmik/use-media-recorder";
 import React from "react";
-import PageContainer from "@ui/PageContainer";
-import Header from "@ui/header";
+import PageContainer from "../../ui/PageContainer";
+import Header from "../../ui/header";
 
 import useAxios from "axios-hooks";
 import useHotkeys from "@reecelucas/react-use-hotkeys";

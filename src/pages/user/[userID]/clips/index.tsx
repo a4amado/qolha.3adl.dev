@@ -1,8 +1,8 @@
-import Header from "@ui/header";
-import PageContainer from "@ui/PageContainer";
+import Header from "../../../../ui/header";
+import PageContainer from "../../../../ui/PageContainer";
 import { GetServerSideProps as GSSP } from "next/types";
 import { List, Alert, Typography } from "antd";
-// import prisma from "@utils/prismadb"
+
 // import getQueryItem from "@utils/getQueryItem";
 
 export const getServerSideProps: GSSP = async (ctx) => {

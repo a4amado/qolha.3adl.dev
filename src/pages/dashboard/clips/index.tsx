@@ -1,8 +1,8 @@
-import Header from "@ui/header";
+import Header from "../../../ui/header";
 import { Button, Row } from "antd";
 import Head from "next/head";
 import React from "react";
-import PageContainer from "@ui/PageContainer";
+import PageContainer from "../../../ui/PageContainer";
 import { PlayCircleOutlined, PauseCircleOutlined, CheckCircleTwoTone, CloseOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import axios from "axios";
 
