@@ -17,7 +17,7 @@
         "noUncheckedIndexedAccess": true,
         "baseUrl": "./",
         "paths": {
-            "@ui/*": ["ui/*"],
+            "@ui/*": ["./src/ui/*"],
             "@utils/*": ["./src/utils/*"],
             "@middleware/*": ["./src/middleware/*"],
             "@db": ["./db/index"],

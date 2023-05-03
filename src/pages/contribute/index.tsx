@@ -6,18 +6,9 @@ import Header from "@ui/header";
 
 import useAxios from "axios-hooks";
 import useHotkeys from "@reecelucas/react-use-hotkeys";
-import { queryWord } from "pages/api/word";
-import queryString from "query-string";
-import { z } from "zod";
 
-const getWordWithTheleastWord = queryString.stringifyUrl({
-    query: {
-        _order: "asc",
-        _sort: "clips",
-        _limit: 1,
-    },
-    url: `api/word`,
-} as Parameters<typeof queryString.stringifyUrl>[0] & z.TypeOf<typeof queryWord>);
+import { z } from "zod";
+import { QueryWord } from "src/query/clip";
 
 type NotificationProps = {
     message: string;
@@ -28,7 +19,6 @@ export function showNotification(Props: NotificationProps) {
     notification[Props.type]({ type: "error", message: Props.message, duration: Props.destroyAfter });
     return;
 }
-console.log(getWordWithTheleastWord);
 
 // words/:wordID/skip
 export default function Page() {
@@ -38,7 +28,16 @@ export default function Page() {
         mediaRecorderOptions: { mime: "audio/webm" },
     });
 
-    const [word, refetch] = useAxios({ url: getWordWithTheleastWord, method: "GET" }, { manual: false });
+    const [word, refetch] = useAxios({
+        url: QueryWord({
+            query: {
+                _order: "asc",
+                _sort: "clips",
+                _limit: 1,
+            },
+            url: `api/word`,
+        }), method: "GET"
+    }, { manual: false });
     const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/words/${word?.data?.id}/clip`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
     const [skip, skipClip] = useAxios({ method: "POST", url: `/api/words/${word?.data?.id}/skip` }, { manual: true });
     const controller = React.useRef<HTMLAudioElement>();
