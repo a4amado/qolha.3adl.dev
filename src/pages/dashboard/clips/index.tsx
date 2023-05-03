@@ -1,8 +1,8 @@
-import Header from "../../../ui/header";
+import Header from "@ui/header";
 import { Button, Row } from "antd";
 import Head from "next/head";
 import React from "react";
-import PageContainer from "../../../ui/PageContainer";
+import PageContainer from "@ui/PageContainer";
 import { PlayCircleOutlined, PauseCircleOutlined, CheckCircleTwoTone, CloseOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ import useAxios from "axios-hooks";
 const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
 
 function Clips() {
-    const [clips, refetch, q] = useAxios<Array<typeof clipType>>({ url: "/api/clip/toBeReviewed", method: "GET" });
+    const [clips, refetch, q] = useAxios<Array<typeof clipType>>({ url: "/api/clips/toBeReviewed", method: "GET" });
     const activeClip = React.useMemo(() => {
         if (!clips?.data || typeof clips?.data[0] === "undefined") return null;
         return clips?.data[0];
@@ -19,13 +19,13 @@ function Clips() {
 
     const acceptClip = async () => {
         if (!activeClip) return;
-        await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject` });
+        await axios({ method: "POST", url: `/api/clips/${activeClip.id}/accept` });
         refetch();
     };
 
     const rejectClip = async () => {
         if (!activeClip) return;
-        await axios({ method: "POST", url: `/api/clip/${activeClip.id}/reject` });
+        await axios({ method: "POST", url: `/api/clips/${activeClip.id}/reject` });
         await refetch();
     };
 

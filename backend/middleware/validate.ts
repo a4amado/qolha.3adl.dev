@@ -7,8 +7,6 @@ import { YupException } from "../utils/exception";
 export default function Validate(schmea: schemaName) {
     return (req: Request, res: Response, Next: NextFunction) => {
         try {
-            console.log(req.params);
-
             schemaObject[schmea].validateSync(req, { abortEarly: false });
             Next();
         } catch (error) {

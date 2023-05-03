@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./hi.sqlite"
+}
+model User {
+    id            String    @unique @default(uuid())
+    name          String
+    email         String @unique
+    emailVerified DateTime?
+    image         String?
+    code          String?
+    role          String
+
+    account Account?
+    words   Word[]
+
+    clips        Clip[]
+    rates        Rate[]
+    reports      WordReport[]
+    clip_reports ClipReport[]
+}
+
+// enum Role {
+//     owner
+//     admin
+//     user
+// }
+
+model Account {
+    id       String @unique @default(uuid())
+    password String
+
+    user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+    userId String @unique
+}
+
+model Word {
+    ar          String
+    id          String       @unique @default(uuid())
+    accepted    Boolean      @default(false)
+    description String
+    userId      String?
+    user        User?        @relation(references: [id], fields: [userId])
+    clips       Clip[]
+    reports     ClipReport[]
+    WordReport  WordReport[]
+}
+
+model Clip {
+    id       String  @unique @default(uuid())
+    clipName String
+    accept   Boolean @default(false)
+    reject   Boolean @default(false)
+
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String?
+
+    word   Word   @relation(fields: [wordId], references: [id])
+    wordId String
+
+    reports ClipReport[]
+    rates   Rate[]
+}
+
+model Rate {
+    id   String @unique @default(uuid())
+    rate String
+
+    clipId String
+    clip   Clip   @relation(fields: [clipId], references: [id])
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    @@unique([clipId, userId])
+}
+
+model WordReport {
+    id     String  @unique @default(uuid())
+    word   Word    @relation(fields: [wordId], references: [id])
+    wordId String
+    reason String
+    User   User?   @relation(fields: [userId], references: [id])
+    userId String?
+}
+
+model ClipReport {
+    id     String  @unique @default(uuid())
+    clip   Clip    @relation(fields: [clipId], references: [id])
+    clipId String
+    reason String
+    User   User?   @relation(fields: [userId], references: [id])
+    userId String?
+    Word   Word?   @relation(fields: [wordId], references: [id])
+    wordId String?
+}

@@ -6,8 +6,7 @@ import { extension } from "mime-types";
 
 // @ts-ignore
 import FirebaseStorage from "multer-firebase-storage";
-
- 
+import { log } from "node:console";
 
 // import * as FirebaseServiceAccount from "../../qolha-372817-firebase-adminsdk-3j4lx-dbd1d6cfa9.json";
 
@@ -20,6 +19,7 @@ import FirebaseStorage from "multer-firebase-storage";
 //     }),
 // });
 
+log(join(process.cwd(), "files", "clips"));
 const MULTER_Storage = multer.diskStorage({
     destination: (_req, _file, _callback) => _callback(null, join(process.cwd(), "files", "clips")),
     filename: (_req, _file, _callback) => _callback(null, randomUUID() + "." + extension(_file.mimetype)),

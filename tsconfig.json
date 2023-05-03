@@ -1,60 +1,35 @@
 {
-  "compilerOptions": {
-    "target": "es2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "noUncheckedIndexedAccess": true,
-    "baseUrl": "./",
-    "paths": {
-      "@ui/*": [
-        "./src/ui/*"
-      ],
-      "@utils/*": [
-        "./src/utils/*"
-      ],
-      "@middleware/*": [
-        "./src/middleware/*"
-      ],
-      "@db": [
-        "./db/index"
-      ],
-      "@backen/*": [
-        "./backend/*"
-      ],
+    "compilerOptions": {
+        "target": "es2017",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "noUncheckedIndexedAccess": true,
+        "baseUrl": "./",
+        "paths": {
+            "@ui/*": ["ui/*"],
+            "@utils/*": ["./src/utils/*"],
+            "@middleware/*": ["./src/middleware/*"],
+            "@db": ["./db/index"],
+            "@backend/*": ["./backend/*"]
+        },
+        "plugins": [
+            {
+                "name": "tsconfig-paths",
+                "afterDeclarations": true
+            }
+        ]
     },
-    "plugins": [
-      {
-        "name": "tsconfig-paths",
-        "afterDeclarations": true
-      }
-    ]
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.mjs",
-    "src/server.ts",
-    "src/pages/api/word/[wordID]",
-    "tsconfig.server.json"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs", "src/server.ts", "src/pages/api/word/[wordID]", "tsconfig.server.json"],
+    "exclude": ["node_modules"]
 }

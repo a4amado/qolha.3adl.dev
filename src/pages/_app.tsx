@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import { type AppType } from "next/app";
-import GoToUp from "../ui/GoToUp";
-import Loading from "../ui/Loading";
+import GoToUp from "@ui/GoToUp";
+import Loading from "@ui/Loading";
 
 import React, { Suspense } from "react";
 import Router from "next/router";

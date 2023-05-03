@@ -1,5 +1,5 @@
-import Header from "../../../ui/header";
-import PageContainer from "../../../ui/PageContainer";
+import Header from "@ui/header";
+import PageContainer from "@ui/PageContainer";
 import { Alert, Col, Typography } from "antd";
 import NextImage from "next/image";
 import { TfiWrite } from "react-icons/tfi";

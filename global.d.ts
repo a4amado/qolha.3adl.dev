@@ -1,14 +1,12 @@
 export {};
 
 declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      PORT: string;
-      NODE_ENV: 'development' | 'production';
-      MAILERSEND: string;
-      DB_URL: string;
+    namespace NodeJS {
+        interface ProcessEnv {
+            PORT: string;
+            NODE_ENV: "development" | "production";
+            MAILERSEND: string;
+            DB_URL: string;
+        }
     }
-  }
 }
-
-
