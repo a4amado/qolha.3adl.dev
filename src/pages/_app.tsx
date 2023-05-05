@@ -5,7 +5,8 @@ import Loading from "@ui/Loading";
 
 import React, { Suspense } from "react";
 import Router from "next/router";
-import Axios, { AxiosError } from "axios";
+import Axios, { AxiosError, AxiosResponse } from "axios";
+import { showNotification } from "./contribute";
 
 Router.events.on("routeChangeStart", () => {
     const loadingContainer = document.getElementById("loading-container");
@@ -23,6 +24,30 @@ Router.events.on("routeChangeComplete", () => {
 });
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
+    React.useEffect(() => {
+        function ss(response: AxiosResponse) {
+
+            return response;
+        }
+
+        function ddd(error: AxiosError) {
+
+
+            error.response?.data.message.map(e => {
+                showNotification({
+                    message: e,
+                    type: "error",
+                    destroyAfter: 500
+                })
+            })
+
+
+            return Promise.reject(error);
+        }
+        Axios.interceptors.response.use(ss, ddd);
+        return () => Axios.interceptors.response.eject(ss, ddd);
+
+    }, [])
 
     return (
         <Suspense>

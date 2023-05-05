@@ -20,7 +20,12 @@ route.delete(async (req: NextApiRequest, res: NextApiResponse) => {
         })
     );
 
-    if (deletedAccount.error) return res.status(Codes.INTERNAL_SERVER_ERROR).send(Codes.getStatusText(Codes.INTERNAL_SERVER_ERROR));
+    if (deletedAccount.error) {
+        console.error(deletedAccount.error);
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: "Something wrong while deleting the Account",
+        });
+    }
 
     res.status(Codes.OK).send(deletedAccount.data);
 });

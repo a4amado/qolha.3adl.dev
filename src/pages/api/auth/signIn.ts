@@ -34,14 +34,18 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     if (user.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
-    if (!user.data) return res.status(Codes.NOT_FOUND).send("Email is not Regesterd");
+    if (!user.data) return res.status(Codes.NOT_FOUND).send({
+        message: ["Email is not Regesterd"]
+    });
 
     console.log(Input.body.password, user?.data?.account?.password);
 
     const is_password_correct = compareSync(Input.body.password, user?.data?.account?.password);
 
     if (!is_password_correct) {
-        return res.status(Codes.NOT_ACCEPTABLE).send("wrong password or email");
+        return res.status(Codes.NOT_ACCEPTABLE).send({
+            message: ["wrong password or email"]
+        });
     }
 
     const token = sign(
