@@ -11,7 +11,10 @@ const route = nextConnect();
 
 route.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$UserQuery, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
 
     if (Input.query._email) {
     }

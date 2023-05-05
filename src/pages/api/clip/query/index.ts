@@ -13,7 +13,10 @@ const route = nextConnect();
 
 route.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$QueryClip, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
 
     const query: Prisma.ClipFindManyArgs = {};
     if (Input.query._userId) {
@@ -31,12 +34,15 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
         query.take = Input.query._limit;
     }
 
-
-
-
     const clips = await butters(prisma.clip.findMany(query));
 
-    if (clips.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
+    if (clips.error) {
+        console.error(clips.error);
+
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Internal Server Errors"],
+        });
+    }
 
     res.status(Codes.OK).send(clips.data.length > 1 ? clips.data : clips.data[0]);
 });

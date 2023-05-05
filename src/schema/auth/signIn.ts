@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import * as yup from "yup";
 
 const Schema$API$signIn = yup.object().shape({
     body: yup.object().shape({
@@ -12,9 +12,4 @@ const Schema$Client$signIn = yup.object().shape({
     password: yup.string().min(10).required(),
 });
 
-
-
-export {
-    Schema$API$signIn,
-    Schema$Client$signIn
-}
+export { Schema$API$signIn, Schema$Client$signIn };

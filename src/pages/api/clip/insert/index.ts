@@ -23,16 +23,17 @@ const uploader = new MicroFormidable({
 // @ts-ignore
 route.post(withAuth, uploader.single("clip"), async (req: NextApiRequest & { clip: Exclude<File, File[] | undefined> }, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$InsertClip, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
-
-    const Fclip = req.clip;
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
 
     const clip = await butters(
         prisma.clip.create({
             data: {
                 // @ts-ignore
 
-                clipName: Fclip.newFilename || "",
+                clipName: req.clip.newFilename,
                 // @ts-ignore
                 userId: req.user.id,
 
@@ -43,7 +44,13 @@ route.post(withAuth, uploader.single("clip"), async (req: NextApiRequest & { cli
         })
     );
 
-    if (clip.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
+    if (clip.error) {
+        console.error(clip.error);
+
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Internal Server Error"],
+        });
+    }
 
     return res.status(Codes.OK).send(clip);
 });

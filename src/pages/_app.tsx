@@ -26,28 +26,23 @@ Router.events.on("routeChangeComplete", () => {
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
     React.useEffect(() => {
         function ss(response: AxiosResponse) {
-
             return response;
         }
 
         function ddd(error: AxiosError) {
-
-
-            error.response?.data.message.map(e => {
+            error.response?.data.message.map((e) => {
                 showNotification({
                     message: e,
                     type: "error",
-                    destroyAfter: 500
-                })
-            })
-
+                    destroyAfter: 500,
+                });
+            });
 
             return Promise.reject(error);
         }
         Axios.interceptors.response.use(ss, ddd);
         return () => Axios.interceptors.response.eject(ss, ddd);
-
-    }, [])
+    }, []);
 
     return (
         <Suspense>

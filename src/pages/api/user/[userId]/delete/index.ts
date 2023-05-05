@@ -10,7 +10,10 @@ const route = nextConnect();
 
 route.delete(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$DeleteUser, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
 
     const deletedAccount = await butters(
         prisma.user.delete({

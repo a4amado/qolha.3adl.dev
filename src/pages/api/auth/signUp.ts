@@ -1,4 +1,3 @@
-import { InternalException } from "@backend/utils/exception";
 import sendVarificationMail from "@backend/utils/mail/config";
 import ValidateInput from "@backend/utils/validate.yup";
 import prisma from "@backend/db";
@@ -11,6 +10,7 @@ import { z } from "zod";
 import butters from "a-promise-wrapper";
 import Codes from "http-status-codes";
 import { hashSync } from "bcrypt";
+import { Schema$API$SignUp } from "@schema/auth/signUp";
 
 export const Schema$signUp = z
     .object({
@@ -31,8 +31,8 @@ export const Schema$signUp = z
     });
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = ValidateInput(Schema$signUp, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    const { data: Input, errors } = ValidateInput(Schema$API$SignUp, req);
+    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send({ message: errors });
 
     let user = await butters(
         prisma.user.findFirst({
@@ -45,8 +45,16 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         })
     );
 
-    if (user.error) return res.status(Codes.INTERNAL_SERVER_ERROR).send(user.error);
-    if (user.data) return res.status(Codes.CONFLICT).send(["Email Already in Use"]);
+    if (user.error) {
+        console.error(user.error);
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Internal Server Error"],
+        });
+    }
+    if (user.data)
+        return res.status(Codes.CONFLICT).send({
+            message: ["Email Already in Use"],
+        });
 
     const verificationCode = randomUUID();
 
@@ -67,7 +75,12 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         })
     );
 
-    if (new_user.error || !new_user.data) return res.status(Codes.INTERNAL_SERVER_ERROR).send(user.error);
+    if (new_user.error || !new_user.data) {
+        console.error(user.error);
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: "Internal Server Error",
+        });
+    }
 
     await prisma.account.create({
         data: {
@@ -95,7 +108,11 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
             })
         );
 
-        return res.status(Codes.INTERNAL_SERVER_ERROR).end("");
+        console.error(sendEmail.error);
+
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: "Internal Server Error",
+        });
     }
 
     const token = sign(

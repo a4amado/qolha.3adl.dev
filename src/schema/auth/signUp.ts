@@ -1,5 +1,4 @@
-import * as yup from "yup"
-
+import * as yup from "yup";
 
 const Schema$API$SignUp = yup.object().shape({
     body: yup.object({
@@ -11,9 +10,8 @@ const Schema$API$SignUp = yup.object().shape({
             .required()
             .min(10)
             .oneOf([yup.ref("password")], "vPassword must equal the password"),
-    })
+    }),
 });
-
 
 const Schema$Client$SignUp = yup.object().shape({
     email: yup.string().email().required(),
@@ -24,10 +22,6 @@ const Schema$Client$SignUp = yup.object().shape({
         .required()
         .min(10)
         .oneOf([yup.ref("password")], "vPassword must equal the password"),
-})
+});
 
-
-export {
-    Schema$API$SignUp,
-    Schema$Client$SignUp
-}
+export { Schema$API$SignUp, Schema$Client$SignUp };

@@ -13,7 +13,7 @@ import { Schema$API$signIn } from "@schema/auth/signIn";
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$signIn, req);
-    if (!errors || errors.length) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (!errors || errors.length) return res.status(Codes.BAD_REQUEST).send({ message: errors });
 
     let user = await butters(
         prisma.user.findFirst({
@@ -33,18 +33,22 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         })
     );
 
-    if (user.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
-    if (!user.data) return res.status(Codes.NOT_FOUND).send({
-        message: ["Email is not Regesterd"]
-    });
-
-    console.log(Input.body.password, user?.data?.account?.password);
+    if (user.error) {
+        console.error(user.error);
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Internal Server Error"],
+        });
+    }
+    if (!user.data)
+        return res.status(Codes.NOT_FOUND).send({
+            message: ["Email is not Regesterd"],
+        });
 
     const is_password_correct = compareSync(Input.body.password, user?.data?.account?.password);
 
     if (!is_password_correct) {
         return res.status(Codes.NOT_ACCEPTABLE).send({
-            message: ["wrong password or email"]
+            message: ["wrong password or email"],
         });
     }
 

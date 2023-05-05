@@ -11,7 +11,10 @@ const route = nextConnect();
 
 route.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$QueryWord, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
 
     const searchObject: Prisma.WordFindManyArgs = {
         take: Input.query._limit,
@@ -39,7 +42,13 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
         };
     }
     const word = await butters(prisma.word.findMany(searchObject));
-    if (word.error) return res.status(Codes.INTERNAL_SERVER_ERROR).send(word.error);
+    if (word.error) {
+        console.error(word.error);
+
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Internal Server Error"],
+        });
+    }
     res.json(word.data.length > 1 ? word.data : word.data[0]);
 });
 

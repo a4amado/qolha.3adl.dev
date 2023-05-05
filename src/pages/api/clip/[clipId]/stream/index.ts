@@ -13,7 +13,10 @@ const route = nextConnect();
 
 route.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$StreamClip, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
     const clip = await butters(
         prisma.clip.findFirst({
             where: {
@@ -25,13 +28,27 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
             },
         })
     );
-    if (clip.error) return res.status(Codes.INTERNAL_SERVER_ERROR).send(errors);
+    if (clip.error) {
+        console.error(clip.error);
 
-    if (!clip.data) return res.status(Codes.NOT_FOUND).send("clip Not Found");
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Internal Server Error"],
+        });
+    }
+
+    if (!clip.data) {
+        return res.status(Codes.NOT_FOUND).send({
+            message: ["clip Not Found"],
+        });
+    }
     const stream = createReadStream(join(process.cwd(), "files", "clips", clip.data.clipName));
 
     stream.on("error", (error) => {
-        return res.status(Codes.INTERNAL_SERVER_ERROR).send(errors);
+        console.error(errors);
+
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Faild To stream the Clip"],
+        });
     });
     stream.pipe(res);
 });

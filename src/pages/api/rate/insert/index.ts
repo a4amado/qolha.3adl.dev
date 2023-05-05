@@ -11,7 +11,10 @@ const route = nextConnect();
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$InsertRate, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
     const clipRate = await butters(
         prisma.rate.upsert({
             create: {
@@ -32,7 +35,13 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
             },
         })
     );
-    if (clipRate.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
+    if (clipRate.error) {
+        console.error(clipRate.error);
+
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: "Internal Server Error",
+        });
+    }
     res.status(Codes.OK).send(clipRate);
 });
 

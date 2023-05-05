@@ -19,8 +19,9 @@ function Clips() {
                 _accepted: false,
                 _limit: 1,
                 _page: 1,
-            }
-        }), method: "GET"
+            },
+        }),
+        method: "GET",
     });
     const activeClip = React.useMemo(() => {
         if (!clips?.data || typeof clips?.data[0] === "undefined") return null;

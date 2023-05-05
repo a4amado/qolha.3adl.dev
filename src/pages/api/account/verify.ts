@@ -15,8 +15,8 @@ const Schema$verifyAccount = z.object({
 });
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = ValidateInput(Schema$verifyAccount, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    const { data: Input, errors } = ValidateInput(Schema$API$, req);
+    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send({ message: errors });
     const getAccount = await butters(
         prisma.user.findUnique({
             where: {
@@ -32,20 +32,20 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     if (getAccount.error) {
-        console.error(getAccount.error)
+        console.error(getAccount.error);
         return res.status(Codes.INTERNAL_SERVER_ERROR).send({
-            message: ["Error While Verifing your account"]
+            message: ["Error While Verifing your account"],
         });
     }
     if (getAccount.data?.emailVerified) {
-
         return res.status(Codes.OK).send({
-            message: ["Email Already Verified"]
+            message: ["Email Already Verified"],
         });
     }
-    if (getAccount.data?.code != Input.query.code) return res.status(Codes.BAD_REQUEST).send({
-        message: `Wrong code ${Input.query.code}`
-    });
+    if (getAccount.data?.code != Input.query.code)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: `Wrong code ${Input.query.code}`,
+        });
 
     const verifyAccount = await butters(
         prisma.user.update({
@@ -59,9 +59,9 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         })
     );
     if (verifyAccount.error) {
-        console.error(verifyAccount.error)
+        console.error(verifyAccount.error);
         return res.status(Codes.INTERNAL_SERVER_ERROR).send({
-            message: ["Error While Verifing your account"]
+            message: ["Error While Verifing your account"],
         });
     }
 

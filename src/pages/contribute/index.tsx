@@ -7,8 +7,6 @@ import Header from "@ui/header";
 import useAxios from "axios-hooks";
 import useHotkeys from "@reecelucas/react-use-hotkeys";
 
-
-
 type NotificationProps = {
     message: string;
     destroyAfter: number;

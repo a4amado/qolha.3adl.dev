@@ -12,7 +12,10 @@ const route = nextConnect();
 
 route.delete(withAuth, verifyRole(["admin"]), async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$DeleteWord, req);
-    if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
+    if (errors.length > 0)
+        return res.status(Codes.BAD_REQUEST).send({
+            message: errors,
+        });
 
     const word = await butters(
         prisma.word.delete({
@@ -22,7 +25,13 @@ route.delete(withAuth, verifyRole(["admin"]), async (req: NextApiRequest, res: N
         })
     );
 
-    if (word.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
+    if (word.error) {
+        console.error(word.error);
+
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Internal Server Error"],
+        });
+    }
 
     return res.status(Codes.OK);
 });

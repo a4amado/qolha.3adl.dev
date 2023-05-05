@@ -17,7 +17,6 @@ import axios from "axios";
 import { Schema$Client$SignUp } from "@schema/auth/signUp";
 import { Schema$Client$signIn } from "@schema/auth/signIn";
 
-
 const LoginModal = () => {
     const [{ loading, data, error }, refetch] = useAxios(
         {
@@ -53,11 +52,7 @@ const LoginModal = () => {
             <Modal open={open} onOk={() => toogle(false)} onCancel={() => toogle(false)} destroyOnClose={true}>
                 <Typography.Title>التسجيل</Typography.Title>
 
-                <Formik
-                    onSubmit={signUp}
-                    initialValues={{ email: "", username: "", password: "", vPassword: "" }}
-                    validationSchema={Schema$Client$SignUp}
-                >
+                <Formik onSubmit={signUp} initialValues={{ email: "", username: "", password: "", vPassword: "" }} validationSchema={Schema$Client$SignUp}>
                     {(props) => {
                         return (
                             <>
