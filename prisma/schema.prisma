@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "postgres"
+    provider = "sqlite"
     url      = env("DATABASE_URL")
 }
 
@@ -17,7 +17,7 @@ model User {
     emailVerified DateTime?
     image         String?
     code          String?
-    role          Role      @default(user)
+    role          String    @default("user")
 
     account Account?
     words   Word[]
@@ -28,11 +28,11 @@ model User {
     clip_reports ClipReport[]
 }
 
-enum Role {
-    owner
-    admin
-    user
-}
+// enum Role {
+//     owner
+//     admin
+//     user
+// }
 
 model Account {
     id       String @unique @default(uuid())

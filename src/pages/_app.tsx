@@ -25,11 +25,11 @@ Router.events.on("routeChangeComplete", () => {
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
     React.useEffect(() => {
-        function ss(response: AxiosResponse) {
+        function handleSuccess(response: AxiosResponse) {
             return response;
         }
 
-        function ddd(error: AxiosError) {
+        function handleError(error: AxiosError) {
             error.response?.data.message.map((e) => {
                 showNotification({
                     message: e,
@@ -40,8 +40,8 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
 
             return Promise.reject(error);
         }
-        Axios.interceptors.response.use(ss, ddd);
-        return () => Axios.interceptors.response.eject(ss, ddd);
+        const id = Axios.interceptors.response.use(handleSuccess, handleError);
+        return () => Axios.interceptors.response.eject(id);
     }, []);
 
     return (

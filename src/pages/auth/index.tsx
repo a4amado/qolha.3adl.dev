@@ -1,6 +1,6 @@
 import PageContainer from "@ui/PageContainer";
 import { Button, Typography, Col, Input, notification, Modal, Alert, Row } from "antd";
-import { signIn } from "next-auth/react";
+
 
 import Header from "@ui/header";
 import { FcGoogle } from "react-icons/fc";
@@ -111,9 +111,7 @@ const AuthPage = () => {
         <>
             <Header isSearch={false} />
             <PageContainer>
-                <Button onClick={() => signIn("google")} className="w-full h-auto">
-                    <FcGoogle className="block mx-auto text-5xl" />
-                </Button>
+
                 <Formik
                     onSubmit={(e) =>
                         axios({

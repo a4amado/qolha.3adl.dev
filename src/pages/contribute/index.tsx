@@ -6,6 +6,7 @@ import Header from "@ui/header";
 
 import useAxios from "axios-hooks";
 import useHotkeys from "@reecelucas/react-use-hotkeys";
+import QueryWord from "src/query/word";
 
 type NotificationProps = {
     message: string;
@@ -13,8 +14,11 @@ type NotificationProps = {
     type: keyof typeof notification;
 };
 export function showNotification(Props: NotificationProps) {
-    notification[Props.type]({ type: "error", message: Props.message, duration: Props.destroyAfter });
-    return;
+
+    const key = notification[Props.type]({ type: "error", message: Props.message, duration: Props.destroyAfter, });
+
+    return setTimeout(() => notification["destroy"](key), Props.destroyAfter);
+
 }
 
 // words/:wordID/skip
@@ -33,7 +37,7 @@ export default function Page() {
                     _sort: "clips",
                     _limit: 1,
                 },
-                url: `api/word`,
+                url: `api/word/query`,
             }),
             method: "GET",
         },

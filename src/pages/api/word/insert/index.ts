@@ -1,5 +1,4 @@
 import Codes from "http-status-codes";
-import { v4 } from "uuid";
 import butters from "a-promise-wrapper";
 import prisma from "@backend/db";
 import ValidateInput from "@backend/utils/validate.yup";
@@ -7,6 +6,7 @@ import nextConnect from "next-connect";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { Schema$API$InsertWord } from "@schema/word/insert-word";
+import { randomUUID } from "crypto";
 const route = nextConnect();
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,7 +22,7 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
                 ar: Input.body.word,
                 // @ts-ignore
                 userId: req?.session?.id,
-                id: v4(),
+                id: randomUUID(),
                 accepted: false,
                 description: req.body.description,
             },
