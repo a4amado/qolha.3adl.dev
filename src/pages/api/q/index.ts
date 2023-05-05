@@ -5,17 +5,17 @@ const route = nextConnect();
 import Codes from "http-status-codes";
 import { v4 } from "uuid";
 import { NextApiRequest, NextApiResponse } from "next";
-import {z} from "zod"
-import validateZodSchema from "@backend/utils/validate.zod";
+import { z } from "zod";
+import ValidateInput from "@backend/utils/validate.yup";
 
 const Query = z.object({
     query: z.object({
-        q: z.string()
-    })
-})
+        q: z.string(),
+    }),
+});
 
 route.get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = validateZodSchema(Query, req);
+    const { data: Input, errors } = ValidateInput(Query, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
     return new Promise((reso) => {
         setTimeout(() => {
@@ -27,6 +27,6 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
             );
         }, 3000);
     });
-})
+});
 
 export default route;

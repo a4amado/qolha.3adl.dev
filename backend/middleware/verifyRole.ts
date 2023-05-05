@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { NextApiRequest, NextApiResponse } from "next";
 
 type roles = "admin" | "all";
 
-const verifyRole = (allowedRoles: Array<roles>) => async (req: Request, res: Response, next: NextFunction) => {
+const verifyRole = (allowedRoles: Array<roles>) => async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     if (allowedRoles.includes("all")) {
         return next();
     }

@@ -1,10 +1,10 @@
 import { Col, Row, Menu, Collapse, Typography } from "antd";
 import React from "react";
-import Header from "ui/header";
-import PageContainer from "ui/PageContainer";
-import TargetWord from "ui/TargetWord";
+import Header from "@ui/header";
+import PageContainer from "@ui//PageContainer";
+import TargetWord from "@ui/TargetWord";
 import { GetServerSideProps as G } from "next/types";
-import AudioHero from "ui/AudioHero";
+import AudioHero from "@ui/AudioHero";
 
 export const getServerSideProps: G = async (ctx) => {
     if (!ctx.query.q && !ctx.query.word) {

@@ -7,11 +7,21 @@ import { PlayCircleOutlined, PauseCircleOutlined, CheckCircleTwoTone, CloseOutli
 import axios from "axios";
 
 import useAxios from "axios-hooks";
+import { QueryClip } from "src/query/clip";
 
 const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
 
 function Clips() {
-    const [clips, refetch, q] = useAxios<Array<typeof clipType>>({ url: "/api/clips/toBeReviewed", method: "GET" });
+    const [clips, refetch, q] = useAxios<Array<typeof clipType>>({
+        url: QueryClip({
+            url: "/api",
+            query: {
+                _accepted: false,
+                _limit: 1,
+                _page: 1,
+            }
+        }), method: "GET"
+    });
     const activeClip = React.useMemo(() => {
         if (!clips?.data || typeof clips?.data[0] === "undefined") return null;
         return clips?.data[0];

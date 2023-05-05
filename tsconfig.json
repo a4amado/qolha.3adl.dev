@@ -1,7 +1,11 @@
 {
     "compilerOptions": {
         "target": "es2017",
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
         "allowJs": true,
         "skipLibCheck": true,
         "strict": true,
@@ -17,11 +21,24 @@
         "noUncheckedIndexedAccess": true,
         "baseUrl": "./",
         "paths": {
-            "@ui/*": ["./src/ui/*"],
-            "@utils/*": ["./src/utils/*"],
-            "@middleware/*": ["./src/middleware/*"],
-            "@db": ["./db/index"],
-            "@backend/*": ["./backend/*"]
+            "@ui/*": [
+                "./src/ui/*"
+            ],
+            "@utils/*": [
+                "./src/utils/*"
+            ],
+            "@middleware/*": [
+                "./src/middleware/*"
+            ],
+            "@db": [
+                "backend/db/index"
+            ],
+            "@backend/*": [
+                "./backend/*"
+            ],
+            "@schema/*": [
+                "./src/schema/*"
+            ],
         },
         "plugins": [
             {
@@ -30,6 +47,17 @@
             }
         ]
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs", "src/server.ts", "src/pages/api/word/[wordID]", "tsconfig.server.json"],
-    "exclude": ["node_modules"]
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.cjs",
+        "**/*.mjs",
+        "src/server.ts",
+        "src/pages/api/word/[wordID]",
+        "tsconfig.server.json"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

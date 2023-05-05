@@ -2,22 +2,17 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import { z } from "zod";
 import butters from "a-promise-wrapper";
-import prisma from "@db";
+import prisma from "@backend/db";
 import Codes from "http-status-codes";
-import validateZodSchema from "@backend/utils/validate.zod";
+import ValidateInput from "@backend/utils/validate.yup";
 import { createReadStream } from "node:fs";
 import { join } from "path";
-
-const streamClip = z.object({
-    query: z.object({
-        clipId: z.string().uuid(),
-    }),
-});
+import { Schema$API$StreamClip } from "@schema/clip/stream-clip";
 
 const route = nextConnect();
 
 route.get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = validateZodSchema(streamClip, req);
+    const { data: Input, errors } = ValidateInput(Schema$API$StreamClip, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
     const clip = await butters(
         prisma.clip.findFirst({

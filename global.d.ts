@@ -1,5 +1,13 @@
 export {};
 
+type file = {
+    mimetype: String;
+    mtime: String;
+    newFilename: String;
+    originalFilename: String;
+    size: number;
+};
+
 declare global {
     namespace NodeJS {
         interface ProcessEnv {

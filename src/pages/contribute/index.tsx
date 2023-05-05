@@ -7,8 +7,7 @@ import Header from "@ui/header";
 import useAxios from "axios-hooks";
 import useHotkeys from "@reecelucas/react-use-hotkeys";
 
-import { z } from "zod";
-import { QueryWord } from "src/query/clip";
+
 
 type NotificationProps = {
     message: string;
@@ -28,18 +27,22 @@ export default function Page() {
         mediaRecorderOptions: { mime: "audio/webm" },
     });
 
-    const [word, refetch] = useAxios({
-        url: QueryWord({
-            query: {
-                _order: "asc",
-                _sort: "clips",
-                _limit: 1,
-            },
-            url: `api/word`,
-        }), method: "GET"
-    }, { manual: false });
-    const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/words/${word?.data?.id}/clip`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
-    const [skip, skipClip] = useAxios({ method: "POST", url: `/api/words/${word?.data?.id}/skip` }, { manual: true });
+    const [word, refetch] = useAxios(
+        {
+            url: QueryWord({
+                query: {
+                    _order: "asc",
+                    _sort: "clips",
+                    _limit: 1,
+                },
+                url: `api/word`,
+            }),
+            method: "GET",
+        },
+        { manual: false }
+    );
+    const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/clip/insert?wordId=${word?.data?.id}`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
+    const [deleted_word, deleteWord] = useAxios({ method: "DELETE", url: `/api/word/${word?.data?.id}/delete` }, { manual: true });
     const controller = React.useRef<HTMLAudioElement>();
 
     const url = React.useMemo(() => {
@@ -96,12 +99,6 @@ export default function Page() {
         }
     }
 
-    async function skipWord() {
-        skipClip({
-            withCredentials: true,
-        });
-    }
-
     return (
         <>
             <Header isSearch={false} />
@@ -112,7 +109,7 @@ export default function Page() {
                     </Row>
 
                     <Row className="w-full">
-                        {/* @ts-ignore */}
+                        {/* @ts-ignore  */}
                         <audio ref={controller} src={url} preload="true" controls className="w-full" />
                     </Row>
                     <Row className="flex flex-row justify-stretch h-80 gap-2 mx-0 relative">
@@ -131,7 +128,7 @@ export default function Page() {
                         <Button onClick={submit} className="flex-grow">
                             ارسل
                         </Button>
-                        <Button onClick={skipWord} className="flex-grow">
+                        <Button onClick={() => deleteWord()} className="flex-grow">
                             تخط
                         </Button>
                     </Row>

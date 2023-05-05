@@ -1,5 +1,5 @@
-import validateZodSchema from "@backend/utils/validate.zod";
-import prisma from "@db";
+import ValidateInput from "@backend/utils/validate.yup";
+import prisma from "@backend/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 const route = nextConnect();
@@ -15,7 +15,7 @@ const Schema$verifyAccount = z.object({
 });
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = validateZodSchema(Schema$verifyAccount, req);
+    const { data: Input, errors } = ValidateInput(Schema$verifyAccount, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
     const getAccount = await butters(
         prisma.user.findUnique({

@@ -2,21 +2,22 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./hi.sqlite"
+    provider = "postgres"
+    url      = env("DATABASE_URL")
 }
+
 model User {
     id            String    @unique @default(uuid())
     name          String
-    email         String @unique
+    email         String    @unique
     emailVerified DateTime?
     image         String?
     code          String?
-    role          String
+    role          Role      @default(user)
 
     account Account?
     words   Word[]
@@ -27,11 +28,11 @@ model User {
     clip_reports ClipReport[]
 }
 
-// enum Role {
-//     owner
-//     admin
-//     user
-// }
+enum Role {
+    owner
+    admin
+    user
+}
 
 model Account {
     id       String @unique @default(uuid())

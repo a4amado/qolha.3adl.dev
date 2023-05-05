@@ -5,6 +5,7 @@ import Loading from "@ui/Loading";
 
 import React, { Suspense } from "react";
 import Router from "next/router";
+import Axios, { AxiosError } from "axios";
 
 Router.events.on("routeChangeStart", () => {
     const loadingContainer = document.getElementById("loading-container");
@@ -22,6 +23,7 @@ Router.events.on("routeChangeComplete", () => {
 });
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
+
     return (
         <Suspense>
             <Loading />

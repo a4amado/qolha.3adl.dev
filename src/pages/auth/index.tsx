@@ -14,7 +14,9 @@ import { useToggle } from "react-use";
 import Head from "next/head";
 import Router from "next/router";
 import axios from "axios";
-import { showNotification } from "../contribute";
+import { Schema$Client$SignUp } from "@schema/auth/signUp";
+import { Schema$Client$signIn } from "@schema/auth/signIn";
+
 
 const LoginModal = () => {
     const [{ loading, data, error }, refetch] = useAxios(
@@ -54,16 +56,7 @@ const LoginModal = () => {
                 <Formik
                     onSubmit={signUp}
                     initialValues={{ email: "", username: "", password: "", vPassword: "" }}
-                    validationSchema={yup.object().shape({
-                        email: yup.string().email().required(),
-                        username: yup.string().required(),
-                        password: yup.string().required().min(10),
-                        vPassword: yup
-                            .string()
-                            .required()
-                            .min(10)
-                            .oneOf([yup.ref("password")], "vPassword must equal the password"),
-                    })}
+                    validationSchema={Schema$Client$SignUp}
                 >
                     {(props) => {
                         return (
@@ -96,7 +89,9 @@ const LoginModal = () => {
                                     </Col>
                                 </Col>
                                 <Col className="my-2">
-                                    <Input className="block my-2" onClick={() => props.handleSubmit()} type="submit" value="التسجيل" size="large" />
+                                    <Button className="block my-2" onClick={() => props.handleSubmit()} primary size="large">
+                                        التسجيل
+                                    </Button>
                                 </Col>
                             </>
                         );
@@ -128,17 +123,13 @@ const AuthPage = () => {
                     onSubmit={(e) =>
                         axios({
                             method: "POST",
-                            url: "/api/auth/logIn",
+                            url: "/api/auth/signIn",
                             data: e,
                             withCredentials: true,
                         })
                     }
                     initialValues={{ email: "", password: "" }}
-                    validationSchema={yup.object().shape({
-                        email: yup.string().email().required(),
-
-                        password: yup.string().required().min(10),
-                    })}
+                    validationSchema={Schema$Client$signIn}
                 >
                     {(props) => {
                         return (

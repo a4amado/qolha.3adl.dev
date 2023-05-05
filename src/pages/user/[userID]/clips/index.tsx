@@ -3,7 +3,6 @@ import PageContainer from "@ui/PageContainer";
 import { GetServerSideProps as GSSP } from "next/types";
 import { List, Alert, Typography } from "antd";
 
-// import getQueryItem from "@utils/getQueryItem";
 
 export const getServerSideProps: GSSP = async (ctx) => {
     try {

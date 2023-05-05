@@ -2,21 +2,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import { z } from "zod";
 import butters from "a-promise-wrapper";
-import prisma from "@db";
-import validateZodSchema from "@backend/utils/validate.zod";
+import prisma from "@backend/db";
+import ValidateInput from "@backend/utils/validate.yup";
 import Codes from "http-status-codes";
+import { Schema$API$InsertRate } from "@schema/rate/insert-rate";
 
 const route = nextConnect();
 
-const appendRate = z.object({
-    query: z.object({
-        clipId: z.string().uuid(),
-        rate: z.preprocess((rate) => parseInt(z.string().parse(rate), 10), z.enum(["1", "50", "100"])),
-    }),
-});
-
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = validateZodSchema(appendRate, req);
+    const { data: Input, errors } = ValidateInput(Schema$API$InsertRate, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
     const clipRate = await butters(
         prisma.rate.upsert({

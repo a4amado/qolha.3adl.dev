@@ -1,7 +1,7 @@
 import { InternalException } from "@backend/utils/exception";
 import sendVarificationMail from "@backend/utils/mail/config";
-import validateZodSchema from "@backend/utils/validate.zod";
-import prisma from "@db";
+import ValidateInput from "@backend/utils/validate.yup";
+import prisma from "@backend/db";
 import { randomUUID } from "crypto";
 import { sign } from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -10,6 +10,7 @@ const route = nextConnect();
 import { z } from "zod";
 import butters from "a-promise-wrapper";
 import Codes from "http-status-codes";
+import { hashSync } from "bcrypt";
 
 export const Schema$signUp = z
     .object({
@@ -30,7 +31,7 @@ export const Schema$signUp = z
     });
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = validateZodSchema(Schema$signUp, req);
+    const { data: Input, errors } = ValidateInput(Schema$signUp, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send(errors);
 
     let user = await butters(
@@ -71,7 +72,7 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     await prisma.account.create({
         data: {
             userId: new_user?.data.id,
-            password: Input.body.password,
+            password: hashSync(Input.body.password, 10),
         },
     });
 

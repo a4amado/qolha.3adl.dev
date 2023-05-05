@@ -1,23 +1,18 @@
-import validateZodSchema from "@backend/utils/validate.zod";
-import prisma from "@db";
+import ValidateInput from "@backend/utils/validate.yup";
+import prisma from "@backend/db";
 import { sign } from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 const route = nextConnect();
-import { z } from "zod";
+
 import butters from "a-promise-wrapper";
 import Codes from "http-status-codes";
 import { compareSync } from "bcrypt";
-
-const Schema$signIn = z.object({
-    body: z.object({
-        email: z.string().email(),
-        password: z.string().min(10),
-    }),
-});
+import { serialize } from "cookie";
+import { Schema$API$signIn } from "@schema/auth/signIn";
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = validateZodSchema(Schema$signIn, req);
+    const { data: Input, errors } = ValidateInput(Schema$API$signIn, req);
     if (!errors || errors.length) return res.status(Codes.BAD_REQUEST).send(errors);
 
     let user = await butters(
@@ -41,7 +36,9 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     if (user.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
     if (!user.data) return res.status(Codes.NOT_FOUND).send("Email is not Regesterd");
 
-    const is_password_correct = compareSync(Input.body.password, user?.data?.account?.password + "");
+    console.log(Input.body.password, user?.data?.account?.password);
+
+    const is_password_correct = compareSync(Input.body.password, user?.data?.account?.password);
 
     if (!is_password_correct) {
         return res.status(Codes.NOT_ACCEPTABLE).send("wrong password or email");
@@ -58,10 +55,7 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         }
     );
 
-    // res.cookie("token", token, {
-    //     httpOnly: true,
-    //     path: "/",
-    // });
+    res.setHeader("Set-Cookie", serialize("token", token, { httpOnly: true, path: "/", sameSite: true }));
     res.status(Codes.OK).end();
 });
 

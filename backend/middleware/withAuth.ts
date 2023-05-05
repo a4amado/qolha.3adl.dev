@@ -1,10 +1,12 @@
-import { NextFunction, Request, Response } from "express";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import { verify } from "jsonwebtoken";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const withAuth = async (req: Request, res: Response, next: NextFunction) => {
+const withAuth = async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+    console.log("req.cookies", req.cookies);
+
     if (!req.cookies.token) {
-        return res.send(StatusCodes.UNAUTHORIZED).end();
+        return res.send(StatusCodes.UNAUTHORIZED);
     }
     try {
         const user = verify(req.cookies.token, process.env.JWT_SECRET || "");
@@ -13,7 +15,7 @@ const withAuth = async (req: Request, res: Response, next: NextFunction) => {
         req.user = user;
         next();
     } catch (error) {
-        return res.status(StatusCodes.UNAUTHORIZED).send(ReasonPhrases.UNAUTHORIZED).end();
+        return res.status(StatusCodes.UNAUTHORIZED).send(ReasonPhrases.UNAUTHORIZED);
     }
 };
 
