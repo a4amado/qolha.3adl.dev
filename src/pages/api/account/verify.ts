@@ -31,9 +31,21 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         })
     );
 
-    if (getAccount.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
-    if (getAccount.data?.emailVerified) return res.status(Codes.OK).send("Email Already Verified");
-    if (getAccount.data?.code != Input.query.code) return res.status(Codes.BAD_REQUEST).send("Wrong Code");
+    if (getAccount.error) {
+        console.error(getAccount.error)
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Error While Verifing your account"]
+        });
+    }
+    if (getAccount.data?.emailVerified) {
+
+        return res.status(Codes.OK).send({
+            message: ["Email Already Verified"]
+        });
+    }
+    if (getAccount.data?.code != Input.query.code) return res.status(Codes.BAD_REQUEST).send({
+        message: `Wrong code ${Input.query.code}`
+    });
 
     const verifyAccount = await butters(
         prisma.user.update({
@@ -46,7 +58,12 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
             },
         })
     );
-    if (verifyAccount.error) return res.status(Codes.INTERNAL_SERVER_ERROR).end();
+    if (verifyAccount.error) {
+        console.error(verifyAccount.error)
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: ["Error While Verifing your account"]
+        });
+    }
 
     return res.status(Codes.OK).send("Account Verified Successfully");
 });
