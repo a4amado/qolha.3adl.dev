@@ -14,11 +14,9 @@ type NotificationProps = {
     type: keyof typeof notification;
 };
 export function showNotification(Props: NotificationProps) {
-
-    const key = notification[Props.type]({ type: "error", message: Props.message, duration: Props.destroyAfter, });
+    const key = notification[Props.type]({ type: "error", message: Props.message, duration: Props.destroyAfter });
 
     return setTimeout(() => notification["destroy"](key), Props.destroyAfter);
-
 }
 
 // words/:wordID/skip

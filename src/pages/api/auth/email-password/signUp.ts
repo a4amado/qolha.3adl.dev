@@ -5,36 +5,17 @@ import { randomUUID } from "crypto";
 import { sign } from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-const route = nextConnect();
-import { z } from "zod";
 import butters from "a-promise-wrapper";
 import Codes from "http-status-codes";
 import { hashSync } from "bcrypt";
 import { Schema$API$SignUp } from "@schema/auth/signUp";
-
-export const Schema$signUp = z
-    .object({
-        body: z.object({
-            username: z.string().min(4),
-            password: z.string().min(10),
-            vPassword: z.string().min(10),
-            email: z.string().email(),
-        }),
-    })
-    .superRefine(({ body: { password, vPassword } }, ctx) => {
-        if (vPassword !== password) {
-            ctx.addIssue({
-                code: "custom",
-                message: "The passwords did not match",
-            });
-        }
-    });
+const route = nextConnect();
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$SignUp, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send({ message: errors });
 
-    let user = await butters(
+    const user = await butters(
         prisma.user.findFirst({
             where: {
                 email: Input.body?.email,
@@ -58,7 +39,7 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const verificationCode = randomUUID();
 
-    let new_user = await butters(
+    const new_user = await butters(
         prisma.user.create({
             data: {
                 email: Input.body?.email,

@@ -7,7 +7,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { randomUUID } from "crypto";
 
 route.get(async (req: NextApiRequest, res: NextApiResponse) => {
-
     return new Promise((reso) => {
         setTimeout(() => {
             res.status(Codes.OK).json(

@@ -15,7 +15,7 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$signIn, req);
     if (!errors || errors.length) return res.status(Codes.BAD_REQUEST).send({ message: errors });
 
-    let user = await butters(
+    const user = await butters(
         prisma.user.findFirst({
             where: {
                 email: Input.body.email,
@@ -44,6 +44,7 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
             message: ["Email is not Regesterd"],
         });
 
+    // @ts-ignore
     const is_password_correct = compareSync(Input.body.password, user?.data?.account?.password);
 
     if (!is_password_correct) {

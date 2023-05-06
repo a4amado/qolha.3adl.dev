@@ -2,20 +2,24 @@ import ValidateInput from "@backend/utils/validate.yup";
 import prisma from "@backend/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-const route = nextConnect();
-import { z } from "zod";
+
 import butters from "a-promise-wrapper";
 import Codes from "http-status-codes";
 
-const Schema$verifyAccount = z.object({
-    query: z.object({
-        userID: z.string().uuid(),
-        code: z.string().uuid(),
+import * as yup from "yup";
+
+const route = nextConnect();
+
+
+const Schema$verifyAccount = yup.object({
+    query: yup.object({
+        userID: yup.string().uuid().required(),
+        code: yup.string().uuid().required(),
     }),
 });
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data: Input, errors } = ValidateInput(Schema$API$, req);
+    const { data: Input, errors } = ValidateInput(Schema$verifyAccount, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send({ message: errors });
     const getAccount = await butters(
         prisma.user.findUnique({

@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import { z } from "zod";
 import butters from "a-promise-wrapper";
 import prisma from "@backend/db";
 import ValidateInput from "@backend/utils/validate.yup";
@@ -11,6 +10,7 @@ const route = nextConnect();
 
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: Input, errors } = ValidateInput(Schema$API$InsertRate, req);
+
     if (errors.length > 0)
         return res.status(Codes.BAD_REQUEST).send({
             message: errors,
@@ -21,10 +21,10 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
                 clipId: Input.query.clipId,
                 // @ts-ignore
                 userId: req.session.id,
-                rate: Input.query.rate,
+                rate: String(Input.query.rate),
             },
             update: {
-                rate: Input.query.rate,
+                rate: String(Input.query.rate),
             },
             where: {
                 clipId_userId: {

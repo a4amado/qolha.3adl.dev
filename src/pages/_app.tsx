@@ -30,11 +30,12 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
         }
 
         function handleError(error: AxiosError) {
+            // @ts-ignore
             error.response?.data.message.map((e) => {
                 showNotification({
                     message: e,
                     type: "error",
-                    destroyAfter: 500,
+                    destroyAfter: 1500,
                 });
             });
 

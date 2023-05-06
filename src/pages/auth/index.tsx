@@ -1,15 +1,12 @@
 import PageContainer from "@ui/PageContainer";
 import { Button, Typography, Col, Input, notification, Modal, Alert, Row } from "antd";
 
-
 import Header from "@ui/header";
-import { FcGoogle } from "react-icons/fc";
 
 import useAxios from "axios-hooks";
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 
-import * as yup from "yup";
 import { useToggle } from "react-use";
 import Head from "next/head";
 import Router from "next/router";
@@ -26,7 +23,7 @@ const LoginModal = () => {
         { manual: true }
     );
 
-    function signUp(e: any) {
+    async function signUp(e: any, form: FormikHelpers<any>) {
         // @ts-ignore
         refetch({
             data: {
@@ -36,19 +33,14 @@ const LoginModal = () => {
                 username: e.username,
             },
             url: `/api/auth/signUp`,
-        }).catch((e) => {
-            (e?.response?.data || []).map((e: any) => {
-                notification["error"]({
-                    message: e,
-                });
-            });
         });
+        form.resetForm();
     }
     const [open, toogle] = useToggle(false);
 
     return (
         <>
-            <Button onClick={() => toogle(true)}>التسجيل</Button>{" "}
+            <Button onClick={() => toogle(true)}>التسجيل</Button>
             <Modal open={open} onOk={() => toogle(false)} onCancel={() => toogle(false)} destroyOnClose={true}>
                 <Typography.Title>التسجيل</Typography.Title>
 
@@ -84,7 +76,7 @@ const LoginModal = () => {
                                     </Col>
                                 </Col>
                                 <Col className="my-2">
-                                    <Button className="block my-2" onClick={() => props.handleSubmit()} primary size="large">
+                                    <Button className="block my-2" onClick={() => props.handleSubmit()} size="large">
                                         التسجيل
                                     </Button>
                                 </Col>
@@ -98,32 +90,22 @@ const LoginModal = () => {
 };
 
 const AuthPage = () => {
-    React.useEffect(() => {
-        if (Router.query.error) {
-            notification["error"]({
-                message: Router.query.error,
-            });
-        }
-        () => Router.replace({ pathname: Router.pathname, query: { ...Router.query, error: "" } }, Router.asPath, { locale: Router.locale, shallow: true });
-    }, []);
+    async function SignIn(e: any, form: FormikHelpers<any>) {
+        await axios({
+            method: "POST",
+            url: "/api/auth/signIn",
+            data: e,
+            withCredentials: true,
+        });
+        form.resetForm();
+        Router.replace({ pathname: "/contribute", query: { ...Router.query, error: "" } }, Router.asPath, { locale: Router.locale, shallow: true });
+    }
 
     return (
         <>
             <Header isSearch={false} />
             <PageContainer>
-
-                <Formik
-                    onSubmit={(e) =>
-                        axios({
-                            method: "POST",
-                            url: "/api/auth/signIn",
-                            data: e,
-                            withCredentials: true,
-                        })
-                    }
-                    initialValues={{ email: "", password: "" }}
-                    validationSchema={Schema$Client$signIn}
-                >
+                <Formik onSubmit={SignIn} initialValues={{ email: "", password: "" }} validationSchema={Schema$Client$signIn}>
                     {(props) => {
                         return (
                             <>

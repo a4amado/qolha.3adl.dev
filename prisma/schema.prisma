@@ -72,7 +72,7 @@ model Clip {
 
 model Rate {
     id   String @unique @default(uuid())
-    rate String
+    rate Number
 
     clipId String
     clip   Clip   @relation(fields: [clipId], references: [id])
@@ -102,3 +102,7 @@ model ClipReport {
     Word   Word?   @relation(fields: [wordId], references: [id])
     wordId String?
 }
+
+// enum Number {
+
+// }

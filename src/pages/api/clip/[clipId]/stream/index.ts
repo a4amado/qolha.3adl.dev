@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import { z } from "zod";
 import butters from "a-promise-wrapper";
 import prisma from "@backend/db";
 import Codes from "http-status-codes";

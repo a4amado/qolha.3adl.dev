@@ -33,6 +33,7 @@
         "mime": "^3.0.0",
         "mimetype": "^0.0.8",
         "next": "13.4.0",
+        "next-auth": "^4.22.1",
         "next-connect": "^0.13.0",
         "query-string": "^8.1.0",
         "react": "18.1.0",

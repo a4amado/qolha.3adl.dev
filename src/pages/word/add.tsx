@@ -20,10 +20,9 @@ export default function AddWord() {
         showNotification({
             message: "نجحت العملية",
             destroyAfter: 600,
-            type: "success"
-        })
-        reset.resetForm()
-
+            type: "success",
+        });
+        reset.resetForm();
     }
     return (
         <>
