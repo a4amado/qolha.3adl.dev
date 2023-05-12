@@ -6,8 +6,13 @@ import Header from "@ui/header";
 import ChangeRole from "@ui/ChangeRole";
 import NextImage from "next/image";
 import RoleBadge from "@ui/RoleBadge";
+import { useSession } from "next-auth/react";
+import Loading from "@ui/Loading";
+import { useRouter } from "next/router";
 
 function Users() {
+    const session = useSession();
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [user, searchForAUser] = useAxios(
         {
@@ -23,6 +28,19 @@ function Users() {
             searchForAUser();
         }
     }, [email]);
+
+
+
+    if (session.status === "loading") return <Loading />;
+    if (session.status === "unauthenticated") {
+        return router.push({ pathname: "/api/auth/signin" });
+    }
+    // @ts-ignore
+    if (session.data.user.role != "owner") {
+        return router.push({ pathname: "/" });
+    }
+
+
 
     return (
         <>

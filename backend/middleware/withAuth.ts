@@ -3,15 +3,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { Session } from "next-auth";
-import butters from "a-promise-wrapper";
 
-const withAuth = async (req: NextApiRequest & { user?: (Session & { role: string }) | null }, res: NextApiResponse, next: any) => {
-    const user = await butters(getServerSession(req, res, authOptions));
-    if (user.error)
+export type UserSession = Session["user"] & { role: string }
+const withAuth = async (req: NextApiRequest & { user?: UserSession }, res: NextApiResponse, next: any) => {
+    const user = await getServerSession(req, res, authOptions);
+    if (!user?.expires) {
         return res.status(StatusCodes.UNAUTHORIZED).send({
             message: [ReasonPhrases.UNAUTHORIZED],
         });
-    req.user = user.data;
+    };
+
+    // @ts-ignore
+    req.user = user.user;
     return next();
 };
 

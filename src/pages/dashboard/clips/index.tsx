@@ -52,9 +52,8 @@ function Clips() {
     if (session.status === "unauthenticated") {
         return router.push({ pathname: "/api/auth/signin" });
     }
-
     // @ts-ignore
-    if (session.status === "authenticated" && session.data.user.role != "owner") {
+    if (session.data.user.role != "owner") {
         return router.push({ pathname: "/" });
     }
 
