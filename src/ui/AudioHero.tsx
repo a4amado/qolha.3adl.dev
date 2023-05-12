@@ -1,12 +1,17 @@
 import { Button, Col, Row, Typography, Modal } from "antd";
 import { memo, useEffect, useState } from "react";
 import { BiPlay } from "react-icons/bi";
-import { useAudio, useToggle } from "react-use";
+import { useToggle } from "react-use";
 import ReportWord from "./ReportWord";
 import URLQrCode from "./URLQrCode";
 import RateRecord from "./RateRecord";
 
-function AudioHero({ word }: { word: any }) {
+import { homeClip, homeWord } from "../pages";
+
+function AudioHero({ word }: { word: homeWord | undefined }) {
+    if (!word) {
+        return <Row className="block border border-balck p-2 rounded max-w-xl w-full mx-auto">SOMETHING Went Wrong</Row>;
+    }
     return (
         <Row className="block border border-balck p-2 rounded max-w-xl w-full mx-auto">
             <Col className="flex flex-row justify-end my-2">
@@ -19,8 +24,8 @@ function AudioHero({ word }: { word: any }) {
             </Col>
 
             <Row className="flex gap-1">
-                {word.clips.map((e: any, i: any) => (
-                    <AudioElement e={e} key={i} />
+                {word.clips.map((clip, i: any) => (
+                    <AudioElement clipId={clip.id} clipName={clip.clipName} user={clip.user} key={i} />
                 ))}
             </Row>
         </Row>
@@ -29,11 +34,11 @@ function AudioHero({ word }: { word: any }) {
 
 export default memo(AudioHero);
 
-const AudioElement = ({ e }: any) => {
+const AudioElement = ({ clipName, user, clipId }: { clipName: string; user: homeClip["user"]; clipId: string }) => {
     const state = useToggle(false);
     const s = useState<any>();
     useEffect(() => {
-        const f = new Audio(`/api/clip/stream/${e.path}`);
+        const f = new Audio(`/api/clip/${clipName}/stream`);
         s[1](f);
     }, []);
 
@@ -53,8 +58,8 @@ const AudioElement = ({ e }: any) => {
                 <BiPlay />
             </Button>
 
-            <Col className="flex-grow flex items-center">{e?.createBy?.name}</Col>
-            <RateRecord id={e.id} />
+            <Col className="flex-grow flex items-center">{user.name}</Col>
+            <RateRecord id={clipName} />
         </Row>
     );
 };

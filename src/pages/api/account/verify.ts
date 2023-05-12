@@ -8,8 +8,10 @@ import Codes from "http-status-codes";
 
 import * as yup from "yup";
 
-const route = nextConnect();
+import { authOptions } from "../auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 
+const route = nextConnect();
 
 const Schema$verifyAccount = yup.object({
     query: yup.object({
@@ -18,7 +20,15 @@ const Schema$verifyAccount = yup.object({
     }),
 });
 
+route.get(async (req: NextApiRequest, res: NextApiResponse) => {
+
+    const g = await getServerSession(req, res, authOptions)
+
+    res.send(g)
+})
+
 route.post(async (req: NextApiRequest, res: NextApiResponse) => {
+
     const { data: Input, errors } = ValidateInput(Schema$verifyAccount, req);
     if (errors.length > 0) return res.status(Codes.BAD_REQUEST).send({ message: errors });
     const getAccount = await butters(

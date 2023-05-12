@@ -7,6 +7,7 @@ import React, { Suspense } from "react";
 import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import { showNotification } from "./contribute";
+import { SessionProvider } from "next-auth/react";
 
 Router.events.on("routeChangeStart", () => {
     const loadingContainer = document.getElementById("loading-container");
@@ -46,11 +47,15 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
     }, []);
 
     return (
+
         <Suspense>
-            <Loading />
-            <Component {...pageProps} />
-            <GoToUp />
-        </Suspense>
+            <SessionProvider session={session}>
+                <Loading />
+                <Component {...pageProps} />
+                <GoToUp />
+            </SessionProvider>
+        </Suspense >
+
     );
 };
 

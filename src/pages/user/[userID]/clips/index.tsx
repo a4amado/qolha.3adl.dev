@@ -2,6 +2,8 @@ import Header from "@ui/header";
 import PageContainer from "@ui/PageContainer";
 import { GetServerSideProps as GSSP } from "next/types";
 import { List, Alert, Typography } from "antd";
+import Loading from "@ui/Loading";
+import { useSession } from "next-auth/react";
 
 export const getServerSideProps: GSSP = async (ctx) => {
     try {
@@ -29,7 +31,10 @@ export const getServerSideProps: GSSP = async (ctx) => {
     }
 };
 
+
 export default function UserWordsPage({ words }: any) {
+    const user = useSession();
+    if (user.status === "loading") return <Loading />
     return (
         <>
             <Header isSearch={true} />

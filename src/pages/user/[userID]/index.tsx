@@ -5,8 +5,23 @@ import NextImage from "next/image";
 import { TfiWrite } from "react-icons/tfi";
 import { BiUserVoice } from "react-icons/bi";
 import NextLink from "next/link";
+import UserDetails from "@ui/UserDetails";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import Loading from "@ui/Loading";
 
 export default function UserPage() {
+    const user = useSession();
+    const router = useRouter();
+    useEffect(() => {
+
+        if (user.status === "unauthenticated" && router.query.userID === "me") {
+            router.replace({ pathname: "/api/auth/signin" })
+        }
+    }, [user.status])
+
+    if (user.status === "loading") return <Loading />
     return (
         <>
             <Header isSearch={true} />
@@ -14,10 +29,7 @@ export default function UserPage() {
                 <Col className="flex flex-row">
                     <NextImage className="p-3 mx-3 border border-cyan-200" src="/unnamed.jpg" width={150} height={150} alt="Image" />
                     <Col>
-                        <Typography className="text-4xl">أحمد عادل</Typography>
-                        <Typography>مصر</Typography>
-                        <Typography>انضم منذ: 3 اعوام</Typography>
-                        <Col>تابعة علي : فيسبوك انسجرام</Col>
+                        <UserDetails country="eg" joinedIn="2001-01-01" name="Ahmad" socialMedia={[{ name: "LK", username: "sss" }]} />
                     </Col>
                 </Col>
                 <Col className="flex flex-col sm:flex-row gap-2 m-2">

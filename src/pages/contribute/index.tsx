@@ -42,7 +42,7 @@ export default function Page() {
         { manual: false }
     );
     const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/clip/insert?wordId=${word?.data?.id}`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
-    const [deleted_word, deleteWord] = useAxios({ method: "DELETE", url: `/api/word/${word?.data?.id}/delete` }, { manual: true });
+    const [_deleted_word, deleteWord] = useAxios({ method: "DELETE", url: `/api/word/${word?.data?.id}/delete` }, { manual: true });
     const controller = React.useRef<HTMLAudioElement>();
 
     const url = React.useMemo(() => {
@@ -62,19 +62,21 @@ export default function Page() {
 
     async function submit() {
         try {
-            if (recorder.status === "recording")
+            if (recorder.status === "recording") {
                 return showNotification({
                     destroyAfter: 1000,
                     message: "اوقف التسجيل اولا",
                     type: "error",
                 });
+            }
 
-            if (recorder.mediaBlob?.size === 0 || !word.data?.id || !recorder.mediaBlob)
+            if (recorder.mediaBlob?.size === 0 || !word.data?.id || !recorder.mediaBlob) {
                 return showNotification({
                     message: "Noting to Submit",
                     destroyAfter: 1500,
                     type: "error",
                 });
+            }
 
             const form = new FormData();
             form.append("clip", recorder.mediaBlob);

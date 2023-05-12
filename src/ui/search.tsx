@@ -1,7 +1,7 @@
-import { AutoComplete, Input, Row, Typography, Spin, Button } from "antd";
+import { AutoComplete, Input, Row, Typography, Spin } from "antd";
 import React, { Reducer, useReducer } from "react";
-import axios from "axios";
 import Router from "next/router";
+import { v4 } from "uuid";
 
 export interface AutoComeleteOption {
     label: any;
@@ -18,6 +18,7 @@ export interface AlogoliaHit {
 export interface HitsReducerState {
     hits: Array<{ label: React.ReactElement | string; value: string; key: string }> | Array<never>;
 }
+
 interface ReducerAction {
     type: "REPLACE_ITEMS" | "LOADING" | "NOT_FOUND";
     data?: HitsReducerState;
@@ -26,6 +27,7 @@ interface ReducerAction {
 const SearchOption: HitsReducerState = {
     hits: [{ label: <Spin />, value: "Searching", key: "asd" }],
 };
+
 const NotingFoundOption: HitsReducerState = {
     hits: [
         {
@@ -87,15 +89,15 @@ export default function Search() {
                         type: "REPLACE_ITEMS",
                         data: {
                             hits: [
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
-                                { ar: "كلمة", id: Math.random() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
+                                { ar: "كلمة", id: v4() },
                             ].map((e: any) => ({
                                 label: `${e.ar}`,
                                 value: `${e.ar}`,
@@ -104,7 +106,7 @@ export default function Search() {
                         },
                     });
                 }, 2000);
-            } catch (error) {}
+            } catch (error) { }
         },
         [q[0]]
     );
@@ -128,12 +130,12 @@ export default function Search() {
     });
 
     function handleSelect(_: any, s: AutoComeleteOption) {
-        return Router.push({ pathname: "/", query: { q: s.key, word: s.value } });
+        return Router.push({ pathname: "/", query: { id: s.key, word: s.value } });
     }
 
     return (
         <>
-            <Row ref={containerRef} className="w-full bg-white">
+            <Row ref={containerRef} className="w-full bg-white ">
                 <Row ref={targetRef} className="w-full max-w-4xl px-4 py-4 mx-auto bg-slate-50">
                     <AutoComplete options={hits} defaultActiveFirstOption onSelect={handleSelect} className="w-full" onChange={search} value={q[0]}>
                         <Input.Search className="w-full" size="large" placeholder="ورميت سهم الحب اقصد قلبها فأصاب سهمي عينها فاعورت" />

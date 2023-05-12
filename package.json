@@ -6,7 +6,8 @@
         "dev": "next dev",
         "format": "prettier --ignore-path .prettierignore --write \"**/*.{ts,tsx,html,css,scss}\"",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "reset": "rm -rf db.dev migrations"
     },
     "dependencies": {
         "@ant-design/icons": "^5.0.1",
@@ -22,6 +23,7 @@
         "babel-polyfill": "^6.26.0",
         "bcrypt": "^5.1.0",
         "cookie": "^0.5.0",
+        "country-flag-icons": "^1.5.7",
         "cross-env": "^7.0.3",
         "form-data": "^4.0.0",
         "formidable": "^2.1.1",
@@ -29,6 +31,7 @@
         "formik-antd": "^2.0.4",
         "http-status-codes": "^2.2.0",
         "jsonwebtoken": "^9.0.0",
+        "luxon": "^3.3.0",
         "mailersend": "^2.0.5",
         "mime": "^3.0.0",
         "mimetype": "^0.0.8",
@@ -41,6 +44,7 @@
         "react-hotkeys-hook": "^4.4.0",
         "react-icons": "^4.8.0",
         "react-use": "^17.4.0",
+        "uuid": "^9.0.0",
         "yup": "^1.1.1"
     },
     "devDependencies": {
@@ -49,11 +53,13 @@
         "@types/cookie": "^0.5.1",
         "@types/formidable": "^2.0.5",
         "@types/jsonwebtoken": "^9.0.1",
+        "@types/luxon": "^3.3.0",
         "@types/mime-types": "^2.1.1",
         "@types/node": "^18.15.11",
         "@types/prettier": "^2.7.2",
         "@types/react": "^18.0.35",
         "@types/react-dom": "^18.0.11",
+        "@types/uuid": "^9.0.1",
         "@types/yup": "^0.32.0",
         "@typescript-eslint/eslint-plugin": "^5.58.0",
         "@typescript-eslint/parser": "^5.58.0",

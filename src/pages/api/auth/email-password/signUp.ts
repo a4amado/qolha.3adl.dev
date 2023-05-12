@@ -1,6 +1,6 @@
 import sendVarificationMail from "@backend/utils/mail/config";
 import ValidateInput from "@backend/utils/validate.yup";
-import prisma from "@backend/db";
+import prisma, { AuthPrisma } from "@backend/db";
 import { randomUUID } from "crypto";
 import { sign } from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -32,10 +32,11 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
             message: ["Internal Server Error"],
         });
     }
-    if (user.data)
+    if (user.data) {
         return res.status(Codes.CONFLICT).send({
             message: ["Email Already in Use"],
         });
+    }
 
     const verificationCode = randomUUID();
 
@@ -63,12 +64,24 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    await prisma.account.create({
-        data: {
-            userId: new_user?.data.id,
-            password: hashSync(Input.body.password, 10),
-        },
-    });
+    const account = await butters(
+        prisma.account.create({
+            data: {
+                userId: new_user?.data.id,
+                password: hashSync(Input.body.password, 10),
+                provider: "local",
+                providerAccountId: new_user?.data.id,
+                type: "credentials",
+            },
+        })
+    );
+
+    if (account.error) {
+        console.error(user.error);
+        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
+            message: "Internal Server Error",
+        });
+    }
 
     const sendEmail = await butters(
         sendVarificationMail({
@@ -96,17 +109,7 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const token = sign(
-        {
-            role: new_user.data.role,
-            id: new_user.data.id,
-        },
-        process.env.JWT_SECRET || "",
-        {
-            expiresIn: "12h",
-        }
-    );
-    res.setHeader("token", token).status(Codes.OK).send(token);
+    res.status(Codes.OK).end();
 });
 
 export default route;

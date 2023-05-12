@@ -39,6 +39,9 @@
             "@schema/*": [
                 "./src/schema/*"
             ],
+            "@hools/*": [
+                "./src/hooks/*"
+            ],
         },
         "plugins": [
             {

@@ -19,13 +19,14 @@ model User {
     code          String?
     role          String    @default("user")
 
-    account Account?
-    words   Word[]
-
+    account      Account?
+    words        Word[]
+    socialMedia  SocialMedia[]
     clips        Clip[]
     rates        Rate[]
     reports      WordReport[]
     clip_reports ClipReport[]
+    Session      Session[]
 }
 
 // enum Role {
@@ -35,11 +36,25 @@ model User {
 // }
 
 model Account {
-    id       String @unique @default(uuid())
-    password String
+    id String @unique @default(uuid())
 
-    user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
     userId String @unique
+
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
+    password          String?
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
 }
 
 model Word {
@@ -72,7 +87,7 @@ model Clip {
 
 model Rate {
     id   String @unique @default(uuid())
-    rate Number
+    rate String
 
     clipId String
     clip   Clip   @relation(fields: [clipId], references: [id])
@@ -103,6 +118,30 @@ model ClipReport {
     wordId String?
 }
 
+model SocialMedia {
+    id       String @unique @default(uuid())
+    userId   String
+    user     User   @relation(references: [id], fields: [userId])
+    site     String @default("TW")
+    username String
+}
+
 // enum Number {
 
 // }
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
