@@ -47,15 +47,13 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
     }, []);
 
     return (
-
         <Suspense>
             <SessionProvider session={session}>
                 <Loading />
                 <Component {...pageProps} />
                 <GoToUp />
             </SessionProvider>
-        </Suspense >
-
+        </Suspense>
     );
 };
 

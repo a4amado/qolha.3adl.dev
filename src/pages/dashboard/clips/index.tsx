@@ -15,8 +15,8 @@ import { useRouter } from "next/router";
 const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
 
 function Clips() {
-    const session = useSession()
-    const router = useRouter()
+    const session = useSession();
+    const router = useRouter();
     const [clips, refetch, q] = useAxios<Array<typeof clipType>>({
         url: QueryClip({
             url: "/api",
@@ -47,7 +47,6 @@ function Clips() {
 
     const disabled = [!!clips.loading, !!clips.error, clips.data?.length === 0].includes(true);
 
-
     if (session.status === "loading") return <Loading />;
     if (session.status === "unauthenticated") {
         return router.push({ pathname: "/api/auth/signin" });
@@ -56,7 +55,6 @@ function Clips() {
     if (session.data.user.role != "owner") {
         return router.push({ pathname: "/" });
     }
-
 
     return (
         <>

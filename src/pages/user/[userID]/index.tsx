@@ -15,13 +15,12 @@ export default function UserPage() {
     const user = useSession();
     const router = useRouter();
     useEffect(() => {
-
         if (user.status === "unauthenticated" && router.query.userID === "me") {
-            router.replace({ pathname: "/api/auth/signin" })
+            router.replace({ pathname: "/api/auth/signin" });
         }
-    }, [user.status])
+    }, [user.status]);
 
-    if (user.status === "loading") return <Loading />
+    if (user.status === "loading") return <Loading />;
     return (
         <>
             <Header isSearch={true} />

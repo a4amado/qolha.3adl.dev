@@ -106,7 +106,7 @@ export default function Search() {
                         },
                     });
                 }, 2000);
-            } catch (error) { }
+            } catch (error) {}
         },
         [q[0]]
     );

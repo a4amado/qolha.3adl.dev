@@ -7,13 +7,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return {
         redirect: {
             destination: "/api/auth/signin",
-            permanent: true
-        }
-
-    }
-}
+            permanent: true,
+        },
+    };
+};
 export default function D() {
-    return <></>
+    return <></>;
 }
 // import Header from "@ui/header";
 

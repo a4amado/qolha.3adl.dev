@@ -31,10 +31,9 @@ export const getServerSideProps: GSSP = async (ctx) => {
     }
 };
 
-
 export default function UserWordsPage({ words }: any) {
     const user = useSession();
-    if (user.status === "loading") return <Loading />
+    if (user.status === "loading") return <Loading />;
     return (
         <>
             <Header isSearch={true} />

@@ -13,15 +13,13 @@ export default function validateYupSchema<T extends yup.AnyObjectSchema>(schema:
             data: validatedData,
         };
     } catch (err) {
-        if (err instanceof yup.ValidationError) {
-            const errors = err.inner.map((e: any) => e.message);
-            return {
-                errors: errors,
-                data: null,
-            };
-        }
+        console.log(err);
+
+        // @ts-ignore
+        const errors: yup.ValidationError = err.inner.map((e: any) => e.message);
         return {
-            errors: ["INTERNAL_SERVER_ERROR"],
+            // @ts-ignore
+            errors: errors,
             data: null,
         };
     }

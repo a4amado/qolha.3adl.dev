@@ -27,6 +27,10 @@ model User {
     reports      WordReport[]
     clip_reports ClipReport[]
     Session      Session[]
+
+    banned DateTime?
+
+    @@index([email, role])
 }
 
 // enum Role {
@@ -67,6 +71,8 @@ model Word {
     clips       Clip[]
     reports     ClipReport[]
     WordReport  WordReport[]
+
+    @@index([userId])
 }
 
 model Clip {
@@ -83,6 +89,8 @@ model Clip {
 
     reports ClipReport[]
     rates   Rate[]
+
+    @@index([userId, wordId])
 }
 
 model Rate {
@@ -96,6 +104,7 @@ model Rate {
     user   User   @relation(fields: [userId], references: [id])
 
     @@unique([clipId, userId])
+    @@index([clipId, userId])
 }
 
 model WordReport {
@@ -105,6 +114,8 @@ model WordReport {
     reason String
     User   User?   @relation(fields: [userId], references: [id])
     userId String?
+
+    @@index([userId, wordId])
 }
 
 model ClipReport {
@@ -116,6 +127,8 @@ model ClipReport {
     userId String?
     Word   Word?   @relation(fields: [wordId], references: [id])
     wordId String?
+
+    @@index([userId, clipId, wordId])
 }
 
 model SocialMedia {
@@ -124,6 +137,8 @@ model SocialMedia {
     user     User   @relation(references: [id], fields: [userId])
     site     String @default("TW")
     username String
+
+    @@index([userId])
 }
 
 // enum Number {
@@ -136,6 +151,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model VerificationToken {
