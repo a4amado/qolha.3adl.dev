@@ -1,4 +1,4 @@
-import { Row, Col, Typography, Button } from "antd";
+import { Row, Col, Typography, Button, Skeleton, Badge } from "antd";
 import Search from "./search";
 
 import { useSession } from "next-auth/react";
@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import NextLink from "next/link";
 
 export default function Header({ isSearch }: { isSearch: boolean }) {
-    const user = useSession();
+    const session = useSession();
     const router = useRouter();
     return (
         <Row className="w-full flex flex-col ">
@@ -22,12 +22,8 @@ export default function Header({ isSearch }: { isSearch: boolean }) {
                             )}
                         </Col>
 
-                        <Typography className="text-cyan-100 flex flex-row">
-                            {user.data?.user?.name} {"\b"} {user.data?.user?.role}
-                        </Typography>
-                        <NextLink className="text-cyan-100 flex flex-row" href="/auth">
-                            تسجيل
-                        </NextLink>
+                        {session.status === "unauthenticated" && <NextLink href="api/auth/signin">SignIn</NextLink>}
+                        {session.status === "authenticated" && <Typography.Text>Hello, {session.data.user?.name}</Typography.Text>}
                     </Row>
                 </Row>
             </Row>

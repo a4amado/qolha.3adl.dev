@@ -12,8 +12,6 @@ export const authOptions: AuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user, account, profile }) {
-
-
             if (user) {
                 return {
                     ...token,
@@ -34,7 +32,6 @@ export const authOptions: AuthOptions = {
 
             return true;
         },
-
     },
     adapter: AuthPrisma,
 

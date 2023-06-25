@@ -21,16 +21,12 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
                 id: Input.query.userId,
             },
             data: {
-                banned: null
-            }
+                banned: null,
+            },
         })
     );
 
-
-
-
     if (bannedUser.error) {
-
         return res.status(Codes.INTERNAL_SERVER_ERROR).send({
             message: "Something wrong while deleting the Account",
         });

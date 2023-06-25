@@ -8,6 +8,7 @@ import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import { showNotification } from "./contribute";
 import { SessionProvider } from "next-auth/react";
+import { trpc } from "@utils/trpc";
 
 Router.events.on("routeChangeStart", () => {
     const loadingContainer = document.getElementById("loading-container");
@@ -57,4 +58,4 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
     );
 };
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);

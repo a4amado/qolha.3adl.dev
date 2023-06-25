@@ -130,7 +130,7 @@ export default function Search() {
     });
 
     function handleSelect(_: any, s: AutoComeleteOption) {
-        return Router.push({ pathname: "/", query: { id: s.key, word: s.value } });
+        return Router.push({ pathname: `/word/${s.key}` });
     }
 
     return (

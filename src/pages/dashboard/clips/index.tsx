@@ -19,7 +19,7 @@ function Clips() {
     const router = useRouter();
     const [clips, refetch, q] = useAxios<Array<typeof clipType>>({
         url: QueryClip({
-            url: "/api",
+            url: "/api/clip/query",
             query: {
                 _accepted: false,
                 _limit: 1,
@@ -52,9 +52,9 @@ function Clips() {
         return router.push({ pathname: "/api/auth/signin" });
     }
     // @ts-ignore
-    if (session.data.user.role != "owner") {
-        return router.push({ pathname: "/" });
-    }
+    // if (session.data.user.role != "owner") {
+    //     return router.push({ pathname: "/" });
+    // }
 
     return (
         <>

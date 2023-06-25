@@ -21,19 +21,20 @@ route.post(async (req: NextApiRequest, res: NextApiResponse) => {
                 id: Input.query.userId,
             },
             data: {
-                banned: new Date()
-            }
+                banned: new Date(),
+            },
         })
     );
 
-    const s = await butters(prisma.session.deleteMany({
-        where: {
-            userId: Input.query.userId
-        }
-    }))
+    const s = await butters(
+        prisma.session.deleteMany({
+            where: {
+                userId: Input.query.userId,
+            },
+        })
+    );
 
     if (bannedUser.error) {
-
         return res.status(Codes.INTERNAL_SERVER_ERROR).send({
             message: "Something wrong while deleting the Account",
         });

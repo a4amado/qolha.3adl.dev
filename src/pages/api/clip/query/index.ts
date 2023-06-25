@@ -34,6 +34,8 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
         query.take = Input.query._limit;
     }
 
+    query.select = {};
+
     const clips = await butters(prisma.clip.findMany(query));
 
     if (clips.error) {

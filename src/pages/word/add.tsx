@@ -43,7 +43,7 @@ export default function AddWord() {
                                 <Col className="w-full">ssss</Col>
 
                                 <Form.Item className="w-full">
-                                    <Button onClick={() => form.handleSubmit()} type="default">
+                                    <Button onClick={() => form.handleSubmit()} htmlType="submit" type="default">
                                         ADD
                                     </Button>
                                 </Form.Item>

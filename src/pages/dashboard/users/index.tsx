@@ -28,7 +28,7 @@ function Users() {
         {
             method: "GET",
         },
-        { manual: true, autoCancel: true, }
+        { manual: true, autoCancel: true }
     );
 
     const User = user.data as User;
@@ -43,9 +43,9 @@ function Users() {
                         _email: email,
                     },
                 }),
-            })
-        }, 500)
-        return () => clearTimeout(g)
+            });
+        }, 500);
+        return () => clearTimeout(g);
     }, [email]);
 
     if (session.status === "loading") return <Loading />;
@@ -69,9 +69,10 @@ function Users() {
                         loading={user.loading}
                         dataSource={user.data ? [user.data] : undefined}
                         renderItem={(item, i) => (
-                            <List.Item key={i} ><UserItem user={item} /></List.Item>
+                            <List.Item key={i}>
+                                <UserItem user={item} />
+                            </List.Item>
                         )}
-
                     />
                 </div>
             </PageContainer>
