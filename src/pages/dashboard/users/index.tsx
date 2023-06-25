@@ -12,6 +12,8 @@ import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
 import queryUserGen from "src/query/user";
 import UserItem from "@ui/UserItem";
+import { trpc } from "@utils/trpc";
+import { useFirstMountState } from "react-use";
 
 type User = {
     image: string;
@@ -20,30 +22,23 @@ type User = {
     email: string;
     id: string;
 };
+
 function Users() {
     const session = useSession();
     const router = useRouter();
     const [email, setEmail] = useState("");
-    const [user, searchForAUser] = useAxios(
-        {
-            method: "GET",
-        },
-        { manual: true, autoCancel: true }
-    );
+    const isFirstMount  = useFirstMountState()
+    const user = trpc.user.query$user.useQuery({query: {
+        _email: email
+    }}, {
+        retry: false
+    })
 
-    const User = user.data as User;
-
+    
     React.useEffect(() => {
         if (!email) return;
         let g = setTimeout(() => {
-            searchForAUser({
-                url: queryUserGen({
-                    url: "/api/user/query",
-                    query: {
-                        _email: email,
-                    },
-                }),
-            });
+            user.refetch()
         }, 500);
         return () => clearTimeout(g);
     }, [email]);
@@ -53,9 +48,11 @@ function Users() {
         return router.push({ pathname: "/api/auth/signin" });
     }
     // @ts-ignore
-    if (session.data.user.role != "owner") {
-        return router.push({ pathname: "/" });
-    }
+    // if (session.data.user.role != "owner") {
+    //     return router.push({ pathname: "/" });
+    // }
+
+    
 
     return (
         <>
@@ -66,14 +63,14 @@ function Users() {
 
                 <div className="flex flex-col justify-evenly w-full gap-2">
                     <List
-                        loading={user.loading}
+                        loading={isFirstMount ? false: user.isLoading}
                         dataSource={user.data ? [user.data] : undefined}
-                        renderItem={(item, i) => (
+                        renderItem={(user, i) => (
                             <List.Item key={i}>
-                                <UserItem user={item} />
+                                <UserItem email={user.name} />
                             </List.Item>
                         )}
-                    />
+                    /> 
                 </div>
             </PageContainer>
         </>

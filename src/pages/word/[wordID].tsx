@@ -1,19 +1,14 @@
-import Loading from "@ui/Loading";
 import PageContainer from "@ui/PageContainer";
 import Header from "@ui/header";
 import { trpc } from "@utils/trpc";
-import { Spin } from "antd";
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-
 import { createServerSideHelpers } from "@trpc/react-query/server";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-
 import React from "react";
 import { appRouter } from "src/server/routers/_app";
-import { log } from "console";
 
-function getQueryItem(query: any) {
+
+
+export function getQueryItem(query: any) {
     if (typeof query === "string") return query;
     if (query.length > 0) return query[0];
 }
@@ -35,11 +30,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function WordPage({ trpcState, wordID }: any) {
-    const word = trpc.word.getWordById.useQuery("bebad36d-a031-4986-89d6-ead45c043736");
+    const word = trpc.word.getWordById.useQuery(wordID);
 
-    const route = useRouter();
 
-    if (word.isLoading) {
+    if (word.status != "success") {
         return (
             <>
                 <Header isSearch={true} />

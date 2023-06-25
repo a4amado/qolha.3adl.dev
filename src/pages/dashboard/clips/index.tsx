@@ -17,6 +17,7 @@ const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
 function Clips() {
     const session = useSession();
     const router = useRouter();
+
     const [clips, refetch, q] = useAxios<Array<typeof clipType>>({
         url: QueryClip({
             url: "/api/clip/query",
@@ -28,6 +29,7 @@ function Clips() {
         }),
         method: "GET",
     });
+    
     const activeClip = React.useMemo(() => {
         if (!clips?.data || typeof clips?.data[0] === "undefined") return null;
         return clips?.data[0];

@@ -5,6 +5,7 @@ import aPromiseWrapper from "a-promise-wrapper";
 import prisma from "@db";
 import { TRPCError } from "@trpc/server";
 import { string } from "yup";
+import userRouter from "./user";
 
 const appRouter = router({
     word: router({
@@ -76,6 +77,8 @@ const appRouter = router({
             return word;
         }),
     }),
+
+    user: userRouter
 });
 
 export { appRouter };

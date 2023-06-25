@@ -4,16 +4,12 @@ import ChangeRole from "@ui/ChangeRole";
 import { roles } from "./ChangeRole";
 import BanUser from "./BanUser";
 
-export default function UserItem({
-    user,
-}: {
-    user: {
-        image: string;
-        name: string;
-        role: roles;
-        email: string;
-        id: string;
-    };
+export default function UserItem(user: {
+    image: string;
+    name: string;
+    role: roles;
+    email: string;
+    id: string;
 }) {
     return (
         <div className="flex flex-row items-center justify-end bg-gray-100 p-4 w-full">
