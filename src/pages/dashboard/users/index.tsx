@@ -1,5 +1,5 @@
 import PageContainer from "@ui/PageContainer";
-import { List, Input } from "antd";
+import { List, Input, Spin, Alert } from "antd";
 
 import useAxios from "axios-hooks";
 import React, { useState } from "react";
@@ -27,18 +27,17 @@ function Users() {
     const session = useSession();
     const router = useRouter();
     const [email, setEmail] = useState("");
-    const isFirstMount  = useFirstMountState()
-    const user = trpc.user.query$user.useQuery({query: {
-        _email: email
-    }}, {
-        retry: false
-    })
 
-    
+    const user = trpc.user.query$user.useQuery({
+        query: {
+            _email: email,
+        },
+    });
+
     React.useEffect(() => {
         if (!email) return;
         let g = setTimeout(() => {
-            user.refetch()
+            user.refetch();
         }, 500);
         return () => clearTimeout(g);
     }, [email]);
@@ -52,8 +51,6 @@ function Users() {
     //     return router.push({ pathname: "/" });
     // }
 
-    
-
     return (
         <>
             <Header isSearch={false} />
@@ -62,15 +59,12 @@ function Users() {
                 <Input value={email} className="text-center font-bold text-lg" placeholder="email@email.email" onChange={(e) => setEmail(e.target.value)} />
 
                 <div className="flex flex-col justify-evenly w-full gap-2">
-                    <List
-                        loading={isFirstMount ? false: user.isLoading}
-                        dataSource={user.data ? [user.data] : undefined}
-                        renderItem={(user, i) => (
-                            <List.Item key={i}>
-                                <UserItem email={user.name} />
-                            </List.Item>
-                        )}
-                    /> 
+                    {user.status === "error" && <Alert type="error" message="Error" />}
+
+                    {user.status === "loading" && <Spin />}
+
+                    {/* @ts-ignore */}
+                    {user.status === "success" && user.data && <UserItem email={user.data.email} id={user.data.id} image={user.data.image || ""} name={user.data.name} role={user.data.role ? user.data.role : "user"} />}
                 </div>
             </PageContainer>
         </>

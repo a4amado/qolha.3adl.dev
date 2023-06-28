@@ -11,6 +11,7 @@ import { QueryClip } from "src/query/clip";
 import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
+import { trpc } from "@utils/trpc";
 
 const clipType = { word: { ar: "s", id: "s" }, id: "s", path: "s" };
 
@@ -18,18 +19,18 @@ function Clips() {
     const session = useSession();
     const router = useRouter();
 
-    const [clips, refetch, q] = useAxios<Array<typeof clipType>>({
-        url: QueryClip({
-            url: "/api/clip/query",
-            query: {
-                _accepted: false,
-                _limit: 1,
-                _page: 1,
-            },
-        }),
-        method: "GET",
-    });
     
+    const clip = trpc.clip.query.useQuery({
+        query: {
+            _order: "asc",
+            _accepted: false,
+            _limit: 5,
+            _sort: "createdAt",
+            _page: 1
+            
+        }
+    })
+
     const activeClip = React.useMemo(() => {
         if (!clips?.data || typeof clips?.data[0] === "undefined") return null;
         return clips?.data[0];
@@ -89,7 +90,7 @@ function Clips() {
                         </Row>
                     </Row>
                     <Row className="flex flex-col gap-2 p-5 w-full">
-                        {clips?.data?.map((e, i) => {
+                        {clip.isSuccess  &&clip?.data?.map((e, i) => {
                             if (i === 0) return <></>;
                             return (
                                 <Row key={e.id} className={`flex flex-row border flex-nowrap whitespace-nowrap w-full  rounded-md border-cyan-900 ${i === 1 && "bg-green-500"}`}>

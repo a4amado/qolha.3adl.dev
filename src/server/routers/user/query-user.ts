@@ -5,7 +5,6 @@ import aPromiseWrapper from "a-promise-wrapper";
 import { publicProcedure } from "src/server/trpc";
 
 const QueryUser = publicProcedure.input(Schema$API$UserQuery).query(async (opts) => {
-
     const findUniqueWhere: { email?: string; id?: string } = {};
     if (opts.input.query._email) {
         findUniqueWhere.email = opts.input.query._email;
@@ -13,22 +12,12 @@ const QueryUser = publicProcedure.input(Schema$API$UserQuery).query(async (opts)
         findUniqueWhere.id = opts.input.query._userId;
     }
 
-    const user = await aPromiseWrapper(
-        prisma.user.findFirst({
-            where: findUniqueWhere,
-            
-        })
-    );
-    
-    
+    const user = await prisma.user.findFirst({
+        where: findUniqueWhere,
+    });
+    // if (user.error) return new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 
-    if (user.error) return new TRPCError({code: "INTERNAL_SERVER_ERROR"})
-    if (!user.data) return new TRPCError({code: "NOT_FOUND"})
+    return user;
+});
 
-
-    return user.data
-
-})
-
-
-export default QueryUser
+export default QueryUser;

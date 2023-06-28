@@ -6,6 +6,7 @@ import prisma from "@db";
 import { TRPCError } from "@trpc/server";
 import { string } from "yup";
 import userRouter from "./user";
+import clipRouter from "./clip";
 
 const appRouter = router({
     word: router({
@@ -78,7 +79,8 @@ const appRouter = router({
         }),
     }),
 
-    user: userRouter
+    user: userRouter,
+    clip: clipRouter
 });
 
 export { appRouter };

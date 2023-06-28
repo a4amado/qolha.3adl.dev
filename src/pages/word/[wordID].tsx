@@ -6,8 +6,6 @@ import { createServerSideHelpers } from "@trpc/react-query/server";
 import React from "react";
 import { appRouter } from "src/server/routers/_app";
 
-
-
 export function getQueryItem(query: any) {
     if (typeof query === "string") return query;
     if (query.length > 0) return query[0];
@@ -31,7 +29,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function WordPage({ trpcState, wordID }: any) {
     const word = trpc.word.getWordById.useQuery(wordID);
-
 
     if (word.status != "success") {
         return (
