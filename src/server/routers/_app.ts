@@ -80,10 +80,14 @@ const appRouter = router({
     }),
 
     user: userRouter,
-    clip: clipRouter
+    clip: clipRouter,
 });
 
 export { appRouter };
 
-type AppRouter = typeof appRouter;
-export type { AppRouter };
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+
+export type RouterInput = inferRouterInputs<AppRouter>;
+export type RouterOutput = inferRouterOutputs<AppRouter>;
+
+export type AppRouter = typeof appRouter;

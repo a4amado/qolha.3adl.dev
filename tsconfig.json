@@ -56,8 +56,7 @@
         "**/*.tsx",
         "**/*.cjs",
         "**/*.mjs",
-        "src/server.ts",
-        "src/pages/api/word/[wordID]",
+        "src/**/*.{ts.tsx}",
         "tsconfig.server.json"
     ],
     "exclude": [

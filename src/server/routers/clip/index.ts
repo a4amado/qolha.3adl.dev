@@ -1,9 +1,12 @@
 import { router } from "src/server/trpc";
-import QueryClip from "./queryClip";
+import getClipThatNeedsRevision from "./getClipThatNeedsRevision";
+import AcceptClip from "./acceptClip";
+import rejectClip from "./rejectClip";
 
 const clipRouter = router({
-    query: QueryClip
-})
-
+    getClipThatNeedsRevision,
+    accept: AcceptClip,
+    reject: rejectClip,
+});
 
 export default clipRouter;
