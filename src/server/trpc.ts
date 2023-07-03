@@ -1,6 +1,7 @@
 import { TRPCError, initTRPC } from "@trpc/server";
 
 import type { Context } from "../pages/api/trpc/[trpc]";
+import { log } from "console";
 
 const t = initTRPC.context<Context>().create();
 /**
@@ -20,10 +21,13 @@ export const protectedProcedure = t.procedure.use((opts) => {
 });
 export const adminProcedure = protectedProcedure.use((opts) => {
     // @ts-ignore
-    if (!opts.ctx.user?.role !== "admin")
+    if (!["admin", "owner"].includes(opts.ctx.user?.role))
+      {
+        log("ss")
         throw new TRPCError({
             code: "UNAUTHORIZED",
         });
+      }
     return opts.next();
 });
 

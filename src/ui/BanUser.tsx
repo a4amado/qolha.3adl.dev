@@ -1,28 +1,15 @@
 import { DeleteOutlined } from "@ant-design/icons";
+import { trpc } from "@utils/trpc";
 import { Button } from "antd";
 import axios from "axios";
 import { useToggle } from "react-use";
 
 export default function BanUser({ userId, callback }: { userId: string; callback: Function }) {
-    const [loading, setLoading] = useToggle(false);
-
-    async function banUser() {
-        setLoading(true);
-        axios({
-            method: "POST",
-            url: `/api/user/${userId}/ban`,
-        })
-            .then(() => {
-                setLoading(false);
-                callback(userId);
-            })
-            .catch(() => {
-                setLoading(false);
-            });
-    }
+ 
+   const ban = trpc.user.banUser.useMutation()
 
     return (
-        <Button danger onClick={banUser} loading={loading}>
+        <Button danger onClick={() => ban.mutate({ userId })} loading={ban.isLoading}>
             DELETE USER <DeleteOutlined />
         </Button>
     );
