@@ -31,11 +31,12 @@ export default function Page() {
     const word = trpc.word.queryWord.useQuery({
         _order: "asc",
         _sort: "clips",
-        _limit: 1
+        _limit: 1,
     });
-    
-    const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/clip/insert?wordId=${word?.data&& word?.data[0].id}`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true,  });
-    const deleted_word = trpc.word.deleteWord.useMutation()
+
+    // @ts-ignore
+    const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/clip/insert?wordId=${word?.data && word?.data[0].id}`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
+    const deleted_word = trpc.word.deleteWord.useMutation();
 
     const controller = React.useRef<HTMLAudioElement>();
 
@@ -124,6 +125,7 @@ export default function Page() {
                         <Button onClick={submit} className="flex-grow">
                             ارسل
                         </Button>
+                        {/* @ts-ignore */}
                         <Button onClick={() => word.data && deleted_word.mutate({ wordId: word.data[0]?.user?.id || "" })} className="flex-grow">
                             تخط
                         </Button>
