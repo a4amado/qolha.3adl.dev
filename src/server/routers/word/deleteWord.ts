@@ -1,9 +1,9 @@
 import prisma from "@db";
 
 import { Schema$Client$DeleteWord } from "@schema/word/delete-word";
-import { publicProcedure } from "src/server/trpc";
+import { adminProcedure, publicProcedure } from "src/server/trpc";
 
-const deleteWord = publicProcedure.input(Schema$Client$DeleteWord).mutation(async (opts) => {
+const deleteWord = adminProcedure.input(Schema$Client$DeleteWord).mutation(async (opts) => {
     const deletedWord = await prisma.word.delete({
         where: {
             id: opts.input.wordId,

@@ -26,9 +26,7 @@ function Clips() {
 
         (action === "accept" ? acc : rej).mutate(
             {
-                query: {
-                    clipId: id,
-                },
+                clipId: id,
             },
             {
                 onSuccess: () => clip.refetch(),

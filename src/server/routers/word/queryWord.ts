@@ -42,7 +42,7 @@ const queryWord = publicProcedure.input(Schema$Client$QueryWord).query(async (op
                 },
             },
             id: true,
-            are: true,
+            ar: true,
         },
     });
 

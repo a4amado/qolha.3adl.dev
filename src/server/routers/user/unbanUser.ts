@@ -1,8 +1,8 @@
 import prisma from "@db";
 import { Schema$Client$BanUser } from "@schema/user/ban-user";
-import { publicProcedure } from "src/server/trpc";
+import { adminProcedure, publicProcedure } from "src/server/trpc";
 
-const UnbanUser = publicProcedure.input(Schema$Client$BanUser).mutation(async (opts) => {
+const UnbanUser = adminProcedure.input(Schema$Client$BanUser).mutation(async (opts) => {
     const bannedUser = await prisma.user.update({
         where: {
             id: opts.input.userId,

@@ -2,9 +2,9 @@ import prisma from "@db";
 import { Schema$Client$AcceptClip } from "@schema/clip/accept-clip";
 import { TRPCError } from "@trpc/server";
 import aPromiseWrapper from "a-promise-wrapper";
-import { publicProcedure } from "src/server/trpc";
+import { adminProcedure, publicProcedure } from "src/server/trpc";
 
-const AcceptClip = publicProcedure.input(Schema$Client$AcceptClip).mutation(async (opts) => {
+const AcceptClip = adminProcedure.input(Schema$Client$AcceptClip).mutation(async (opts) => {
     const acceptedClip = await aPromiseWrapper(
         prisma.clip.update({
             where: {

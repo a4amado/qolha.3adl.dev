@@ -29,9 +29,7 @@ function Users() {
     const [email, setEmail] = useState("");
 
     const user = trpc.user.query$user.useQuery({
-        query: {
-            _email: email,
-        },
+        _email: email,
     });
 
     React.useEffect(() => {
