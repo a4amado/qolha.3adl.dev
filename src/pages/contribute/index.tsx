@@ -7,6 +7,7 @@ import Header from "@ui/header";
 import useAxios from "axios-hooks";
 import useHotkeys from "@reecelucas/react-use-hotkeys";
 import QueryWord from "src/query/word";
+import { trpc } from "@utils/trpc";
 
 type NotificationProps = {
     message: string;
@@ -27,22 +28,15 @@ export default function Page() {
         mediaRecorderOptions: { mime: "audio/webm" },
     });
 
-    const [word, refetch] = useAxios(
-        {
-            url: QueryWord({
-                query: {
-                    _order: "asc",
-                    _sort: "clips",
-                    _limit: 1,
-                },
-                url: `api/word/query`,
-            }),
-            method: "GET",
-        },
-        { manual: false }
-    );
-    const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/clip/insert?wordId=${word?.data?.id}`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
-    const [_deleted_word, deleteWord] = useAxios({ method: "DELETE", url: `/api/word/${word?.data?.id}/delete` }, { manual: true });
+    const word = trpc.word.queryWord.useQuery({
+        _order: "asc",
+        _sort: "clips",
+        _limit: 1
+    });
+    
+    const [clip, submitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/clip/insert?wordId=${word?.data&& word?.data[0].id}`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true,  });
+    const deleted_word = trpc.word.deleteWord.useMutation()
+
     const controller = React.useRef<HTMLAudioElement>();
 
     const url = React.useMemo(() => {
@@ -70,7 +64,7 @@ export default function Page() {
                 });
             }
 
-            if (recorder.mediaBlob?.size === 0 || !word.data?.id || !recorder.mediaBlob) {
+            if (recorder.mediaBlob?.size === 0 || !word.data || !recorder.mediaBlob) {
                 return showNotification({
                     message: "Noting to Submit",
                     destroyAfter: 1500,
@@ -82,7 +76,7 @@ export default function Page() {
             form.append("clip", recorder.mediaBlob);
 
             await submitClip({ data: form });
-            await refetch();
+            await word.refetch();
 
             recorder.clearMediaBlob();
             recorder.clearMediaStream();
@@ -107,7 +101,7 @@ export default function Page() {
             <PageContainer>
                 <Row className="flex flex-col w-full">
                     <Row className=" flex justify-center align-middle">
-                        <Typography.Title className="text-7xl flex justify-center align-middle">{word?.data?.ar}</Typography.Title>
+                        <Typography.Title className="text-7xl flex justify-center align-middle">{word?.data && word?.data[0]?.ar}</Typography.Title>
                     </Row>
 
                     <Row className="w-full">
@@ -130,7 +124,7 @@ export default function Page() {
                         <Button onClick={submit} className="flex-grow">
                             ارسل
                         </Button>
-                        <Button onClick={() => deleteWord()} className="flex-grow">
+                        <Button onClick={() => word.data && deleted_word.mutate({ wordId: word.data[0]?.user?.id || "" })} className="flex-grow">
                             تخط
                         </Button>
                     </Row>

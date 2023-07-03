@@ -33,7 +33,7 @@ const NotingFoundOption: HitsReducerState = {
         {
             label: <Typography>لم نجد شيئاََ</Typography>,
             value: "Searching",
-            key: "Asdasdasda",
+            key: "$API$asda",
         },
     ],
 };

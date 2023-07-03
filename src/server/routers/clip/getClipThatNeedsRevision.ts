@@ -1,8 +1,5 @@
 import prisma from "@db";
-import { Clip } from "@prisma/client";
-import { TRPCError } from "@trpc/server";
 import { publicProcedure } from "src/server/trpc";
-import { Maybe } from "yup";
 
 const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
     let clip = await prisma.clip.findFirst({
@@ -35,8 +32,6 @@ const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
         },
     });
 
-
-    
     return { clip, RandomClips };
 });
 

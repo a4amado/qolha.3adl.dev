@@ -17,7 +17,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         ctx: {},
     });
 
-    await helpers.word.getWordById.prefetch("bebad36d-a031-4986-89d6-ead45c043736");
+    await helpers.word.queryWord.prefetch({
+        _wordID: "bebad36d-a031-4986-89d6-ead45c043736",
+    });
 
     return {
         props: {
@@ -28,7 +30,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function WordPage({ trpcState, wordID }: any) {
-    const word = trpc.word.getWordById.useQuery(wordID);
+    const word = trpc.word.queryWord.useQuery({
+        _wordID: wordID,
+        _limit: 1,
+    });
 
     if (word.status != "success") {
         return (
@@ -42,16 +47,18 @@ export default function WordPage({ trpcState, wordID }: any) {
         <>
             <Header isSearch={true} />
             <PageContainer>
-                {word.data?.ar}
-
-                {word.data?.description}
-
-                {word.data?.clips.map((e) => {
+                {word.data.map((item) => {
                     return (
-                        <p key={e.id}>
-                            <audio controls src={`http://localhost:3000/api/clip/${e.clipName}/stream`} />
-                            {e.user?.name}
-                        </p>
+                        <>
+                            {item?.clips &&
+                                item?.clips.map((e) => {
+                                    return (
+                                        <p key={e.id}>
+                                            <audio controls src={`http://localhost:3000/api/clip/${e.clipName}/stream`} />
+                                        </p>
+                                    );
+                                })}
+                        </>
                     );
                 })}
             </PageContainer>

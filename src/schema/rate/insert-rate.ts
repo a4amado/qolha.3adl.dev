@@ -9,6 +9,7 @@ const Schema$API$InsertRate = yup.object().shape({
 
 const Schema$Client$InsertRate = yup.object().shape({
     rate: yup.number().oneOf([0, 50, 100]).required(),
+    clipId: yup.string().uuid().required(),
 });
 
 export { Schema$API$InsertRate, Schema$Client$InsertRate };

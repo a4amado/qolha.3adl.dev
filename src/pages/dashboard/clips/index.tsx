@@ -19,10 +19,6 @@ function Clips() {
     const acc = trpc.clip.accept.useMutation();
     const rej = trpc.clip.reject.useMutation();
 
-
-
-
-
     const disabled = clip.isLoading || acc.isLoading || rej.isLoading || !(clip.data?.clip?.id || false);
 
     function handleAction(id: string, action: "accept" | "reject") {
@@ -62,9 +58,7 @@ function Clips() {
                 <Row className="flex flex-col">
                     <Row className="min-h-56 flex flex-row p-5">
                         <h1 className="h-full w-1/2 text-4xl grid">
-                            {
-                                
-                            }
+                            {}
                             <span className="place-items-center">{clip.data?.clip?.word.ar}</span>
                         </h1>
 
@@ -98,8 +92,6 @@ function Clips() {
 
 export default Clips;
 
-
-
 function Audio({ clipID }: { clipID: string }) {
     const [time, setTime] = React.useState<number>(0);
 
@@ -109,22 +101,25 @@ function Audio({ clipID }: { clipID: string }) {
 
     useInterval(() => {
         if (!state.playing) return;
-        setTime((state.time * state.duration) * 10)
+        setTime(state.time * state.duration * 10);
+    }, 100);
 
-    }, 100)
-
-    return <Row className="flex w-full h-1/3 justify-center">
-        {Element}
-        <Button className="w-1/2 h-[100%]" onClick={() => {
-            pause()
-            seek(0)
-        }}>    
-            reset
-        </Button>
-        <Button className="w-1/2 h-full" onClick={() => (state.playing ? pause() : play())}>    
-            {!state.playing && <PlayCircleOutlined className="text-4xl" />}
-            {state.playing && <PauseCircleOutlined className="text-4xl" />}
-        </Button>
-    </Row>
-
+    return (
+        <Row className="flex w-full h-1/3 justify-center">
+            {Element}
+            <Button
+                className="w-1/2 h-[100%]"
+                onClick={() => {
+                    pause();
+                    seek(0);
+                }}
+            >
+                reset
+            </Button>
+            <Button className="w-1/2 h-full" onClick={() => (state.playing ? pause() : play())}>
+                {!state.playing && <PlayCircleOutlined className="text-4xl" />}
+                {state.playing && <PauseCircleOutlined className="text-4xl" />}
+            </Button>
+        </Row>
+    );
 }

@@ -7,21 +7,13 @@ import useAxios from "axios-hooks";
 import { Formik, FieldConfig, Field, ErrorMessage, FormikHelpers } from "formik";
 import { InferType } from "yup";
 import { showNotification } from "../contribute";
+import { trpc } from "@utils/trpc";
 
 export default function AddWord() {
-    const [data, refetch] = useAxios({}, { manual: true });
+    const insertWord = trpc.word.insertWord.useMutation();
 
     async function submitWord(e: any, reset: FormikHelpers<any>) {
-        await refetch({
-            url: "/api/word/insert",
-            method: "POST",
-            data: e,
-        });
-        showNotification({
-            message: "نجحت العملية",
-            destroyAfter: 600,
-            type: "success",
-        });
+        await insertWord.mutateAsync({ word: e.word, description: e.description });
         reset.resetForm();
     }
     return (
