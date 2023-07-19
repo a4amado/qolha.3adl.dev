@@ -10,6 +10,8 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+
+
 model User {
     id            String    @unique @default(uuid())
     name          String
@@ -65,12 +67,14 @@ model Word {
     ar          String
     id          String       @unique @default(uuid())
     accepted    Boolean      @default(false)
-    description String
+    description_ar String
+    description_en String
     userId      String?
     user        User?        @relation(references: [id], fields: [userId])
     clips       Clip[]
     reports     ClipReport[]
     WordReport  WordReport[]
+    wordView WordView[]
 
     @@index([userId])
 }
@@ -91,6 +95,15 @@ model Clip {
     rates   Rate[]
 
     @@index([userId, wordId])
+}
+
+model WordView {
+    id String @default(uuid()) @id
+    wordID String
+    word Word @relation(fields: [wordID], references: [id])
+    day DateTime @default(now()) 
+
+    @@index([day, wordID])
 }
 
 model Rate {
@@ -162,3 +175,5 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+

@@ -1,45 +1,45 @@
-import { WhatsAppOutlined } from "@ant-design/icons";
-import { Schema$Client$InsertWord } from "@schema/word/insert-word";
-import PageContainer from "@ui/PageContainer";
-import Header from "@ui/header";
-import { Row, Col, Input, Button, Form } from "antd";
-import useAxios from "axios-hooks";
-import { Formik, FieldConfig, Field, ErrorMessage, FormikHelpers } from "formik";
+import { Alert, Alignment, FormGroup, InputGroup } from "@blueprintjs/core";
 import { InferType } from "yup";
-import { showNotification } from "../contribute";
+import * as yup from "yup";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
+import { Button } from "@blueprintjs/core";
+const g = yup.object().shape({
+    word: yup.string().required(),
+});
+
+import { Formik, Field, Form } from "formik";
+import { ChangeEvent, useEffect } from "react";
 import { trpc } from "@utils/trpc";
+import Header from "@ui/header";
+import PageContainer from "@ui/PageContainer";
 
-export default function AddWord() {
-    const insertWord = trpc.word.insertWord.useMutation();
+export default function Page() {
+    const appendWord = trpc.word.insertWord.useMutation();
 
-    async function submitWord(e: any, reset: FormikHelpers<any>) {
-        await insertWord.mutateAsync({ word: e.word, description: e.description });
-        reset.resetForm();
-    }
     return (
         <>
             <Header isSearch={false} />
             <PageContainer>
-                <Formik onSubmit={(data, form) => submitWord(data, form)} initialValues={{ word: "", description: "" } as InferType<typeof Schema$Client$InsertWord>} validationSchema={Schema$Client$InsertWord}>
+                <Formik
+                    validationSchema={g}
+                    initialValues={{ word: "" } as InferType<typeof g>}
+                    enableReinitialize={true}
+                    onSubmit={async (values, actions) => {
+                        await appendWord.mutateAsync(values);
+                        actions.resetForm();
+                    }}
+                >
                     {(form) => (
-                        <Form>
-                            <Row className="w-full h-full">
-                                <Form.Item required className="w-full" label="الكلمة العربية">
-                                    <Field {...({ name: "word" } as FieldConfig)} as={Input} />
-                                    <ErrorMessage name="word" />
-                                </Form.Item>
-                                <Form.Item required label="وصف" className="w-full">
-                                    <Field {...({ name: "description" } as FieldConfig)} as={Input.TextArea} />
-                                    <ErrorMessage name="description" />
-                                </Form.Item>
-                                <Col className="w-full">ssss</Col>
+                        <Form className="max-w-4xl mx-auto my-3 h-auto">
+                            <FormGroup helperText="Input Word" label="Word" labelFor="text-input" labelInfo="(Required)">
+                                <Field className="text-center" as={InputGroup} onChange={(e: ChangeEvent) => form.handleChange(e)} value={form.values.word} name="word" id="text-input" placeholder="Word" />
+                            </FormGroup>
 
-                                <Form.Item className="w-full">
-                                    <Button onClick={() => form.handleSubmit()} htmlType="submit" type="default">
-                                        ADD
-                                    </Button>
-                                </Form.Item>
-                            </Row>
+                            <div className="m-auto">
+                                <Button icon="send-message" name="description" title="Add Word" onClick={() => form.handleSubmit()} type="submit" />
+                            </div>
                         </Form>
                     )}
                 </Formik>

@@ -17,9 +17,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         ctx: {},
     });
 
-    await helpers.word.queryWord.prefetch({
-        _wordID: "bebad36d-a031-4986-89d6-ead45c043736",
-    });
+    // @ts-ignore
+    await helpers.word.getWord.prefetch(ctx.query.wordID);
 
     return {
         props: {
@@ -30,10 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function WordPage({ trpcState, wordID }: any) {
-    const word = trpc.word.queryWord.useQuery({
-        _wordID: wordID,
-        _limit: 1,
-    });
+    const word = trpc.word.getWord.useQuery(wordID);
 
     if (word.status != "success") {
         return (
@@ -47,20 +43,16 @@ export default function WordPage({ trpcState, wordID }: any) {
         <>
             <Header isSearch={true} />
             <PageContainer>
-                {word.data.map((item) => {
-                    return (
-                        <>
-                            {item?.clips &&
-                                item?.clips.map((e) => {
-                                    return (
-                                        <p key={e.id}>
-                                            <audio controls src={`http://localhost:3000/api/clip/${e.clipName}/stream`} />
-                                        </p>
-                                    );
-                                })}
-                        </>
-                    );
-                })}
+                <>
+                    {word?.data &&
+                        word?.data?.clips.map((e) => {
+                            return (
+                                <p key={e.id}>
+                                    <audio controls src={`http://localhost:3000/api/clip/${e.clipName}/stream`} />
+                                </p>
+                            );
+                        })}
+                </>
             </PageContainer>
         </>
     );

@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.ql-editor-1 {
+    direction: rtl;
+    text-align: right;
+}
+
 * {
     box-sizing: border-box;
     /* font-family: 'Amiri Quran', serif; */
@@ -19,7 +24,7 @@ body,
 }
 
 html {
-    direction: rtl;
+    direction: ltr;
 }
 
 .active-loading {

@@ -9,16 +9,22 @@ import prisma from "@db";
 
 async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
     const b = await getServerSession(req, res, authOptions);
+ 
+    if (!b?.user) return {};
+
     const user = await prisma.user.findUnique({
         where: {
             email: b?.user?.email || "",
         },
     });
-    if (!b?.user) {
-        return {};
-    }
 
-    return { user: { ...b.user, role: user?.role } };
+    console.log(user);
+    
+    if (!user) return {};
+
+    return {
+        user,
+    };
 }
 
 export type Context = inferAsyncReturnType<typeof createContext>;

@@ -1,12 +1,14 @@
 import { router } from "src/server/trpc";
 import deleteWord from "./deleteWord";
 import insertWord from "./insertWord";
-import queryWord from "./queryWord";
+import getWordThatNeedsClips from "./getWordThatNeedsClips";
+import getWord from "./getWord";
 
 const wordRouter = router({
     deleteWord: deleteWord,
     insertWord: insertWord,
-    queryWord: queryWord,
+    getWordThatNeedsClips: getWordThatNeedsClips,
+    getWord: getWord,
 });
 
 export default wordRouter;

@@ -1,15 +1,15 @@
 import Header from "@ui/header";
-import { Button, Col, Row } from "antd";
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import PageContainer from "@ui/PageContainer";
-import { PlayCircleOutlined, PauseCircleOutlined, CheckCircleTwoTone, CloseOutlined, DoubleLeftOutlined } from "@ant-design/icons";
+import { PlayCircleOutlined, PauseCircleOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
 import { getBaseUrl, trpc } from "@utils/trpc";
 import { useAudio, useInterval } from "react-use";
-import { showNotification } from "src/pages/contribute";
+import { Button, ButtonGroup, Divider, Toaster } from "@blueprintjs/core";
+
 
 function Clips() {
     const session = useSession();
@@ -19,21 +19,8 @@ function Clips() {
     const acc = trpc.clip.accept.useMutation();
     const rej = trpc.clip.reject.useMutation();
 
-    const disabled = clip.isLoading || acc.isLoading || rej.isLoading || !(clip.data?.clip?.id || false);
+ 
 
-    function handleAction(id: string, action: "accept" | "reject") {
-        if (!clip.data?.clip?.id) return;
-
-        (action === "accept" ? acc : rej).mutate(
-            {
-                clipId: id,
-            },
-            {
-                onSuccess: () => clip.refetch(),
-                onError: (error) => showNotification({ message: error.message, destroyAfter: 800, type: "error" }),
-            }
-        );
-    }
 
     if (session.status === "loading") return <Loading />;
     if (session.status === "unauthenticated") {
@@ -51,38 +38,18 @@ function Clips() {
                 <link rel="stylesheet" href="/disable_scroll.css" />
             </Head>
             <Header isSearch={false} />
-
             <PageContainer>
-                <Row className="flex flex-col">
-                    <Row className="min-h-56 flex flex-row p-5">
-                        <h1 className="h-full w-1/2 text-4xl grid">
-                            {}
-                            <span className="place-items-center">{clip.data?.clip?.word.ar}</span>
-                        </h1>
+                <div className="flex flex-col max-w-sm ">
+                    {
+                        clip.data?.clips?.map((clip, i) => <ClipReview ClipName={clip.clipName}
+                            ar={clip.word.ar}
+                            clipId={clip.id}
+                            number={i}
+                            username={clip?.user?.name || ""}
 
-                        <Row className="flex flex-row  gap-2 h-full w-1/2 ">
-                            <Audio clipID={clip.data?.clip?.id || ""} />
-                            <Button type="primary" disabled={disabled} onClick={() => handleAction(clip.data?.clip?.id || "", "accept")} className="w-full h-1/3 bg-green-500 hover:bg-green-400">
-                                <CheckCircleTwoTone twoToneColor="#52c41a" className="text-4xl" />
-                                قبول
-                            </Button>
-                            <Button disabled={disabled} onClick={() => handleAction(clip.data?.clip?.id || "", "reject")} type="primary" danger className="w-full h-1/3">
-                                <CloseOutlined className="text-4xl" />
-                                رفض
-                            </Button>
-                        </Row>
-                    </Row>
-                    <Row className="flex flex-col gap-2 p-5 w-full">
-                        {clip.data?.RandomClips.map((clip, i) => {
-                            return (
-                                <Row key={clip.id} className={`flex flex-row border flex-nowrap whitespace-nowrap w-full  rounded-md border-cyan-900 ${i === 0 && "bg-green-500"}`}>
-                                    {i === 0 && <DoubleLeftOutlined className="self-center p-2 text-2xl" />}
-                                    <Row className={`p-2 text-2xl overflow-hidden max-w-fit text-ellipsis ${i === 0 && "text-slate-50"}`}>{clip.word.ar}</Row>
-                                </Row>
-                            );
-                        })}
-                    </Row>
-                </Row>
+                        />)
+                    }
+                </div>
             </PageContainer>
         </>
     );
@@ -90,34 +57,32 @@ function Clips() {
 
 export default Clips;
 
-function Audio({ clipID }: { clipID: string }) {
-    const [time, setTime] = React.useState<number>(0);
+function ClipReview({ number, ar, username, clipId, ClipName }: {
+    number: number, ar: string, username: string, clipId: string, ClipName: string
+}) {
+    const rej = trpc.clip.reject.useMutation()
+    const acc = trpc.clip.accept.useMutation()
+    const disabled = useState(false);
+    const audio = useAudio({
+        src: `/api/clip/${clipId}/stream`
+    })
+    return <div className={`flex p-1 justify-between ${number % 2 === 0 ? "bg-slate-200" : ""}`}>
+        <span>{ar}</span>
+        <span>{username}</span>
+        {audio[0]}
+        <ButtonGroup className="gap-2">
+            <Button disabled={disabled[0]} onClick={audio[2].play} small icon="play" text="play" />
+            <Button disabled={disabled[0]} 
+            onClick={async() => {
+                await acc.mutateAsync({clipId: clipId})
+                disabled[1](true)
 
-    const [Element, state, { pause, play, seek }] = useAudio({
-        src: `${getBaseUrl()}/api/clip/${clipID}/stream`,
-    });
-
-    useInterval(() => {
-        if (!state.playing) return;
-        setTime(state.time * state.duration * 10);
-    }, 100);
-
-    return (
-        <Row className="flex w-full h-1/3 justify-center">
-            {Element}
-            <Button
-                className="w-1/2 h-[100%]"
-                onClick={() => {
-                    pause();
-                    seek(0);
-                }}
-            >
-                reset
-            </Button>
-            <Button className="w-1/2 h-full" onClick={() => (state.playing ? pause() : play())}>
-                {!state.playing && <PlayCircleOutlined className="text-4xl" />}
-                {state.playing && <PauseCircleOutlined className="text-4xl" />}
-            </Button>
-        </Row>
-    );
+            }}
+            small intent="primary" text="accept" />
+            <Button disabled={disabled[0]} onClick={async () => {
+                await rej.mutateAsync({ clipId: clipId })
+                disabled[1](true)
+            }} small intent="danger" icon="trash" text="reject" />
+        </ButtonGroup>
+    </div>
 }

@@ -1,4 +1,7 @@
 import "../styles/globals.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+
 import { type AppType } from "next/app";
 import GoToUp from "@ui/GoToUp";
 import Loading from "@ui/Loading";
@@ -6,7 +9,7 @@ import Loading from "@ui/Loading";
 import React, { Suspense } from "react";
 import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
-import { showNotification } from "./contribute";
+
 import { SessionProvider } from "next-auth/react";
 import { trpc } from "@utils/trpc";
 
@@ -34,11 +37,11 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
         function handleError(error: AxiosError) {
             // @ts-ignore
             error.response?.data.message.map((e) => {
-                showNotification({
-                    message: e,
-                    type: "error",
-                    destroyAfter: 1500,
-                });
+                // showNotification({
+                //     message: e,
+                //     type: "error",
+                //     destroyAfter: 1500,
+                // });
             });
 
             return Promise.reject(error);

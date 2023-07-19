@@ -8,10 +8,10 @@ const insertWord = protectedProcedure.input(Schema$Client$InsertWord).mutation(a
         data: {
             ar: opts.input.word,
             // @ts-ignore
-            userId: req?.session?.id,
-            id: randomUUID(),
+            userId: opts.ctx.user.id,
             accepted: false,
-            description: opts.input.description || "",
+            description_ar: opts.input.description_ar || "",
+            description_en: opts.input.description_en || "",
         },
     });
 

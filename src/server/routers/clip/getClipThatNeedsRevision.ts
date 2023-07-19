@@ -1,8 +1,8 @@
 import prisma from "@db";
 import { adminProcedure, publicProcedure } from "src/server/trpc";
 
-const getClipThatNeedsRevision = adminProcedure.query(async (opts) => {
-    let clip = await prisma.clip.findFirst({
+const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
+    let clip = await prisma.clip.findMany({
         where: {
             accept: false,
         },
@@ -14,25 +14,18 @@ const getClipThatNeedsRevision = adminProcedure.query(async (opts) => {
                 },
             },
             clipName: true,
-        },
-    });
-
-    let RandomClips = await prisma.clip.findMany({
-        where: {
-            accept: false,
-        },
-        take: 5,
-        select: {
-            id: true,
-            word: {
+            user: {
                 select: {
-                    ar: true,
-                },
-            },
+                    name: true, image: true
+                }
+            }
         },
+        take: 15
     });
 
-    return { clip, RandomClips };
+ 
+
+    return { clips: clip };
 });
 
 export default getClipThatNeedsRevision;
