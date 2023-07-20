@@ -23,13 +23,14 @@ type User = {
     id: string;
 };
 
-function Users() {
+function Users({userID}: {userID: string}) {
     const session = useSession();
     const router = useRouter();
     const [email, setEmail] = useState("");
 
     const user = trpc.user.query$user.useQuery({
         _email: email,
+        _userId: userID
     });
 
     React.useEffect(() => {
@@ -55,9 +56,7 @@ function Users() {
 
             <PageContainer>
                 <InputGroup value={email} className="text-center font-bold text-lg" placeholder="email@email.email" onChange={(e) => setEmail(e.target.value)} />
-                    {
-                        
-                    }
+                <UserItem email={user?.data?.email || ""} id={user?.data?.id || ""} image={user?.data?.image || ""} name={user?.data?.name || ""}  role={user?.data?.role || ""}/>
             </PageContainer>
         </>
     );
