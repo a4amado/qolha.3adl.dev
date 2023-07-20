@@ -1,10 +1,12 @@
 import NextImage from "next/image";
- import ChangeRole from "@ui/ChangeRole";
-import { roles } from "./ChangeRole";
+import ChangeRole from "@ui/ChangeRole";
 import BanUser from "./BanUser";
 import { Callout } from "@blueprintjs/core";
+import Prisma from "@prisma/client"
 
-export default function UserItem(user: { image: string; name: string; role: roles & string; email: string; id: string }) {
+
+
+export default function UserItem(user: { image: string; name: string; role: Prisma.Role; email: string; id: string }) {
     return (
         <div className="flex flex-row items-center justify-end bg-gray-100 p-4 w-full">
             <div className="rounded-full overflow-hidden mb-4">
@@ -12,10 +14,10 @@ export default function UserItem(user: { image: string; name: string; role: role
             </div>
             <div className="w-full h-full px-3 ">
                 <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
-                <Callout title={user.role}  />
+                <Callout title={user.role} />
             </div>
             <BanUser userId={user.id} />
-            <ChangeRole currentRole={user.role} id={user.id} email={user.email} />
+            <ChangeRole />
         </div>
     );
 }

@@ -2,22 +2,24 @@ import PageContainer from "@ui/PageContainer";
  
  import React, { useState } from "react";
 import Header from "@ui/header";
-import   { roles } from "@ui/ChangeRole";
-  import { useSession } from "next-auth/react";
+   import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
  import UserItem from "@ui/UserItem";
 import { trpc } from "@utils/trpc";
-import { useFirstMountState } from "react-use";
-import { InputGroup } from "@blueprintjs/core";
+ import { InputGroup } from "@blueprintjs/core";
+import Prisma from "@prisma/client";
 
 type User = {
     image: string;
     name: string;
-    role: roles;
+    role: Prisma.Role;
     email: string;
     id: string;
 };
+
+
+ 
 
 function Users({userID}: {userID: string}) {
     const session = useSession();

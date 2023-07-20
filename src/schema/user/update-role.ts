@@ -5,13 +5,13 @@ const Schema$API$UpdateRole = yup.object({
         userId: yup.string().uuid().required(),
     }),
     body: yup.object({
-        role: yup.string().oneOf(["admin", "user"]).required(),
+        role: yup.string().oneOf(["admin", "user", "owner"]).required(),
     }),
 });
 
 const Schema$Client$UpdateRole = yup.object({
     userId: yup.string().uuid(),
-    role: yup.string().oneOf(["admin", "user"]),
+    role: yup.string().oneOf(["admin", "user", "owner"]).required(),
 });
 
 export { Schema$API$UpdateRole, Schema$Client$UpdateRole };
