@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import React from "react";
 import { appRouter } from "src/server/routers/_app";
+import ClipComponent from "@ui/ClipComponent";
 
 export function getQueryItem(query: any) {
     if (typeof query === "string") return query;
@@ -45,13 +46,7 @@ export default function WordPage({ trpcState, wordID }: any) {
             <PageContainer>
                 <>
                     {word?.data &&
-                        word?.data?.clips.map((e) => {
-                            return (
-                                <p key={e.id}>
-                                    <audio controls src={`http://localhost:3000/api/clip/${e.clipName}/stream`} />
-                                </p>
-                            );
-                        })}
+                        word?.data?.clips.map((e, i) => <ClipComponent ClipName={e.id} ar={word.data?.ar || ""} clipId={e.id} number={i} username={e.userId || ""} />)}
                 </>
             </PageContainer>
         </>
