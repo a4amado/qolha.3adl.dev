@@ -13,17 +13,17 @@ export function getQueryItem(query: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const helpers = createServerSideHelpers({
-        router: appRouter,
-        ctx: {},
-    });
+    // const helpers = createServerSideHelpers({
+    //     router: appRouter,
+    //     ctx: {},
+    // });
 
     // @ts-ignore
-    await helpers.word.getWord.prefetch(ctx.query.wordID);
+    // await helpers.word.getWord.prefetch(ctx.query.wordID);
 
     return {
         props: {
-            trpcState: helpers.dehydrate(),
+            // trpcState: helpers.dehydrate(),
             wordID: ctx.query.wordID,
         },
     };
