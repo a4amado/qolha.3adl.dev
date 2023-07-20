@@ -56,6 +56,7 @@ function Users({userID}: {userID: string}) {
 
             <PageContainer>
                 <InputGroup value={email} className="text-center font-bold text-lg" placeholder="email@email.email" onChange={(e) => setEmail(e.target.value)} />
+                {/* @ts-ignore */}
                 <UserItem email={user?.data?.email || ""} id={user?.data?.id || ""} image={user?.data?.image || ""} name={user?.data?.name || ""}  role={user?.data?.role || ""}/>
             </PageContainer>
         </>
