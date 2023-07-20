@@ -1,7 +1,7 @@
-import React, { memo } from "react";
+import React  from "react";
 
-import { Row, Spin } from "antd";
-import Router from "next/router";
+ import Router from "next/router";
+import { Spinner } from "@blueprintjs/core";
 
 const Loading = () => {
     React.useEffect(() => {
@@ -13,10 +13,10 @@ const Loading = () => {
     return (
         <>
             <div className="active-loading" id="loading-container">
-                <Row className="flex flex-col w-screen h-screen align-center justify-center">
-                    <Row className="text-center font-bold text-6xl w-full block">قٌلها</Row>
-                    <Spin />
-                </Row>
+                <div className="flex flex-col w-screen h-screen align-center justify-center">
+                    <div className="text-center font-bold text-6xl w-full block">قٌلها</div>
+                    <Spinner  />
+                </div>
             </div>
         </>
     );

@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
@@ -17,7 +17,7 @@ model User {
     emailVerified DateTime?
     image         String?
     code          String?
-    role          String    @default("user")
+    role          Role    @default(user)
     country       String?
 
     account      Account?
@@ -34,11 +34,11 @@ model User {
     @@index([email, role])
 }
 
-// enum Role {
-//     owner
-//     admin
-//     user
-// }
+enum Role {
+    owner
+    admin
+    user
+}
 
 model Account {
     id String @unique @default(uuid())

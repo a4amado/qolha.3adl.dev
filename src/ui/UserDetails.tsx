@@ -44,10 +44,10 @@ function SocialMediaList({ list }: { list: UserDetailsProps["socialMedia"] }) {
 export default function UserDetails(UserDetails: UserDetailsProps) {
     return (
         <>
-            <Typography className="text-4xl">{UserDetails.name}</Typography>
-            <Typography>
+            <span className="text-4xl">{UserDetails.name}</span>
+            <span>
                 {UserDetails.country} <EG title="sss" width={30} height={20} />
-            </Typography>
+            </span>
             <JoinedSince date="2001-01-01" />
 
             <SocialMediaList

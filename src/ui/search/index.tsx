@@ -6,6 +6,8 @@ import { trpc } from "@utils/trpc";
 export default function Search() {
     const w = trpc.search.searchWord.useQuery();
     const word = useState("");
+    console.log(w.data);
+    
     return (
         <div className="w-full h-screen">
             <span className="block w-full h-1/5" >
@@ -15,7 +17,7 @@ export default function Search() {
             <p>Found {w.data?.length} words</p>
             <>
                 {(w.data || []).map(e => (
-                    <NextLink key={e.id} className="block" href={`/word/${e.id}`}>{e.id}</NextLink>
+                    <NextLink key={e.id} className="block" href={`/word/${e.id}`}>{e.ar}</NextLink>
                 ))}
             </>
         </div>

@@ -1,12 +1,31 @@
-import { randomUUID } from "node:crypto";
+import prisma from "@db";
 import { publicProcedure, router } from "src/server/trpc";
 
 const searchRouter = router({
     searchWord: publicProcedure.query(async () => {
-        return  Array.from({ length: 10 }, () => ({
-            ar: "أنا",
-            id: randomUUID(),
-        }));
+        const ss = await prisma.word.findMany({
+            where: {
+                accepted: true,
+
+            },
+            include: {
+                clips: {
+                    select: {
+                        id: true,
+
+                    }
+                }
+            },
+            orderBy: {
+                clips: {
+                    _count: "desc"
+                }
+            }
+
+        });
+        console.log(ss);
+        
+        return ss
     }),
 });
 

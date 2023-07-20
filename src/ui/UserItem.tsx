@@ -1,8 +1,8 @@
 import NextImage from "next/image";
-import RoleBadge from "@ui/RoleBadge";
-import ChangeRole from "@ui/ChangeRole";
+ import ChangeRole from "@ui/ChangeRole";
 import { roles } from "./ChangeRole";
 import BanUser from "./BanUser";
+import { Callout } from "@blueprintjs/core";
 
 export default function UserItem(user: { image: string; name: string; role: roles & string; email: string; id: string }) {
     return (
@@ -12,7 +12,7 @@ export default function UserItem(user: { image: string; name: string; role: role
             </div>
             <div className="w-full h-full px-3 ">
                 <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
-                <RoleBadge role={user.role} />
+                <Callout title={user.role}  />
             </div>
             <BanUser userId={user.id} />
             <ChangeRole currentRole={user.role} id={user.id} email={user.email} />
