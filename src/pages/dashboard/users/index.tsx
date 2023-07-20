@@ -10,10 +10,10 @@ import RoleBadge from "@ui/RoleBadge";
 import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
-import queryUserGen from "src/query/user";
-import UserItem from "@ui/UserItem";
+ import UserItem from "@ui/UserItem";
 import { trpc } from "@utils/trpc";
 import { useFirstMountState } from "react-use";
+import { InputGroup } from "@blueprintjs/core";
 
 type User = {
     image: string;
@@ -54,16 +54,10 @@ function Users() {
             <Header isSearch={false} />
 
             <PageContainer>
-                <Input value={email} className="text-center font-bold text-lg" placeholder="email@email.email" onChange={(e) => setEmail(e.target.value)} />
-
-                <div className="flex flex-col justify-evenly w-full gap-2">
-                    {user.status === "error" && <Alert type="error" message="Error" />}
-
-                    {user.status === "loading" && <Spin />}
-
-                    {/* @ts-ignore */}
-                    {user.status === "success" && user.data && <UserItem email={user.data.email} id={user.data.id} image={user.data.image || ""} name={user.data.name} role={user.data.role ? user.data.role : "user"} />}
-                </div>
+                <InputGroup value={email} className="text-center font-bold text-lg" placeholder="email@email.email" onChange={(e) => setEmail(e.target.value)} />
+                    {
+                        
+                    }
             </PageContainer>
         </>
     );

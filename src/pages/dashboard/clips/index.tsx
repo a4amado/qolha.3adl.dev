@@ -46,6 +46,7 @@ function Clips() {
                             clipId={clip.id}
                             number={i}
                             username={clip?.user?.name || ""}
+                            key={clip.id}
 
                         />)
                     }

@@ -34,8 +34,8 @@ function SocialMediaLink({ link }: { link: UserDetailsProps["socialMedia"][numbe
 function SocialMediaList({ list }: { list: UserDetailsProps["socialMedia"] }) {
     return (
         <Col className="flex">
-            {list.map((media) => (
-                <SocialMediaLink link={media} />
+            {list.map((media, i) => (
+                <SocialMediaLink key={i}  link={media} />
             ))}
         </Col>
     );

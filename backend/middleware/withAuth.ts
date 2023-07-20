@@ -6,7 +6,7 @@ import { Session } from "next-auth";
 
 export type UserSession = Session["user"] & { role: string };
 const withAuth = async (req: NextApiRequest & { user?: UserSession }, res: NextApiResponse, next: any) => {
-    const user = await getServerSession(req, res, authOptions);
+    const user = await getServerSession(req, res, authOptions(req, res));
     if (!user?.expires) {
         return res.status(StatusCodes.UNAUTHORIZED).send({
             message: [ReasonPhrases.UNAUTHORIZED],

@@ -15,7 +15,7 @@ export default function Search() {
             <p>Found {w.data?.length} words</p>
             <>
                 {(w.data || []).map(e => (
-                    <NextLink className="block" href={`/word/${e.id}`}>{e.id}</NextLink>
+                    <NextLink key={e.id} className="block" href={`/word/${e.id}`}>{e.id}</NextLink>
                 ))}
             </>
         </div>

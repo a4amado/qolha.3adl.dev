@@ -4,7 +4,7 @@ import ChangeRole from "@ui/ChangeRole";
 import { roles } from "./ChangeRole";
 import BanUser from "./BanUser";
 
-export default function UserItem(user: { image: string; name: string; role: roles & string & {}; email: string; id: string }) {
+export default function UserItem(user: { image: string; name: string; role: roles & string; email: string; id: string }) {
     return (
         <div className="flex flex-row items-center justify-end bg-gray-100 p-4 w-full">
             <div className="rounded-full overflow-hidden mb-4">
@@ -14,7 +14,7 @@ export default function UserItem(user: { image: string; name: string; role: role
                 <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
                 <RoleBadge role={user.role} />
             </div>
-            <BanUser userId={user.id} callback={console.log} />
+            <BanUser userId={user.id} />
             <ChangeRole currentRole={user.role} id={user.id} email={user.email} />
         </div>
     );

@@ -8,9 +8,9 @@ import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import prisma from "@db";
 
 async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
-    const b = await getServerSession(req, res, authOptions);
+    const b = await getServerSession(req, res, authOptions(req, res));
  
-    if (!b?.user) return {};
+    if (!b) return {};
 
     const user = await prisma.user.findUnique({
         where: {
