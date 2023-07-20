@@ -2,7 +2,7 @@ import prisma from "@db";
 import { adminProcedure, publicProcedure } from "src/server/trpc";
 
 const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
-    let clip = await prisma.clip.findMany({
+    const clip = await prisma.clip.findMany({
         where: {
             accept: false,
         },

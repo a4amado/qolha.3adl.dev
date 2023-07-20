@@ -35,7 +35,7 @@ function Users({userID}: {userID: string}) {
 
     React.useEffect(() => {
         if (!email) return;
-        let g = setTimeout(() => {
+        const g = setTimeout(() => {
             user.refetch();
         }, 500);
         return () => clearTimeout(g);

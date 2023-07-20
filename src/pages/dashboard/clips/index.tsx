@@ -41,7 +41,7 @@ function Clips() {
             <PageContainer>
                 <div className="flex flex-col max-w-sm ">
                     {
-                        clip.data?.clips?.map((clip, i) => <ClipComponent ClipName={clip.clipName}
+                        clip.data?.clips?.map((clip, i) => <ClipComponent
                             ar={clip.word.ar}
                             clipId={clip.id}
                             number={i}
