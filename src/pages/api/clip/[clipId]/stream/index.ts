@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import butters from "a-promise-wrapper";
-import prisma from "@backend/db";
+ import prisma from "@backend/db";
 import Codes from "http-status-codes";
 import ValidateInput from "@backend/utils/validate.yup";
 import { createReadStream } from "node:fs";
@@ -16,8 +15,7 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(Codes.BAD_REQUEST).send({
             message: errors,
         });
-    const clip = await butters(
-        prisma.clip.findFirst({
+    const clip = await prisma.clip.findFirst({
             where: {
                 id: Input.query.clipId,
             },
@@ -25,22 +23,15 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
                 clipName: true,
                 id: true,
             },
-        })
-    );
-    if (clip.error) {
-        console.error(clip.error);
-
-        return res.status(Codes.INTERNAL_SERVER_ERROR).send({
-            message: ["Internal Server Error"],
         });
-    }
 
-    if (!clip.data) {
+
+    if (!clip) {
         return res.status(Codes.NOT_FOUND).send({
             message: ["clip Not Found"],
         });
     }
-    const stream = createReadStream(join(process.cwd(), "files", "clips", clip.data.clipName));
+    const stream = createReadStream(join(process.cwd(), "files", "clips", clip.clipName));
 
     stream.on("error", (error) => {
         console.error(errors);

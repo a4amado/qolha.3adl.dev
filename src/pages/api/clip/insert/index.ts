@@ -1,7 +1,6 @@
 import Codes from "http-status-codes";
 
-import butters from "a-promise-wrapper";
-import prisma from "@backend/db";
+ import prisma from "@backend/db";
 
 import ValidateInput from "@backend/utils/validate.yup";
 import nextConnect from "next-connect";
@@ -28,8 +27,7 @@ route.post(withAuth, uploader.single("clip"), async (req: NextApiRequest & { cli
             message: errors,
         });
 
-    const clip = await butters(
-        prisma.clip.create({
+    const clip = await  prisma.clip.create({
             data: {
                 // @ts-ignore
 
@@ -42,10 +40,10 @@ route.post(withAuth, uploader.single("clip"), async (req: NextApiRequest & { cli
                 reject: false,
             },
         })
-    );
+    
 
-    if (clip.error) {
-        console.error(clip.error);
+    if (!clip) {
+        
 
         return res.status(Codes.INTERNAL_SERVER_ERROR).send({
             message: ["Internal Server Error"],
