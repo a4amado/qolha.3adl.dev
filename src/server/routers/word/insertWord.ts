@@ -1,7 +1,6 @@
 import prisma from "@db";
 import { Schema$Client$InsertWord } from "@schema/word/insert-word";
-import { randomUUID } from "node:crypto";
-import { protectedProcedure, publicProcedure } from "src/server/trpc";
+ import { protectedProcedure, publicProcedure } from "src/server/trpc";
 
 const insertWord = protectedProcedure.input(Schema$Client$InsertWord).mutation(async (opts) => {
     const word = await prisma.word.create({

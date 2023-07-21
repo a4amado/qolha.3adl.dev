@@ -1,11 +1,10 @@
 import prisma from "@db";
 import { Schema$Client$AcceptClip } from "@schema/clip/accept-clip";
 import { TRPCError } from "@trpc/server";
-import aPromiseWrapper from "a-promise-wrapper";
-import { adminProcedure, publicProcedure } from "src/server/trpc";
+ import { adminProcedure, publicProcedure } from "src/server/trpc";
 
 const AcceptClip = adminProcedure.input(Schema$Client$AcceptClip).mutation(async (opts) => {
-    const acceptedClip = await aPromiseWrapper(
+    const acceptedClip = await 
         prisma.clip.update({
             where: {
                 id: opts.input.clipId,
@@ -14,14 +13,8 @@ const AcceptClip = adminProcedure.input(Schema$Client$AcceptClip).mutation(async
                 accept: true,
             },
         })
-    );
-    if (acceptedClip.error) {
-        return new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-        });
-    }
-
-    return acceptedClip.data;
+    
+    return acceptedClip;
 });
 
 export default AcceptClip;
