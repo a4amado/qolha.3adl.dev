@@ -10,8 +10,8 @@
   "/": "pages/index.html",
   "/word/add": "pages/word/add.html",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/clip/insert": "pages/api/clip/insert.js",
   "/word/[wordID]": "pages/word/[wordID].js",
+  "/api/clip/insert": "pages/api/clip/insert.js",
   "/_document": "pages/_document.js",
   "/404": "pages/404.html"
 }
