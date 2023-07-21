@@ -55,11 +55,11 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
         },
         events: {
             async createUser(message) {
-                const Location = await getLocation(ip  || "");
+                const Location = await getLocation(ip || "");
                 if (!Location) return;
                 await prisma.user.update({
                     data: {
-                        country: Location.continent_code ,
+                        country: Location.continent_code,
                     },
                     where: {
                         email: message.user.email || "",

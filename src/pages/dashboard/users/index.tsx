@@ -25,7 +25,7 @@ function Users({ userID }: { userID: string }) {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [id, _] = useState(userID);
-    const ss = useRef<OverlayToaster>(null)
+    const ss = useRef<OverlayToaster>(null);
     const user = trpc.user.query$user.useMutation();
     const isNoData = !user?.isLoading && !user.data;
 
@@ -44,10 +44,9 @@ function Users({ userID }: { userID: string }) {
     return (
         <>
             <Header isSearch={false} />
-            <OverlayToaster  position={ "top-right" as ToasterPosition} ref={ss}/>
+            <OverlayToaster position={"top-right" as ToasterPosition} ref={ss} />
             <PageContainer>
                 <Formik
-                
                     onSubmit={(e) => {
                         user.mutateAsync({
                             _email: e.email,

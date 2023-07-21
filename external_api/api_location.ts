@@ -13,37 +13,31 @@ const object = {
     continent_name: "Asia",
     is_eu: false,
     connection: {
-      asn: 58715,
-      isp: "Earth Telecommunication ( pvt ) Limited"
+        asn: 58715,
+        isp: "Earth Telecommunication ( pvt ) Limited",
     },
     location: {
-      capital: "Dhaka",
-      native_name: "Bangladesh",
-      flag: "http://assets.apilayer.com/flags/BD.svg",
-      top_level_domains: [
-        ".bd"
-      ],
-      calling_codes: [
-        "880"
-      ]
+        capital: "Dhaka",
+        native_name: "Bangladesh",
+        flag: "http://assets.apilayer.com/flags/BD.svg",
+        top_level_domains: [".bd"],
+        calling_codes: ["880"],
     },
     currencies: [
-      {
-        name: "Bangladeshi taka",
-        code: "BDT",
-        symbol: "৳"
-      }
+        {
+            name: "Bangladeshi taka",
+            code: "BDT",
+            symbol: "৳",
+        },
     ],
-    timezones: [
-      "UTC+06:00"
-    ]
-  }
+    timezones: ["UTC+06:00"],
+};
 
 type Ip_To_LocationType = typeof object;
-export default async function getLocation(ip: string) : Promise<Ip_To_LocationType> {
+export default async function getLocation(ip: string): Promise<Ip_To_LocationType> {
     return Axios({
         headers: {
-            apikey: "1mudQokhKL4bcz4mOuLYNVut4FlgfEEi",
+            apikey: "k",
         },
         method: "GET",
         url: `https://api.apilayer.com/ip_to_location/${ip}`,

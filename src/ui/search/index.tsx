@@ -18,6 +18,7 @@ export default function Search() {
                 <h1 className="text-5xl text-center justify-middle">Qolha</h1>
             </span>
             <Select
+            onItemSelect={console.log}
                 popoverTargetProps={{}}
                 className="w-full"
                 filterable={false}
