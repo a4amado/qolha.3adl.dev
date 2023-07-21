@@ -44,7 +44,7 @@
         "mailersend": "^2.2.0",
         "mime": "^3.0.0",
         "mimetype": "^0.0.8",
-        "next": "13.4.0",
+        "next": "13.4.10",
         "next-auth": "^4.22.3",
         "next-connect": "^0.13.0",
         "query-string": "^8.1.0",
