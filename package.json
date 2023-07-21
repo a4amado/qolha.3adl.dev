@@ -97,7 +97,9 @@
         "typescript": "^4.9.5"
     },
     "engines": {
-        "vscode": "^1.22.0"
+        "vscode": "^1.22.0",
+        "node": "v20.4.0"
      },
     "packageManager": "pnpm@8.6.7"
 }
+
