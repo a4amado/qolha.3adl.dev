@@ -1,13 +1,13 @@
 import PageContainer from "@ui/PageContainer";
- 
- import React, { useState } from "react";
+
+import React, { useState } from "react";
 import Header from "@ui/header";
-   import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
- import UserItem from "@ui/UserItem";
+import UserItem from "@ui/UserItem";
 import { trpc } from "@utils/trpc";
- import { InputGroup } from "@blueprintjs/core";
+import { InputGroup } from "@blueprintjs/core";
 import Prisma from "@prisma/client";
 
 type User = {
@@ -18,17 +18,14 @@ type User = {
     id: string;
 };
 
-
- 
-
-function Users({userID}: {userID: string}) {
+function Users({ userID }: { userID: string }) {
     const session = useSession();
     const router = useRouter();
     const [email, setEmail] = useState("");
 
     const user = trpc.user.query$user.useQuery({
         _email: email,
-        _userId: userID
+        _userId: userID,
     });
 
     React.useEffect(() => {
@@ -55,7 +52,7 @@ function Users({userID}: {userID: string}) {
             <PageContainer>
                 <InputGroup value={email} className="text-center font-bold text-lg" placeholder="email@email.email" onChange={(e) => setEmail(e.target.value)} />
                 {/* @ts-ignore */}
-                <UserItem email={user?.data?.email || ""} id={user?.data?.id || ""} image={user?.data?.image || ""} name={user?.data?.name || ""}  role={user?.data?.role || ""}/>
+                <UserItem email={user?.data?.email || ""} id={user?.data?.id || ""} image={user?.data?.image || ""} name={user?.data?.name || ""} role={user?.data?.role || ""} />
             </PageContainer>
         </>
     );

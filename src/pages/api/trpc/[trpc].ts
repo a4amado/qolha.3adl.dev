@@ -9,7 +9,7 @@ import prisma from "@db";
 
 async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
     const b = await getServerSession(req, res, authOptions(req, res));
- 
+
     if (!b) return {};
 
     const user = await prisma.user.findUnique({
@@ -19,7 +19,7 @@ async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
     });
 
     console.log(user);
-    
+
     if (!user) return {};
 
     return {

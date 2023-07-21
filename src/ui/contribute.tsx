@@ -7,13 +7,16 @@ import useAxios from "axios-hooks";
 import React, { useState } from "react";
 
 export default function ContributeClip() {
-    const [open, setOpen]= useState(false)
+    const [open, setOpen] = useState(false);
     const [blob, setBlob] = useState<Blob | null>(null);
     const [link, setLink] = useState<string | null>(null);
     const word = trpc.word.getWordThatNeedsClips.useQuery();
     const [clip, axiosSubmitClip] = useAxios({ method: "POST", withCredentials: true, url: `/api/clip/insert?wordId=${word?.data && word?.data?.id}`, headers: { "Content-Type": "multipart/form-data" } }, { manual: true });
     const deleted_word = trpc.word.deleteWord.useMutation();
 
+    React.useEffect(() => {
+        word.refetch();
+    }, [open]);
 
     function handleFinishRecord(recordBlob: Blob, link: string) {
         setBlob(recordBlob);
@@ -32,19 +35,25 @@ export default function ContributeClip() {
 
     return (
         <>
-            <Button title="open" text="open" onClick={() => setOpen(true)}/>
-            <Dialog isOpen={open} title="Contribute a Clip" icon="info-sign" isCloseButtonShown onClose={() => setOpen(false)} >
-                <DialogBody >
+            <Button title="open" text="open" onClick={() => setOpen(true)} />
+            <Dialog isOpen={open} title="Contribute a Clip" icon="info-sign" isCloseButtonShown onClose={() => setOpen(false)}>
+                <DialogBody>
                     <div className="flex flex-col max-w-xs border p-2 mx-auto">
                         <Callout icon="new-text-box" intent="primary" title={word.data?.ar} />
                         <Recorder disabled={!word.data?.ar} onFinish={handleFinishRecord} />
 
                         <ButtonGroup nonce="">
-                            <Button className="w-1/2" intent="primary" icon="send-to" title="send" text="send" onClick={async () => {
-                                await submitClip()
-                                word.refetch();
-
-                            }} />
+                            <Button
+                                className="w-1/2"
+                                intent="primary"
+                                icon="send-to"
+                                title="send"
+                                text="send"
+                                onClick={async () => {
+                                    await submitClip();
+                                    word.refetch();
+                                }}
+                            />
                             <Divider />
                             <Button
                                 className="w-1/2"
@@ -63,7 +72,7 @@ export default function ContributeClip() {
                         </ButtonGroup>
                     </div>{" "}
                 </DialogBody>
-                <DialogFooter actions={<Button  onClick={() => setOpen(false)} intent="primary" text="Close" />} />
+                <DialogFooter actions={<Button onClick={() => setOpen(false)} intent="primary" text="Close" />} />
             </Dialog>
         </>
     );

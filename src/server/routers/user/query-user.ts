@@ -1,7 +1,7 @@
 import prisma from "@db";
 import { Schema$Client$UserQuery } from "@schema/user/query-user";
 import { TRPCError } from "@trpc/server";
- import { publicProcedure } from "src/server/trpc";
+import { publicProcedure } from "src/server/trpc";
 
 const QueryUser = publicProcedure.input(Schema$Client$UserQuery).query(async (opts) => {
     const findUniqueWhere: { email?: string; id?: string } = {};

@@ -6,26 +6,23 @@ const searchRouter = router({
         const ss = await prisma.word.findMany({
             where: {
                 accepted: true,
-
             },
             include: {
                 clips: {
                     select: {
                         id: true,
-
-                    }
-                }
+                    },
+                },
             },
             orderBy: {
                 clips: {
-                    _count: "desc"
-                }
-            }
-
+                    _count: "desc",
+                },
+            },
         });
         console.log(ss);
-        
-        return ss
+
+        return ss;
     }),
 });
 

@@ -15,7 +15,6 @@ export const middleware = t.middleware;
 export const publicProcedure = t.procedure;
 
 export const protectedProcedure = t.procedure.use((opts) => {
- 
     // @ts-ignore
     if (!opts.ctx.user)
         throw new TRPCError({
@@ -27,7 +26,7 @@ export const protectedProcedure = t.procedure.use((opts) => {
 export const adminProcedure = protectedProcedure.use((opts) => {
     // @ts-ignore
     if (!["admin", "owner"].includes(opts.ctx.user?.role)) {
-         throw new TRPCError({
+        throw new TRPCError({
             code: "UNAUTHORIZED",
         });
     }

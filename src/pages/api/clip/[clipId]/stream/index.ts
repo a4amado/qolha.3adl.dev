@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
- import prisma from "@backend/db";
+import prisma from "@backend/db";
 import Codes from "http-status-codes";
 import ValidateInput from "@backend/utils/validate.yup";
 import { createReadStream } from "node:fs";
@@ -16,15 +16,14 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
             message: errors,
         });
     const clip = await prisma.clip.findFirst({
-            where: {
-                id: Input.query.clipId,
-            },
-            select: {
-                clipName: true,
-                id: true,
-            },
-        });
-
+        where: {
+            id: Input.query.clipId,
+        },
+        select: {
+            clipName: true,
+            id: true,
+        },
+    });
 
     if (!clip) {
         return res.status(Codes.NOT_FOUND).send({

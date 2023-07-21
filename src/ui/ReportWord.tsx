@@ -12,9 +12,7 @@ export default function ReportWord({ wordID }: { wordID: string }) {
                     <span>ما سبب الابلاغ ؟</span>
                     {/* <Select className="mx-2" defaultValue="اختر سبب الابلاغ" style={{ width: 250 }} options={["كاني", "ماني"].map((e) => ({ value: e, lable: e.toUpperCase() }))}></Select> */}
 
-                    <Button className="mx-2">
-                        إبلاغ
-                    </Button>
+                    <Button className="mx-2">إبلاغ</Button>
                 </DialogBody>
             </Dialog>
         </>

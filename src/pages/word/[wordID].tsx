@@ -1,7 +1,7 @@
 import PageContainer from "@ui/PageContainer";
 import Header from "@ui/header";
 import { trpc } from "@utils/trpc";
-import type  { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import React from "react";
 import { appRouter } from "src/server/routers/_app";
@@ -44,10 +44,9 @@ export default function WordPage({ trpcState, wordID }: any) {
         <>
             <Header isSearch={true} />
             <PageContainer>
-                <> 
+                <>
                     {word?.data?.ar}
-                    {word?.data &&
-                        word?.data?.clips.map((e, i) => <ClipComponent key={i} ar={word.data?.ar || ""} clipId={e.id} number={i} username={e.userId || ""} />)}
+                    {word?.data && word?.data?.clips.map((e, i) => <ClipComponent key={i} ar={word.data?.ar || ""} clipId={e.id} number={i} username={e.userId || ""} />)}
                 </>
             </PageContainer>
         </>

@@ -1,22 +1,22 @@
 import Codes from "http-status-codes";
 
- import prisma from "@backend/db";
+import prisma from "@backend/db";
 
 import ValidateInput from "@backend/utils/validate.yup";
 import nextConnect from "next-connect";
 
 import { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import withAuth from "@backend/middleware/withAuth";
-import MicroFormidable from "@backend/middleware/MicroFormidable";
-import { join } from "path";
-import { randomUUID } from "crypto";
-import { Schema$API$InsertClip } from "@schema/clip/insert-clip";
 
+import { Schema$API$InsertClip } from "@schema/clip/insert-clip";
+import MicroFormidable from "@backend/middleware/MicroFormidable";
+import path, { join } from "path";
+import { randomUUID } from "crypto";
 const route = nextConnect();
 
 const uploader = new MicroFormidable({
     uploadDir: join(process.cwd(), "files", "clips"),
-    filename: () => `clip-from-user${randomUUID()}`,
+    filename: () => `clip-from-user-[${randomUUID()}]`,
 });
 
 // @ts-ignore
@@ -27,24 +27,20 @@ route.post(withAuth, uploader.single("clip"), async (req: NextApiRequest & { cli
             message: errors,
         });
 
-    const clip = await  prisma.clip.create({
-            data: {
-                // @ts-ignore
+    const clip = await prisma.clip.create({
+        data: {
+            // @ts-ignore
+            clipName: req.clip[0].newFilename,
+            // @ts-ignore
+            userId: req.user.id,
 
-                clipName: req.clip.newFilename,
-                // @ts-ignore
-                userId: req.user.id,
-
-                wordId: Input.query.wordId,
-                accept: false,
-                reject: false,
-            },
-        })
-    
+            wordId: Input.query.wordId,
+            accept: false,
+            reject: false,
+        },
+    });
 
     if (!clip) {
-        
-
         return res.status(Codes.INTERNAL_SERVER_ERROR).send({
             message: ["Internal Server Error"],
         });

@@ -1,3 +1,3 @@
 import ClipComponent from "./ClipComponent";
 
-export default ClipComponent
+export default ClipComponent;

@@ -25,10 +25,13 @@ class MicroFormidable extends Formidable {
                 if (typeof file === "undefined") {
                     return res.status(500).json({ error: `file ${fieldName} is required` });
                 }
-                if (Array.isArray(file)) {
+
+                // @ts-ignore
+                if (file?.length > 1) {
                     return res.status(500).json({ error: `file ${fieldName} should only be one file` });
                 }
 
+                // @ts-ignore
                 req[fieldName] = file;
 
                 return next();

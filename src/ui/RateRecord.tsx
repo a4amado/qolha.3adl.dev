@@ -34,10 +34,8 @@ function Rate({ type, toogle, text, clipID }: { type: "GOOD" | "BAD" | "OK"; too
             });
             ToogleLoading(false);
             toogle(false);
-        } catch (error) { }
+        } catch (error) {}
     }
 
-    return (
-        <Button loading={isLoading} onClick={doRate} text={type}  title={type} />
-    );
+    return <Button loading={isLoading} onClick={doRate} text={type} title={type} />;
 }

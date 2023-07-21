@@ -1,15 +1,14 @@
 import Header from "@ui/header";
 import Head from "next/head";
-import React  from "react";
+import React from "react";
 import PageContainer from "@ui/PageContainer";
 
 import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
-import {  trpc } from "@utils/trpc";
+import { trpc } from "@utils/trpc";
 
 import ClipComponent from "@ui/ClipComponent";
-
 
 function Clips() {
     const session = useSession();
@@ -18,9 +17,6 @@ function Clips() {
     const clip = trpc.clip.getClipThatNeedsRevision.useQuery();
     const acc = trpc.clip.accept.useMutation();
     const rej = trpc.clip.reject.useMutation();
-
- 
-
 
     if (session.status === "loading") return <Loading />;
     if (session.status === "unauthenticated") {
@@ -40,16 +36,9 @@ function Clips() {
             <Header isSearch={false} />
             <PageContainer>
                 <div className="flex flex-col max-w-sm ">
-                    {
-                        clip.data?.clips?.map((clip, i) => <ClipComponent
-                            ar={clip.word.ar}
-                            clipId={clip.id}
-                            number={i}
-                            username={clip?.user?.name || ""}
-                            key={clip.id}
-
-                        />)
-                    }
+                    {clip.data?.clips?.map((clip, i) => (
+                        <ClipComponent ar={clip.word.ar} clipId={clip.id} number={i} username={clip?.user?.name || ""} key={clip.id} />
+                    ))}
                 </div>
             </PageContainer>
         </>

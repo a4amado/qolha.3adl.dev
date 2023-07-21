@@ -16,14 +16,13 @@ const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
             clipName: true,
             user: {
                 select: {
-                    name: true, image: true
-                }
-            }
+                    name: true,
+                    image: true,
+                },
+            },
         },
-        take: 15
+        take: 15,
     });
-
- 
 
     return { clips: clip };
 });

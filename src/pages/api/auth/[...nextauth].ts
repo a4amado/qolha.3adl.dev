@@ -2,12 +2,12 @@ import prisma, { AuthPrisma } from "@db";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import requestIp from "request-ip"
+import requestIp from "request-ip";
 
 export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOptions => {
-    const ip = requestIp.getClientIp(req)
+    const ip = requestIp.getClientIp(req);
 
-    return ({
+    return {
         providers: [
             GoogleProvider({
                 clientId: process.env.GOOGLE_CLIENT_ID,
@@ -21,6 +21,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
                         ...token,
                         // @ts-ignore
                         role: user?.role,
+                        id: user?.id,
                     };
                 }
                 return token;
@@ -28,6 +29,8 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
             async session({ session, token, user }) {
                 // @ts-ignore
                 session.user.role = token?.role || user?.role;
+                // @ts-ignore
+                session.user.id = token?.id || user?.id;
                 return session;
             },
             signIn(params) {
@@ -53,17 +56,16 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
             async createUser(message) {
                 await prisma.user.update({
                     data: {
-                        country: ip || ""
+                        country: ip || "",
                     },
                     where: {
-                        email: message.user.email || ""
-                    }
-                })
+                        email: message.user.email || "",
+                    },
+                });
             },
-        }
-    })
-}
+        },
+    };
+};
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  
     return await NextAuth(req, res, authOptions(req, res));
 }
