@@ -1,7 +1,8 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
-const DynamicPage = dynamic(() => import("./index").then((module) => module.default));
+// @ts-ignore
+const DynamicPage = dynamic(() => import("../index").then((module) => module.default));
 
 export default function Home() {
     const router = useRouter();

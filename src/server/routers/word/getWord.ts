@@ -10,6 +10,17 @@ const getWord = publicProcedure.input(string().required().uuid()).query(async (o
         include: {
             clips: {
                 take: 10,
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            role: true,
+                            country: true,
+                            image: true,
+                        },
+                    },
+                },
             },
         },
     });

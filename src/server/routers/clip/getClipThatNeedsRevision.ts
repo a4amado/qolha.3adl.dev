@@ -18,13 +18,20 @@ const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
                 select: {
                     name: true,
                     image: true,
+                    id: true,
                 },
             },
         },
         take: 15,
     });
 
-    return { clips: clip };
+    const PendingClips = await prisma.clip.aggregate({
+        where: {
+            accept: false,
+        },
+        _count: { _all: true },
+    });
+    return { clips: clip, PendingClips };
 });
 
 export default getClipThatNeedsRevision;

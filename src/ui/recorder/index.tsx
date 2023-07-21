@@ -1,8 +1,6 @@
 import { Button, ButtonGroup, Divider, Callout } from "@blueprintjs/core";
-import PageContainer from "@ui/PageContainer";
-import Header from "@ui/header";
 import useRecorder from "@wmik/use-media-recorder";
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 
 export default function Recorder({ onFinish, disabled }: { onFinish: (b: Blob, link: string) => any; disabled: boolean }) {
     const link = useState("");

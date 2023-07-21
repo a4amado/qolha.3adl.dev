@@ -46,7 +46,7 @@ export default function WordPage({ trpcState, wordID }: any) {
             <PageContainer>
                 <>
                     {word?.data?.ar}
-                    {word?.data && word?.data?.clips.map((e, i) => <ClipComponent key={i} ar={word.data?.ar || ""} clipId={e.id} number={i} username={e.userId || ""} />)}
+                    {word?.data && word?.data?.clips.map((e, i) => <ClipComponent userId={e.user?.id || ""} key={i} ar={word.data?.ar || ""} clipId={e.id} number={i} username={e.id || ""} />)}
                 </>
             </PageContainer>
         </>

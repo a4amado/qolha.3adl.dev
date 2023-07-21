@@ -4,9 +4,9 @@ import { publicProcedure, router } from "src/server/trpc";
 const searchRouter = router({
     searchWord: publicProcedure.query(async () => {
         const ss = await prisma.word.findMany({
-            where: {
-                accepted: true,
-            },
+            // where: {
+            //     accepted: true,
+            // },
             include: {
                 clips: {
                     select: {

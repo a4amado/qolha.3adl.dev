@@ -1,5 +1,3 @@
-import { Typography, Col } from "antd";
-
 import { EG } from "country-flag-icons/react/3x2";
 import JoinedSince from "@ui/JoinedSince";
 import React, { ReactNode } from "react";
@@ -33,11 +31,11 @@ function SocialMediaLink({ link }: { link: UserDetailsProps["socialMedia"][numbe
 
 function SocialMediaList({ list }: { list: UserDetailsProps["socialMedia"] }) {
     return (
-        <Col className="flex">
+        <div className="flex">
             {list.map((media, i) => (
                 <SocialMediaLink key={i} link={media} />
             ))}
-        </Col>
+        </div>
     );
 }
 

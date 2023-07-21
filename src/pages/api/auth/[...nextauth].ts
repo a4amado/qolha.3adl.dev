@@ -1,4 +1,5 @@
 import prisma, { AuthPrisma } from "@db";
+import getLocation from "external_api/api_location";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
@@ -54,9 +55,11 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
         },
         events: {
             async createUser(message) {
+                const Location = await getLocation(ip  || "");
+                if (!Location) return;
                 await prisma.user.update({
                     data: {
-                        country: ip || "",
+                        country: Location.continent_code ,
                     },
                     where: {
                         email: message.user.email || "",

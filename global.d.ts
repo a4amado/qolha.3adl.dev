@@ -20,6 +20,7 @@ declare global {
             GOOGLE_CLIENT_ID: string;
             DISCORD_CLIENT_SECRET: string;
             GOOGLE_CLIENT_SECRET: string;
+            IP_TO_LOCATION_API_KEY: string;
         }
     }
 }

@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { trpc } from "@utils/trpc";
 
 import ClipComponent from "@ui/ClipComponent";
+import { Button, ButtonGroup } from "@blueprintjs/core";
 
 function Clips() {
     const session = useSession();
@@ -36,9 +37,15 @@ function Clips() {
             <Header isSearch={false} />
             <PageContainer>
                 <div className="flex flex-col max-w-sm ">
-                    {clip.data?.clips?.map((clip, i) => (
-                        <ClipComponent ar={clip.word.ar} clipId={clip.id} number={i} username={clip?.user?.name || ""} key={clip.id} />
-                    ))}
+                    <ButtonGroup>
+                        <Button icon="feed" text="fetch" onClick={() => clip.refetch()} />
+                    </ButtonGroup>
+                    <span>{clip?.data?.PendingClips._count._all} clips needs revision</span>
+                    <table width="500px">
+                        {clip.data?.clips?.map((clip, i) => (
+                            <ClipComponent userId={clip.user?.id || ""} ar={clip.word.ar} clipId={clip.id} number={i} username={clip?.user?.name || ""} key={clip.id} />
+                        ))}
+                    </table>
                 </div>
             </PageContainer>
         </>
