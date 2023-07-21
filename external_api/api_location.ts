@@ -37,11 +37,10 @@ type Ip_To_LocationType = typeof object;
 export default async function getLocation(ip: string): Promise<Ip_To_LocationType> {
     return Axios({
         headers: {
-            apikey: "k",
+            apikey: process.env.IP_TO_LOCATION_API_KEY,
         },
         method: "GET",
         url: `https://api.apilayer.com/ip_to_location/${ip}`,
     })
-        .then((e) => e.data)
-        .catch((e) => false);
+        
 }

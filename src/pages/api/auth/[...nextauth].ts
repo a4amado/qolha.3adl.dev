@@ -55,16 +55,26 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
         },
         events: {
             async createUser(message) {
-                const Location = await getLocation(ip || "");
-                if (!Location) return;
-                await prisma.user.update({
-                    data: {
-                        country: Location.continent_code,
-                    },
-                    where: {
-                        email: message.user.email || "",
-                    },
-                });
+                
+                
+
+                try {
+                    const Location = await getLocation(ip || "");
+                    console.log(Location);
+                        
+                } catch (error) {
+                    console.log(error);
+                }
+
+                // if (!Location) return;
+                // await prisma.user.update({
+                //     data: {
+                //         country: Location.continent_code,
+                //     },
+                //     where: {
+                //         email: message.user.email || "",
+                //     },
+                // });
             },
         },
     };
