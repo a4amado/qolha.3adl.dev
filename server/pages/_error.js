@@ -2,122 +2,132 @@
 (() => {
 var exports = {};
 exports.id = 820;
-exports.ids = [820];
+exports.ids = [820,660];
 exports.modules = {
 
-/***/ 5808:
-/***/ ((module, exports, __webpack_require__) => {
+/***/ 1618:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   config: () => (/* binding */ config),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   getServerSideProps: () => (/* binding */ getServerSideProps),
+/* harmony export */   getStaticPaths: () => (/* binding */ getStaticPaths),
+/* harmony export */   getStaticProps: () => (/* binding */ getStaticProps),
+/* harmony export */   reportWebVitals: () => (/* binding */ reportWebVitals),
+/* harmony export */   routeModule: () => (/* binding */ routeModule),
+/* harmony export */   unstable_getServerProps: () => (/* binding */ unstable_getServerProps),
+/* harmony export */   unstable_getServerSideProps: () => (/* binding */ unstable_getServerSideProps),
+/* harmony export */   unstable_getStaticParams: () => (/* binding */ unstable_getStaticParams),
+/* harmony export */   unstable_getStaticPaths: () => (/* binding */ unstable_getStaticPaths),
+/* harmony export */   unstable_getStaticProps: () => (/* binding */ unstable_getStaticProps)
+/* harmony export */ });
+/* harmony import */ var next_dist_server_future_route_modules_pages_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(361);
+/* harmony import */ var next_dist_server_future_route_modules_pages_module__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(next_dist_server_future_route_modules_pages_module__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4292);
+/* harmony import */ var next_dist_pages_document__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3078);
+/* harmony import */ var next_dist_pages_document__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_dist_pages_document__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var private_next_pages_app_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5460);
+/* harmony import */ var next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2315);
+/* harmony import */ var next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__);
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([private_next_pages_app_tsx__WEBPACK_IMPORTED_MODULE_3__]);
+private_next_pages_app_tsx__WEBPACK_IMPORTED_MODULE_3__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-Object.defineProperty(exports, "default", ({
-    enumerable: true,
-    get: function() {
-        return Error;
-    }
-}));
-const _interop_require_default = __webpack_require__(659);
-const _react = /*#__PURE__*/ _interop_require_default._(__webpack_require__(6689));
-const _head = /*#__PURE__*/ _interop_require_default._(__webpack_require__(4196));
-const statusCodes = {
-    400: "Bad Request",
-    404: "This page could not be found",
-    405: "Method Not Allowed",
-    500: "Internal Server Error"
-};
-function _getInitialProps(param) {
-    let { res , err  } = param;
-    const statusCode = res && res.statusCode ? res.statusCode : err ? err.statusCode : 404;
-    return {
-        statusCode
-    };
-}
-const styles = {
-    error: {
-        // https://github.com/sindresorhus/modern-normalize/blob/main/modern-normalize.css#L38-L52
-        fontFamily: 'system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-        height: "100vh",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    desc: {
-        display: "inline-block",
-        textAlign: "left"
-    },
-    h1: {
-        display: "inline-block",
-        margin: "0 20px 0 0",
-        paddingRight: 23,
-        fontSize: 24,
-        fontWeight: 500,
-        verticalAlign: "top",
-        lineHeight: "49px"
-    },
-    h2: {
-        fontSize: 14,
-        fontWeight: 400,
-        lineHeight: "49px",
-        margin: 0
-    }
-};
-class Error extends _react.default.Component {
-    render() {
-        const { statusCode , withDarkMode =true  } = this.props;
-        const title = this.props.title || statusCodes[statusCode] || "An unexpected error has occurred";
-        return /*#__PURE__*/ _react.default.createElement("div", {
-            style: styles.error
-        }, /*#__PURE__*/ _react.default.createElement(_head.default, null, /*#__PURE__*/ _react.default.createElement("title", null, statusCode ? statusCode + ": " + title : "Application error: a client-side exception has occurred")), /*#__PURE__*/ _react.default.createElement("div", null, /*#__PURE__*/ _react.default.createElement("style", {
-            dangerouslySetInnerHTML: {
-                /* CSS minified from
-                body { margin: 0; color: #000; background: #fff; }
-                .next-error-h1 {
-                  border-right: 1px solid rgba(0, 0, 0, .3);
-                }
+        // Next.js Route Loader
+        
+        
 
-                ${
-                  withDarkMode
-                    ? `@media (prefers-color-scheme: dark) {
-                  body { color: #fff; background: #000; }
-                  .next-error-h1 {
-                    border-right: 1px solid rgba(255, 255, 255, .3);
-                  }
-                }`
-                    : ''
-                }
-               */ __html: "body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}" + (withDarkMode ? "@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}" : "")
-            }
-        }), statusCode ? /*#__PURE__*/ _react.default.createElement("h1", {
-            className: "next-error-h1",
-            style: styles.h1
-        }, statusCode) : null, /*#__PURE__*/ _react.default.createElement("div", {
-            style: styles.desc
-        }, /*#__PURE__*/ _react.default.createElement("h2", {
-            style: styles.h2
-        }, this.props.title || statusCode ? title : /*#__PURE__*/ _react.default.createElement(_react.default.Fragment, null, "Application error: a client-side exception has occurred (see the browser console for more information)"), "."))));
-    }
-}
-(()=>{
-    Error.displayName = "ErrorPage";
-})();
-(()=>{
-    Error.getInitialProps = _getInitialProps;
-})();
-(()=>{
-    Error.origGetInitialProps = _getInitialProps;
-})();
-if ((typeof exports.default === "function" || typeof exports.default === "object" && exports.default !== null) && typeof exports.default.__esModule === "undefined") {
-    Object.defineProperty(exports.default, "__esModule", {
-        value: true
-    });
-    Object.assign(exports.default, exports);
-    module.exports = exports.default;
-} //# sourceMappingURL=_error.js.map
+        // Import the app and document modules.
+        
+        
 
+        // Import the userland code.
+        
+
+        // Re-export the component (should be the default export).
+        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "default"));
+
+        // Re-export methods.
+        const getStaticProps = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "getStaticProps")
+        const getStaticPaths = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "getStaticPaths")
+        const getServerSideProps = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "getServerSideProps")
+        const config = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "config")
+        const reportWebVitals = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "reportWebVitals")
+        
+
+        // Re-export legacy methods.
+        const unstable_getStaticProps = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "unstable_getStaticProps")
+        const unstable_getStaticPaths = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "unstable_getStaticPaths")
+        const unstable_getStaticParams = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "unstable_getStaticParams")
+        const unstable_getServerProps = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "unstable_getServerProps")
+        const unstable_getServerSideProps = (0,next_dist_build_webpack_loaders_next_route_loader_helpers__WEBPACK_IMPORTED_MODULE_1__/* .hoist */ .l)(next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__, "unstable_getServerSideProps")
+
+        // Create and export the route module that will be consumed.
+        const options = {"definition":{"kind":"PAGES","page":"/_error","pathname":"/_error","bundlePath":"","filename":""}}
+        const routeModule = new (next_dist_server_future_route_modules_pages_module__WEBPACK_IMPORTED_MODULE_0___default())({
+          ...options,
+          components: {
+            App: private_next_pages_app_tsx__WEBPACK_IMPORTED_MODULE_3__["default"],
+            Document: (next_dist_pages_document__WEBPACK_IMPORTED_MODULE_2___default()),
+          },
+          userland: next_dist_pages_error__WEBPACK_IMPORTED_MODULE_4__,
+        })
+        
+        
+    
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
+
+/***/ }),
+
+/***/ 9629:
+/***/ ((module) => {
+
+module.exports = require("@blueprintjs/core");
+
+/***/ }),
+
+/***/ 1649:
+/***/ ((module) => {
+
+module.exports = require("next-auth/react");
+
+/***/ }),
+
+/***/ 3076:
+/***/ ((module) => {
+
+module.exports = require("next/dist/server/future/route-modules/route-module.js");
+
+/***/ }),
+
+/***/ 4140:
+/***/ ((module) => {
+
+module.exports = require("next/dist/server/get-page-files.js");
+
+/***/ }),
+
+/***/ 9716:
+/***/ ((module) => {
+
+module.exports = require("next/dist/server/htmlescape.js");
+
+/***/ }),
+
+/***/ 3100:
+/***/ ((module) => {
+
+module.exports = require("next/dist/server/render.js");
+
+/***/ }),
+
+/***/ 6368:
+/***/ ((module) => {
+
+module.exports = require("next/dist/server/utils.js");
 
 /***/ }),
 
@@ -135,10 +145,31 @@ module.exports = require("next/dist/shared/lib/amp-mode.js");
 
 /***/ }),
 
+/***/ 6724:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/constants.js");
+
+/***/ }),
+
 /***/ 2796:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/head-manager-context.js");
+
+/***/ }),
+
+/***/ 8743:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/html-context.js");
+
+/***/ }),
+
+/***/ 8524:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/is-plain-object.js");
 
 /***/ }),
 
@@ -156,6 +187,13 @@ module.exports = require("next/dist/shared/lib/utils/warn-once.js");
 
 /***/ }),
 
+/***/ 1853:
+/***/ ((module) => {
+
+module.exports = require("next/router");
+
+/***/ }),
+
 /***/ 6689:
 /***/ ((module) => {
 
@@ -163,16 +201,24 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 659:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ 272:
+/***/ ((module) => {
 
+module.exports = import("@trpc/client");;
 
+/***/ }),
 
-exports._ = exports._interop_require_default = _interop_require_default;
-function _interop_require_default(obj) {
-    return obj && obj.__esModule ? obj : { default: obj };
-}
+/***/ 7455:
+/***/ ((module) => {
 
+module.exports = import("@trpc/next");;
+
+/***/ }),
+
+/***/ 9648:
+/***/ ((module) => {
+
+module.exports = import("axios");;
 
 /***/ })
 
@@ -183,7 +229,7 @@ function _interop_require_default(obj) {
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [196], () => (__webpack_exec__(5808)));
+var __webpack_exports__ = __webpack_require__.X(0, [78,234,614,315,460], () => (__webpack_exec__(1618)));
 module.exports = __webpack_exports__;
 
 })();

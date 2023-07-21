@@ -75,7 +75,7 @@ module.exports = require("process");
 
 /***/ }),
 
-/***/ 2444:
+/***/ 5425:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
@@ -84,11 +84,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _trpc_server_adapters_next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6282);
-/* harmony import */ var _server_routers_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8954);
+/* harmony import */ var _server_routers_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1475);
 /* harmony import */ var next_auth_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2113);
 /* harmony import */ var next_auth_next__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_auth_next__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var src_pages_api_auth_nextauth___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6041);
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5196);
+/* harmony import */ var src_pages_api_auth_nextauth___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8683);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1116);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_trpc_server_adapters_next__WEBPACK_IMPORTED_MODULE_0__, _server_routers_app__WEBPACK_IMPORTED_MODULE_1__]);
 ([_trpc_server_adapters_next__WEBPACK_IMPORTED_MODULE_0__, _server_routers_app__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -96,10 +96,10 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_trp
 
 
 
-async function createContext({ req , res  }) {
+async function createContext({ req, res }) {
     const b = await (0,next_auth_next__WEBPACK_IMPORTED_MODULE_2__.getServerSession)(req, res, (0,src_pages_api_auth_nextauth___WEBPACK_IMPORTED_MODULE_3__.authOptions)(req, res));
     if (!b) return {};
-    const user = await _db__WEBPACK_IMPORTED_MODULE_4__/* ["default"].user.findUnique */ .Z.user.findUnique({
+    const user = await _db__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z.user.findUnique({
         where: {
             email: b?.user?.email || ""
         }
@@ -120,11 +120,11 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 2642:
+/***/ 7354:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "H": () => (/* binding */ Schema$Client$AcceptClip)
+/* harmony export */   H: () => (/* binding */ Schema$Client$AcceptClip)
 /* harmony export */ });
 /* unused harmony export Schema$API$AcceptClip */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -143,11 +143,11 @@ const Schema$Client$AcceptClip = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape
 
 /***/ }),
 
-/***/ 3916:
+/***/ 7827:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "f": () => (/* binding */ Schema$Client$QueryClip)
+/* harmony export */   f: () => (/* binding */ Schema$Client$QueryClip)
 /* harmony export */ });
 /* unused harmony export Schema$API$QueryClip */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -188,11 +188,11 @@ const Schema$Client$QueryClip = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape(
 
 /***/ }),
 
-/***/ 9166:
+/***/ 5187:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "T": () => (/* binding */ Schema$Client$InsertRate)
+/* harmony export */   T: () => (/* binding */ Schema$Client$InsertRate)
 /* harmony export */ });
 /* unused harmony export Schema$API$InsertRate */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -221,11 +221,11 @@ const Schema$Client$InsertRate = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape
 
 /***/ }),
 
-/***/ 6351:
+/***/ 2399:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "S": () => (/* binding */ Schema$Client$BanUser)
+/* harmony export */   S: () => (/* binding */ Schema$Client$BanUser)
 /* harmony export */ });
 /* unused harmony export Schema$API$BanUser */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -244,11 +244,11 @@ const Schema$Client$BanUser = yup__WEBPACK_IMPORTED_MODULE_0__.object({
 
 /***/ }),
 
-/***/ 9852:
+/***/ 2122:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "w": () => (/* binding */ Schema$Client$DeleteUser)
+/* harmony export */   w: () => (/* binding */ Schema$Client$DeleteUser)
 /* harmony export */ });
 /* unused harmony export Schema$API$DeleteUser */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -267,11 +267,11 @@ const Schema$Client$DeleteUser = yup__WEBPACK_IMPORTED_MODULE_0__.object({
 
 /***/ }),
 
-/***/ 9406:
+/***/ 1402:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "A": () => (/* binding */ Schema$Client$UserQuery)
+/* harmony export */   A: () => (/* binding */ Schema$Client$UserQuery)
 /* harmony export */ });
 /* unused harmony export Schema$API$UserQuery */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -302,11 +302,11 @@ const Schema$Client$UserQuery = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape(
 
 /***/ }),
 
-/***/ 3088:
+/***/ 2279:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "e": () => (/* binding */ Schema$Client$DeleteWord)
+/* harmony export */   e: () => (/* binding */ Schema$Client$DeleteWord)
 /* harmony export */ });
 /* unused harmony export Schema$API$DeleteWord */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -325,11 +325,11 @@ const Schema$Client$DeleteWord = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape
 
 /***/ }),
 
-/***/ 4455:
+/***/ 690:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "H": () => (/* binding */ Schema$Client$InsertWord)
+/* harmony export */   H: () => (/* binding */ Schema$Client$InsertWord)
 /* harmony export */ });
 /* unused harmony export Schema$API$InsertWord */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -350,19 +350,19 @@ const Schema$Client$InsertWord = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape
 
 /***/ }),
 
-/***/ 8954:
+/***/ 1475:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "q": () => (/* binding */ appRouter)
+/* harmony export */   q: () => (/* binding */ appRouter)
 /* harmony export */ });
-/* harmony import */ var _trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2075);
-/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6223);
-/* harmony import */ var _clip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1467);
-/* harmony import */ var _word__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3464);
-/* harmony import */ var _rate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4270);
-/* harmony import */ var _search__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6981);
+/* harmony import */ var _trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2686);
+/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1795);
+/* harmony import */ var _clip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9206);
+/* harmony import */ var _word__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7540);
+/* harmony import */ var _rate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8465);
+/* harmony import */ var _search__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4066);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_trpc__WEBPACK_IMPORTED_MODULE_0__, _user__WEBPACK_IMPORTED_MODULE_1__, _clip__WEBPACK_IMPORTED_MODULE_2__, _word__WEBPACK_IMPORTED_MODULE_3__, _rate__WEBPACK_IMPORTED_MODULE_4__, _search__WEBPACK_IMPORTED_MODULE_5__]);
 ([_trpc__WEBPACK_IMPORTED_MODULE_0__, _user__WEBPACK_IMPORTED_MODULE_1__, _clip__WEBPACK_IMPORTED_MODULE_2__, _word__WEBPACK_IMPORTED_MODULE_3__, _rate__WEBPACK_IMPORTED_MODULE_4__, _search__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -385,23 +385,23 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 8385:
+/***/ 2873:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2642);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7354);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const AcceptClip = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure.input */ .qF.input(_schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$AcceptClip */ .H).mutation(async (opts)=>{
-    const acceptedClip = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].clip.update */ .Z.clip.update({
+const AcceptClip = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure */ .qF.input(_schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$AcceptClip */ .H).mutation(async (opts)=>{
+    const acceptedClip = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.clip.update({
         where: {
             id: opts.input.clipId
         },
@@ -418,21 +418,21 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 8612:
+/***/ 510:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_1__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
-const getClipThatNeedsRevision = src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure.query */ .$y.query(async (opts)=>{
-    const clip = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].clip.findMany */ .Z.clip.findMany({
+const getClipThatNeedsRevision = src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure */ .$y.query(async (opts)=>{
+    const clip = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.clip.findMany({
         where: {
             accept: false
         },
@@ -464,18 +464,18 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 1467:
+/***/ 9206:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2075);
-/* harmony import */ var _getClipThatNeedsRevision__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8612);
-/* harmony import */ var _acceptClip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8385);
-/* harmony import */ var _rejectClip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6272);
-/* harmony import */ var _queryClip__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3633);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2686);
+/* harmony import */ var _getClipThatNeedsRevision__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(510);
+/* harmony import */ var _acceptClip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2873);
+/* harmony import */ var _rejectClip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4036);
+/* harmony import */ var _queryClip__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(930);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _getClipThatNeedsRevision__WEBPACK_IMPORTED_MODULE_1__, _acceptClip__WEBPACK_IMPORTED_MODULE_2__, _rejectClip__WEBPACK_IMPORTED_MODULE_3__, _queryClip__WEBPACK_IMPORTED_MODULE_4__]);
 ([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _getClipThatNeedsRevision__WEBPACK_IMPORTED_MODULE_1__, _acceptClip__WEBPACK_IMPORTED_MODULE_2__, _rejectClip__WEBPACK_IMPORTED_MODULE_3__, _queryClip__WEBPACK_IMPORTED_MODULE_4__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -496,22 +496,22 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 3633:
+/***/ 930:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_clip_query_clip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3916);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_clip_query_clip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7827);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const queryClip = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .publicProcedure.input */ .$y.input(_schema_clip_query_clip__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$QueryClip */ .f).query(async (opts)=>{
+const queryClip = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .publicProcedure */ .$y.input(_schema_clip_query_clip__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$QueryClip */ .f).query(async (opts)=>{
     const query = {};
     if (opts.input._userId) {
         query.where = {
@@ -528,7 +528,7 @@ const queryClip = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .publicProcedur
         query.take = opts.input._limit;
     }
     query.select = {};
-    const clips = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].clip.findMany */ .Z.clip.findMany(query);
+    const clips = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.clip.findMany(query);
     return clips;
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (queryClip);
@@ -538,23 +538,23 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 6272:
+/***/ 4036:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2642);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7354);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const rejectClip = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure.input */ .qF.input(_schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$AcceptClip */ .H).mutation(async (opts)=>{
-    const deletedClip = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].clip["delete"] */ .Z.clip["delete"]({
+const rejectClip = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure */ .qF.input(_schema_clip_accept_clip__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$AcceptClip */ .H).mutation(async (opts)=>{
+    const deletedClip = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.clip.delete({
         where: {
             id: opts.input.clipId
         }
@@ -568,15 +568,15 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 4270:
+/***/ 8465:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2075);
-/* harmony import */ var _insertRate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2364);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2686);
+/* harmony import */ var _insertRate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9976);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _insertRate__WEBPACK_IMPORTED_MODULE_1__]);
 ([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _insertRate__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -591,23 +591,23 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 2364:
+/***/ 9976:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_rate_insert_rate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9166);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_rate_insert_rate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5187);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const insertRate = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .publicProcedure.input */ .$y.input(_schema_rate_insert_rate__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$InsertRate */ .T).query(async (opts)=>{
-    const clipRate = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].rate.upsert */ .Z.rate.upsert({
+const insertRate = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .publicProcedure */ .$y.input(_schema_rate_insert_rate__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$InsertRate */ .T).query(async (opts)=>{
+    const clipRate = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.rate.upsert({
         create: {
             clipId: opts.input.clipId,
             // @ts-ignore
@@ -637,22 +637,22 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 6981:
+/***/ 4066:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_1__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 const searchRouter = (0,src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .router */ .Nd)({
-    searchWord: src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure.query */ .$y.query(async ()=>{
-        const ss = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].word.findMany */ .Z.word.findMany({
+    searchWord: src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure */ .$y.query(async ()=>{
+        const ss = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.word.findMany({
             where: {
                 accepted: true
             },
@@ -680,25 +680,25 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 8040:
+/***/ 7830:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6351);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2399);
 /* harmony import */ var _trpc_server__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2937);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2075);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_trpc_server__WEBPACK_IMPORTED_MODULE_2__, src_server_trpc__WEBPACK_IMPORTED_MODULE_3__]);
 ([_trpc_server__WEBPACK_IMPORTED_MODULE_2__, src_server_trpc__WEBPACK_IMPORTED_MODULE_3__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
 
-const banUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_3__/* .adminProcedure.input */ .qF.input(_schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$BanUser */ .S).mutation(async (opts)=>{
-    const user = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].user.findUnique */ .Z.user.findUnique({
+const banUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_3__/* .adminProcedure */ .qF.input(_schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$BanUser */ .S).mutation(async (opts)=>{
+    const user = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.user.findUnique({
         where: {
             id: opts.input.userId
         }
@@ -708,7 +708,7 @@ const banUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_3__/* .adminProcedure.i
             code: "UNPROCESSABLE_CONTENT"
         });
     }
-    const bannedUser = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].user.update */ .Z.user.update({
+    const bannedUser = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.user.update({
         where: {
             id: opts.input.userId
         },
@@ -716,7 +716,7 @@ const banUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_3__/* .adminProcedure.i
             banned: new Date()
         }
     });
-    await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].session.deleteMany */ .Z.session.deleteMany({
+    await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.session.deleteMany({
         where: {
             userId: opts.input.userId
         }
@@ -730,23 +730,23 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 4079:
+/***/ 4307:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_user_delete_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9852);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_user_delete_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2122);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const deleteUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure.input */ .qF.input(_schema_user_delete_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$DeleteUser */ .w).mutation(async (opts)=>{
-    const deletedAccount = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].user["delete"] */ .Z.user["delete"]({
+const deleteUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure */ .qF.input(_schema_user_delete_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$DeleteUser */ .w).mutation(async (opts)=>{
+    const deletedAccount = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.user.delete({
         where: {
             id: opts.input.userId
         }
@@ -760,18 +760,18 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 6223:
+/***/ 1795:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2075);
-/* harmony import */ var _query_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7137);
-/* harmony import */ var _ban_user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8040);
-/* harmony import */ var _delete_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4079);
-/* harmony import */ var _unbanUser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9890);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2686);
+/* harmony import */ var _query_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7409);
+/* harmony import */ var _ban_user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7830);
+/* harmony import */ var _delete_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4307);
+/* harmony import */ var _unbanUser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1380);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _query_user__WEBPACK_IMPORTED_MODULE_1__, _ban_user__WEBPACK_IMPORTED_MODULE_2__, _delete_user__WEBPACK_IMPORTED_MODULE_3__, _unbanUser__WEBPACK_IMPORTED_MODULE_4__]);
 ([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _query_user__WEBPACK_IMPORTED_MODULE_1__, _ban_user__WEBPACK_IMPORTED_MODULE_2__, _delete_user__WEBPACK_IMPORTED_MODULE_3__, _unbanUser__WEBPACK_IMPORTED_MODULE_4__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -792,29 +792,29 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 7137:
+/***/ 7409:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_user_query_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9406);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_user_query_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1402);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const QueryUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .publicProcedure.input */ .$y.input(_schema_user_query_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$UserQuery */ .A).query(async (opts)=>{
+const QueryUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .publicProcedure */ .$y.input(_schema_user_query_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$UserQuery */ .A).query(async (opts)=>{
     const findUniqueWhere = {};
     if (opts.input._email) {
         findUniqueWhere.email = opts.input._email;
     } else {
         findUniqueWhere.id = opts.input._userId;
     }
-    const user = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].user.findFirst */ .Z.user.findFirst({
+    const user = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.user.findFirst({
         where: findUniqueWhere
     });
     // if (user.error) return new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
@@ -827,23 +827,23 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 9890:
+/***/ 1380:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6351);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2399);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const UnbanUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure.input */ .qF.input(_schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$BanUser */ .S).mutation(async (opts)=>{
-    const bannedUser = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].user.update */ .Z.user.update({
+const UnbanUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure */ .qF.input(_schema_user_ban_user__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$BanUser */ .S).mutation(async (opts)=>{
+    const bannedUser = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.user.update({
         where: {
             id: opts.input.userId
         },
@@ -851,7 +851,7 @@ const UnbanUser = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure
             banned: new Date()
         }
     });
-    await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].session.deleteMany */ .Z.session.deleteMany({
+    await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.session.deleteMany({
         where: {
             userId: opts.input.userId
         }
@@ -865,23 +865,23 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 9039:
+/***/ 9463:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_word_delete_word__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3088);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_word_delete_word__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2279);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const deleteWord = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure.input */ .qF.input(_schema_word_delete_word__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$DeleteWord */ .e).mutation(async (opts)=>{
-    const deletedWord = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].word["delete"] */ .Z.word["delete"]({
+const deleteWord = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .adminProcedure */ .qF.input(_schema_word_delete_word__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$DeleteWord */ .e).mutation(async (opts)=>{
+    const deletedWord = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.word.delete({
         where: {
             id: opts.input.wordId
         }
@@ -895,15 +895,15 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 9635:
+/***/ 9341:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2686);
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5609);
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(yup__WEBPACK_IMPORTED_MODULE_2__);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_1__]);
@@ -911,8 +911,8 @@ src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.t
 
 
 
-const getWord = src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure.input */ .$y.input((0,yup__WEBPACK_IMPORTED_MODULE_2__.string)().required().uuid()).query(async (opts)=>{
-    const Word = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].word.findFirst */ .Z.word.findFirst({
+const getWord = src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure */ .$y.input((0,yup__WEBPACK_IMPORTED_MODULE_2__.string)().required().uuid()).query(async (opts)=>{
+    const Word = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.word.findFirst({
         where: {
             id: opts.input
         },
@@ -931,21 +931,21 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 7938:
+/***/ 7503:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_1__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
-const getWordThatNeedsClips = src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure.query */ .$y.query(async (opts)=>{
-    const word = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].word.findFirst */ .Z.word.findFirst({
+const getWordThatNeedsClips = src_server_trpc__WEBPACK_IMPORTED_MODULE_1__/* .publicProcedure */ .$y.query(async (opts)=>{
+    const word = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.word.findFirst({
         orderBy: {
             clips: {
                 _count: "asc"
@@ -961,18 +961,18 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 3464:
+/***/ 7540:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2075);
-/* harmony import */ var _deleteWord__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9039);
-/* harmony import */ var _insertWord__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8595);
-/* harmony import */ var _getWordThatNeedsClips__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7938);
-/* harmony import */ var _getWord__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9635);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2686);
+/* harmony import */ var _deleteWord__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9463);
+/* harmony import */ var _insertWord__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7818);
+/* harmony import */ var _getWordThatNeedsClips__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7503);
+/* harmony import */ var _getWord__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9341);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _deleteWord__WEBPACK_IMPORTED_MODULE_1__, _insertWord__WEBPACK_IMPORTED_MODULE_2__, _getWordThatNeedsClips__WEBPACK_IMPORTED_MODULE_3__, _getWord__WEBPACK_IMPORTED_MODULE_4__]);
 ([src_server_trpc__WEBPACK_IMPORTED_MODULE_0__, _deleteWord__WEBPACK_IMPORTED_MODULE_1__, _insertWord__WEBPACK_IMPORTED_MODULE_2__, _getWordThatNeedsClips__WEBPACK_IMPORTED_MODULE_3__, _getWord__WEBPACK_IMPORTED_MODULE_4__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -993,23 +993,23 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 8595:
+/***/ 7818:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5196);
-/* harmony import */ var _schema_word_insert_word__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4455);
-/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2075);
+/* harmony import */ var _db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1116);
+/* harmony import */ var _schema_word_insert_word__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(690);
+/* harmony import */ var src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2686);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([src_server_trpc__WEBPACK_IMPORTED_MODULE_2__]);
 src_server_trpc__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
-const insertWord = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .protectedProcedure.input */ .U5.input(_schema_word_insert_word__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$InsertWord */ .H).mutation(async (opts)=>{
-    const word = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"].word.create */ .Z.word.create({
+const insertWord = src_server_trpc__WEBPACK_IMPORTED_MODULE_2__/* .protectedProcedure */ .U5.input(_schema_word_insert_word__WEBPACK_IMPORTED_MODULE_1__/* .Schema$Client$InsertWord */ .H).mutation(async (opts)=>{
+    const word = await _db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z.word.create({
         data: {
             ar: opts.input.word,
             // @ts-ignore
@@ -1028,15 +1028,15 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 2075:
+/***/ 2686:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "$y": () => (/* binding */ publicProcedure),
-/* harmony export */   "Nd": () => (/* binding */ router),
-/* harmony export */   "U5": () => (/* binding */ protectedProcedure),
-/* harmony export */   "qF": () => (/* binding */ adminProcedure)
+/* harmony export */   $y: () => (/* binding */ publicProcedure),
+/* harmony export */   Nd: () => (/* binding */ router),
+/* harmony export */   U5: () => (/* binding */ protectedProcedure),
+/* harmony export */   qF: () => (/* binding */ adminProcedure)
 /* harmony export */ });
 /* unused harmony exports middleware, ownerProcedure */
 /* harmony import */ var _trpc_server__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2937);
@@ -1089,7 +1089,7 @@ __webpack_async_result__();
 var __webpack_require__ = require("../../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [260], () => (__webpack_exec__(2444)));
+var __webpack_exports__ = __webpack_require__.X(0, [683], () => (__webpack_exec__(5425)));
 module.exports = __webpack_exports__;
 
 })();

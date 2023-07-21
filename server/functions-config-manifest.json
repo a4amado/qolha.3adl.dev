@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/auth/[...nextauth]": {},
+    "/api/clip/insert": {},
+    "/word/[wordID]": {}
+  }
+}

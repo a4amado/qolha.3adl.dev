@@ -89,13 +89,13 @@ module.exports = require("process");
 
 /***/ }),
 
-/***/ 4894:
+/***/ 426:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "Z": () => (/* binding */ middleware_MicroFormidable)
+  Z: () => (/* binding */ middleware_MicroFormidable)
 });
 
 ;// CONCATENATED MODULE: external "formidable"
@@ -138,15 +138,15 @@ class MicroFormidable extends external_formidable_namespaceObject.Formidable {
 
 /***/ }),
 
-/***/ 8920:
+/***/ 406:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8010);
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(http_status_codes__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var src_pages_api_auth_nextauth___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6041);
+/* harmony import */ var src_pages_api_auth_nextauth___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8683);
 /* harmony import */ var next_auth_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2113);
 /* harmony import */ var next_auth_next__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_auth_next__WEBPACK_IMPORTED_MODULE_2__);
 
@@ -170,11 +170,11 @@ const withAuth = async (req, res, next)=>{
 
 /***/ }),
 
-/***/ 2566:
+/***/ 9376:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ validateYupSchema)
+/* harmony export */   Z: () => (/* binding */ validateYupSchema)
 /* harmony export */ });
 function validateYupSchema(schema, data) {
     try {
@@ -200,27 +200,27 @@ function validateYupSchema(schema, data) {
 
 /***/ }),
 
-/***/ 5508:
+/***/ 6771:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "config": () => (/* binding */ config),
+/* harmony export */   config: () => (/* binding */ config),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8010);
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(http_status_codes__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _backend_db__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5196);
-/* harmony import */ var _backend_utils_validate_yup__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(2566);
+/* harmony import */ var _backend_db__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1116);
+/* harmony import */ var _backend_utils_validate_yup__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(9376);
 /* harmony import */ var next_connect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5616);
-/* harmony import */ var _backend_middleware_withAuth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8920);
-/* harmony import */ var _backend_middleware_MicroFormidable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4894);
+/* harmony import */ var _backend_middleware_withAuth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(406);
+/* harmony import */ var _backend_middleware_MicroFormidable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(426);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1017);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(6113);
 /* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(crypto__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _schema_clip_insert_clip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(969);
+/* harmony import */ var _schema_clip_insert_clip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(9050);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([next_connect__WEBPACK_IMPORTED_MODULE_2__]);
 next_connect__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
@@ -239,11 +239,11 @@ const uploader = new _backend_middleware_MicroFormidable__WEBPACK_IMPORTED_MODUL
 });
 // @ts-ignore
 route.post(_backend_middleware_withAuth__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z, uploader.single("clip"), async (req, res)=>{
-    const { data: Input , errors  } = (0,_backend_utils_validate_yup__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z)(_schema_clip_insert_clip__WEBPACK_IMPORTED_MODULE_7__/* .Schema$API$InsertClip */ .p, req);
+    const { data: Input, errors } = (0,_backend_utils_validate_yup__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z)(_schema_clip_insert_clip__WEBPACK_IMPORTED_MODULE_7__/* .Schema$API$InsertClip */ .p, req);
     if (errors.length > 0) return res.status((http_status_codes__WEBPACK_IMPORTED_MODULE_0___default().BAD_REQUEST)).send({
         message: errors
     });
-    const clip = await _backend_db__WEBPACK_IMPORTED_MODULE_1__/* ["default"].clip.create */ .Z.clip.create({
+    const clip = await _backend_db__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z.clip.create({
         data: {
             // @ts-ignore
             clipName: req.clip.newFilename,
@@ -275,11 +275,11 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 969:
+/***/ 9050:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "p": () => (/* binding */ Schema$API$InsertClip)
+/* harmony export */   p: () => (/* binding */ Schema$API$InsertClip)
 /* harmony export */ });
 /* unused harmony export Schema$Client$InsertClip */
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5609);
@@ -305,7 +305,7 @@ const Schema$Client$InsertClip = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape
 var __webpack_require__ = require("../../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [260], () => (__webpack_exec__(5508)));
+var __webpack_exports__ = __webpack_require__.X(0, [683], () => (__webpack_exec__(6771)));
 module.exports = __webpack_exports__;
 
 })();
