@@ -1,0 +1,45 @@
+{
+  "../../node_modules/.pnpm/@blueprintjs+icons@5.1.3_@types+react@18.2.15_react-dom@18.2.0_react@18.1.0/node_modules/@blueprintjs/icons/lib/esm/iconLoader.js -> ./paths-loaders/allPathsLoader": {
+    "id": 7776,
+    "files": [
+      "static/chunks/776.9cb18283fc09360b.js"
+    ]
+  },
+  "../../node_modules/.pnpm/@blueprintjs+icons@5.1.3_@types+react@18.2.15_react-dom@18.2.0_react@18.1.0/node_modules/@blueprintjs/icons/lib/esm/iconLoader.js -> ./paths-loaders/splitPathsBySizeLoader": {
+    "id": 9735,
+    "files": [
+      "static/chunks/735.fb4924db6bc0ade9.js"
+    ]
+  },
+  "../../node_modules/.pnpm/@blueprintjs+icons@5.1.3_@types+react@18.2.15_react-dom@18.2.0_react@18.1.0/node_modules/@blueprintjs/icons/lib/esm/paths-loaders/allPathsLoader.js -> ../allPaths": {
+    "id": 3477,
+    "files": [
+      "static/chunks/blueprint-icons-20px-paths.b641c8c6b9d1771b.js",
+      "static/chunks/blueprint-icons-16px-paths.4bcfe8512b883f49.js",
+      "static/chunks/blueprint-icons-all-paths.201404213984d247.js"
+    ]
+  },
+  "../../node_modules/.pnpm/@blueprintjs+icons@5.1.3_@types+react@18.2.15_react-dom@18.2.0_react@18.1.0/node_modules/@blueprintjs/icons/lib/esm/paths-loaders/splitPathsBySizeLoader.js -> ../generated/16px/paths": {
+    "id": 946,
+    "files": [
+      "static/chunks/blueprint-icons-16px-paths.4bcfe8512b883f49.js"
+    ]
+  },
+  "../../node_modules/.pnpm/@blueprintjs+icons@5.1.3_@types+react@18.2.15_react-dom@18.2.0_react@18.1.0/node_modules/@blueprintjs/icons/lib/esm/paths-loaders/splitPathsBySizeLoader.js -> ../generated/20px/paths": {
+    "id": 26,
+    "files": [
+      "static/chunks/blueprint-icons-20px-paths.b641c8c6b9d1771b.js"
+    ]
+  },
+  "dashboard/users/[userID]/index.tsx -> ./index": {
+    "id": 2603,
+    "files": []
+  },
+  "word/add.tsx -> react-quill": {
+    "id": 7803,
+    "files": [
+      "static/chunks/ac363f47.dfafa85bde1e9f56.js",
+      "static/chunks/803.a1c6471d017a21b2.js"
+    ]
+  }
+}

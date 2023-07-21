@@ -1,0 +1,17 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/api/clip/[clipId]/stream": "pages/api/clip/[clipId]/stream.js",
+  "/api": "pages/api.js",
+  "/api/trpc/[trpc]": "pages/api/trpc/[trpc].js",
+  "/dashboard/clips": "pages/dashboard/clips.html",
+  "/dashboard/users/[userID]": "pages/dashboard/users/[userID].html",
+  "/dashboard/users": "pages/dashboard/users.html",
+  "/": "pages/index.html",
+  "/word/add": "pages/word/add.html",
+  "/api/clip/insert": "pages/api/clip/insert.js",
+  "/_document": "pages/_document.js",
+  "/word/[wordID]": "pages/word/[wordID].js",
+  "/404": "pages/404.html"
+}
