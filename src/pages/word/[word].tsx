@@ -1,5 +1,4 @@
 import PageContainer from "@ui/PageContainer";
-import Header from "@ui/header";
 import { trpc } from "@utils/trpc";
 import type { GetServerSideProps } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
@@ -9,7 +8,7 @@ import ClipComponent from "@ui/ClipComponent";
 
 export function getQueryItem(query: any) {
     if (typeof query === "string") return query;
-    if (query.length > 0) return query[0];
+    if (Array.isArray(query)) return query[0];
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -24,30 +23,28 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
         props: {
             // trpcState: helpers.dehydrate(),
-            wordID: ctx.query.wordID,
+            word: ctx.query.word,
         },
     };
 };
 
-export default function WordPage({ trpcState, wordID }: any) {
-    const word = trpc.word.getWord.useQuery(wordID);
+export default function WordPage({ trpcState, word }: any) {
+    const QueryWord = trpc.search.searchWord.useMutation();
 
-    if (word.status != "success") {
-        return (
-            <>
-                <Header isSearch={true} />
-                <PageContainer>Loading</PageContainer>
-            </>
-        );
-    }
+    React.useEffect(() => {
+        QueryWord.mutate(word);
+    }, []);
+
     return (
         <>
-            <Header isSearch={true} />
             <PageContainer>
-                <>
-                    {word?.data?.ar}
-                    {word?.data && word?.data?.clips.map((e, i) => <ClipComponent userId={e.user?.id || ""} key={i} ar={word.data?.ar || ""} clipId={e.id} number={i} username={e.id || ""} />)}
-                </>
+                {QueryWord.data?.map((e) => {
+                    return (
+                        <div>
+                            {e.ar} {e.clips.length}
+                        </div>
+                    );
+                })}
             </PageContainer>
         </>
     );

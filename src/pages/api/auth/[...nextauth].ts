@@ -1,15 +1,10 @@
 import prisma, { AuthPrisma } from "@db";
-import axios from "axios";
-import getLocation from "external_api/api_location";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import requestIp from "request-ip";
+import request_ip from "request-ip";
 
 export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOptions => {
-    const ip = requestIp.getClientIp(req);
-    
-    
     return {
         providers: [
             GoogleProvider({
@@ -54,24 +49,18 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
         secret: process.env.NEXTAUTH_SECRET,
         theme: {
             colorScheme: "auto",
+            logo: "/qolha.png",
         },
         events: {
-            async createUser(message) {
-                const f = await getLocation(ip || "");
-                if (!f) return;
-                
-                
-                
-
-                
-
-                
+            async signIn(message) {
+                const ip = request_ip.getClientIp(req);
                 await prisma.user.update({
-                    data: {
-                        country: f.country_code2,
-                    },
                     where: {
-                        email: message.user.email || "",
+                        id: message.user.id,
+                    },
+                    data: {
+                        last_login: new Date(),
+                        country: ip,
                     },
                 });
             },

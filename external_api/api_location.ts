@@ -26,28 +26,30 @@ const object = {
     connection_type: "",
     organization: "TE-AS",
     currency: {
-      code: "EGP",
-      name: "Egyptian Pound",
-      symbol: "E£"
+        code: "EGP",
+        name: "Egyptian Pound",
+        symbol: "E£",
     },
     time_zone: {
-      name: "Africa/Cairo",
-      offset: 2,
-      current_time: "2023-07-22 02:30:55.133+0300",
-      current_time_unix: 1689982255.133,
-      is_dst: true,
-      dst_savings: 1
-    }
-  }
+        name: "Africa/Cairo",
+        offset: 2,
+        current_time: "2023-07-22 02:30:55.133+0300",
+        current_time_unix: 1689982255.133,
+        is_dst: true,
+        dst_savings: 1,
+    },
+};
 
 type Ip_To_LocationType = typeof object;
 export default async function getLocation(ip: string): Promise<Ip_To_LocationType | null> {
     try {
         const x = await axios.get(`https//api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_TO_LOCATION_API_KEY}&ip=${ip}`);
         const data = x.data as Ip_To_LocationType;
-        return data
+        console.log(data);
+
+        return data;
     } catch (error) {
-        return null
+        console.log(error);
+        return null;
     }
-        
 }

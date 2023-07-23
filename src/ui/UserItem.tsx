@@ -1,6 +1,4 @@
 import NextImage from "next/image";
-import ChangeRole from "@ui/ChangeRole";
-import BanUser from "./BanUser";
 import { Callout } from "@blueprintjs/core";
 import Prisma from "@prisma/client";
 
@@ -12,10 +10,7 @@ export default function UserItem(user: { image: string; name: string; role: Pris
             </div>
             <div className="w-full h-full px-3 ">
                 <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
-                <Callout title={`${user.role} from ${user.country}`} />
             </div>
-            <BanUser userId={user.id} />
-            <ChangeRole />
         </div>
     );
 }

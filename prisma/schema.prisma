@@ -10,6 +10,8 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+
+
 model User {
     id            String    @unique @default(uuid())
     name          String
@@ -19,6 +21,16 @@ model User {
     code          String?
     role          Role    @default(user)
     country       String?
+    last_login DateTime? @default(now())
+    Region String?
+    Real_name String? 
+    Website String? 
+    Language_skills String? 
+
+    Personal_information String? 
+    Business_information String? 
+    Contact_information String? 
+
 
     account      Account?
     words        Word[]
@@ -28,16 +40,38 @@ model User {
     reports      WordReport[]
     clip_reports ClipReport[]
     Session      Session[]
-
+    searchHistory wordPopularity[]
     banned DateTime?
-
+    wordsApproved WordApproval[]
     @@index([email, role])
 }
 
+
+model WordApproval {
+    id String @default(uuid()) @unique
+    wordId String @unique
+    word Word @relation(references: [id], fields: [wordId])
+
+    userId String
+    user User @relation(references: [id], fields: [userId])
+
+}
+
+
+ 
 enum Role {
     owner
     admin
     user
+}
+
+model wordPopularity {
+    id String @default(uuid()) @unique
+    userId String?
+    user User? @relation(references: [id], fields: [userId])
+    wordId String
+    word Word @relation(references: [id],fields: [wordId])
+    date DateTime @default(now())
 }
 
 model Account {
@@ -65,7 +99,7 @@ model Account {
 model Word {
     ar             String
     id             String       @unique @default(uuid())
-    accepted       Boolean      @default(false)
+    
     description_ar String
     description_en String
     userId         String?
@@ -74,6 +108,8 @@ model Word {
     reports        ClipReport[]
     WordReport     WordReport[]
     wordView       WordView[]
+    wordPopularity wordPopularity[]
+    approval WordApproval?
 
     @@index([userId])
 }

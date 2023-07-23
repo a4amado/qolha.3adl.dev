@@ -1,4 +1,6 @@
-import { Button, ButtonGroup, Divider, Callout } from "@blueprintjs/core";
+import { Box, Button, ButtonGroup } from "@mui/material";
+import MicNoneIcon from "@mui/icons-material/MicNone";
+import StopIcon from "@mui/icons-material/Stop";
 import useRecorder from "@wmik/use-media-recorder";
 import { useState } from "react";
 
@@ -16,42 +18,28 @@ export default function Recorder({ onFinish, disabled }: { onFinish: (b: Blob, l
     });
 
     return (
-        <>
-            <Divider role="alert" />
-
+        <Box>
             <ButtonGroup className="w-full flex justify-around">
                 <Button
-                    className="w-1/2"
-                    icon={
-                        ["recording", "paused"].includes(rec.status) ? (
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                            </span>
-                        ) : (
-                            "record"
-                        )
-                    }
-                    disabled={disabled}
+                    className="w-1/2 bg-blue-500 text-white hover:bg-blue-300"
                     onClick={() => (["recording", "paused"].includes(rec.status) ? rec.stopRecording() : rec.startRecording())}
                     title={["recording", "paused"].includes(rec.status) ? "Record" : "Stop_"}
-                    text={["recording", "paused"].includes(rec.status) ? "Stop_" : "Record"}
-                />
-                <Divider />
+                >
+                    {rec.status === "recording" ? <StopIcon /> : <MicNoneIcon />}
+                </Button>
                 <Button
-                    className="w-1/2"
-                    disabled={disabled}
-                    onClick={() => (rec.status === "paused" ? rec.resumeRecording() : rec.pauseRecording())}
-                    title={rec.status === "paused" ? "Resume" : "Pause "}
-                    text={rec.status === "paused" ? "Resume" : "Pause "}
-                />
+                    className="w-1/2 bg-blue-500 text-white hover:bg-blue-300"
+                    disabled={rec.mediaBlob?.size === 0}
+                    onClick={() => {
+                        rec.clearMediaBlob();
+                        rec.clearMediaStream();
+                    }}
+                >
+                    reset
+                </Button>
             </ButtonGroup>
-            <Divider role="alert" />
 
-            <Callout intent="primary" icon="record" className="text-center" title={rec.status} />
-            <Divider role="alert" />
             <audio src={link[0]} controls />
-            <Divider role="alert" />
-        </>
+        </Box>
     );
 }

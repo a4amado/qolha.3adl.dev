@@ -1,46 +1,15 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import Search from "./search";
+import { AppBar, Container, Toolbar, Typography } from "@mui/material";
 
-import { useState } from "react";
-import { Alignment, Button, ButtonGroup, Navbar } from "@blueprintjs/core";
-import NextLink from "next/link";
-import ContributeClip from "./contribute";
-
-export default function Header({ isSearch }: { isSearch: boolean }) {
-    const session = useSession();
-    const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
-    const logedIn = session.status === "authenticated";
-    const NotlogedIn = session.status === "unauthenticated";
+export default function Header() {
     return (
-        <Navbar>
-            <Navbar.Group align={Alignment.LEFT}>
-                <Navbar.Heading>Qolha</Navbar.Heading>
-                <Navbar.Divider />
-                <ButtonGroup>
-                    <NextLink href="/">
-                        <Button className="bp5-minimal" icon="home" text="Home" />
-                    </NextLink>
-
-                    <NextLink href="/word/add">
-                        <Button className="bp5-minimal" icon="add-column-right" text="add word" />
-                    </NextLink>
-
-                    <NextLink hidden={!NotlogedIn} href="/api/auth/signin">
-                        <Button intent="primary" className="bp5-minimal" icon="log-in" text="SignIn" />
-                    </NextLink>
-
-                    <NextLink hidden={!logedIn} href="/api/auth/signout">
-                        <Button intent="danger" className="bp5-minimal" icon="log-out" text="SignOut" />
-                    </NextLink>
-
-                    <NextLink href="/dashboard/clips">
-                        <Button intent="warning" className="bp5-minimal" icon="record" text="Review Clips" />
-                    </NextLink>
-
-                    <ContributeClip />
-                </ButtonGroup>
-            </Navbar.Group>
-        </Navbar>
+        <AppBar sx={{ boxShadow: "none", bgcolor: "wheat" }} className="border-b border-black">
+            <Toolbar className="flex gap-2 w-full mx-5 align-middle p-1 ">
+                <Typography component="h1" className="self-center text-black">
+                    Qolha
+                </Typography>
+                <Search />
+            </Toolbar>
+        </AppBar>
     );
 }

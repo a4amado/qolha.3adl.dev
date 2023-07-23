@@ -24,6 +24,13 @@ const getWord = publicProcedure.input(string().required().uuid()).query(async (o
             },
         },
     });
+
+    await prisma.wordPopularity.create({
+        data: {
+            userId: opts.ctx.user?.id,
+            wordId: Word?.id as string,
+        },
+    });
     return Word;
 });
 

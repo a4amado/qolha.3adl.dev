@@ -1,44 +1,62 @@
-import { InputGroup, MenuItem, Popover } from "@blueprintjs/core";
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import NextLink from "next/link";
 import { trpc } from "@utils/trpc";
-import { Select } from "@blueprintjs/select";
 import "./search.module.scss";
+import { Autocomplete, TextField, MenuItem, Menu } from "@mui/material";
+import { useRef } from "react";
+import Router from "next/router";
+
+interface AutocompleteOption {
+    label: string;
+    id: string;
+    key: string;
+}
 
 export default function Search() {
-    const w = trpc.search.searchWord.useQuery();
     const word = useState("");
-    React.useEffect(() => {
-        w.refetch();
-    }, [word]);
+    const [selected, setSelected] = useState("");
+    const w = trpc.search.searchWord.useMutation();
+
+    const ref = useRef<HTMLInputElement>();
 
     return (
-        <div className="w-full h-screen">
-            <span className="block w-full h-1/5">
-                <h1 className="text-5xl text-center justify-middle">Qolha</h1>
-            </span>
-            <Select
-            onItemSelect={console.log}
-                popoverTargetProps={{}}
-                className="w-full"
-                filterable={false}
-                items={w.data || []}
-                itemRenderer={(e, i) => {
-                    return (
-                        <MenuItem
-                            className={`${i.index % 2 === 0 ? "bg-slate-200" : ""}`}
-                            text={
-                                <NextLink key={e.id} className="block" href={`/word/${e.id}`}>
-                                    {e.ar}
-                                </NextLink>
-                            }
-                        />
-                    );
-                }}
-            >
-                <InputGroup intent="primary" className="text-middle" onChange={(e) => word[1](e.target.value)} value={word[0]} />
-            </Select>
-            <p>Found {w.data?.length} words</p>
-        </div>
+        <Autocomplete
+            blurOnSelect
+            disableClearable
+            freeSolo
+            loading={w.isLoading}
+            onHighlightChange={(_, d) => setSelected(d?.label || "")}
+            options={w.data?.map((e) => ({ id: e.id, label: e.ar, key: e.id })) || ([] as AutocompleteOption[])}
+            sx={{ maxWidth: 300, width: "100%", backgroundColor: "white" }}
+            filterOptions={(x) => x}
+            renderOption={(e, { id, key, label }) => (
+                <NextLink href={`/word/${label}`}>
+                    <MenuItem {...e} key={key}>
+                        {label}
+                    </MenuItem>{" "}
+                </NextLink>
+            )}
+            renderInput={(params) => (
+                <TextField
+                    inputRef={ref}
+                    onChange={(e) => {
+                        if (e.target.value) {
+                            w.mutate(e.target.value);
+                        }
+
+                        word[1](e.target.value);
+                    }}
+                    value={word[0]}
+                    {...params}
+                    size="small"
+                />
+            )}
+            onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    Router.push(`/word/${selected}`);
+                }
+            }}
+        />
     );
 }

@@ -1,26 +1,25 @@
 import prisma from "@db";
 import { publicProcedure, router } from "src/server/trpc";
+import { string } from "yup";
 
 const searchRouter = router({
-    searchWord: publicProcedure.query(async () => {
+    searchWord: publicProcedure.input(string().required()).mutation(async () => {
         const ss = await prisma.word.findMany({
-            // where: {
-            //     accepted: true,
-            // },
-            include: {
-                clips: {
-                    select: {
-                        id: true,
-                    },
-                },
-            },
             orderBy: {
                 clips: {
                     _count: "desc",
                 },
             },
+
+            include: {
+                clips: {
+                    select: {
+                        _count: true,
+                        id: true,
+                    },
+                },
+            },
         });
-        console.log(ss);
 
         return ss;
     }),

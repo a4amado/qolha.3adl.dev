@@ -34,7 +34,6 @@ function Clips() {
             <Head>
                 <link rel="stylesheet" href="/disable_scroll.css" />
             </Head>
-            <Header isSearch={false} />
             <PageContainer>
                 <div className="flex flex-col max-w-sm ">
                     <ButtonGroup>

@@ -7,7 +7,10 @@ import UnbanUser from "./unbanUser";
 const userRouter = router({
     banUser: banUser,
     unBanUser: UnbanUser,
-    query$user: QueryUser,
+    query$user: router({
+        QueryUserById: QueryUser.QueryUserById,
+        QueryUserByEmail: QueryUser.QueryUserByEmail,
+    }),
     deleteUser: deleteUser,
 });
 
