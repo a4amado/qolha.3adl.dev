@@ -1,4 +1,6 @@
-import { ButtonGroup, Button } from "@blueprintjs/core";
+import { ButtonGroup, Button } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { trpc } from "@utils/trpc";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -16,10 +18,10 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
     });
     return (
         <tr className={`flex p-1 justify-between ${number % 2 === 0 ? "bg-slate-200" : ""}`}>
-            <td>
+            <td className="self-center">
                 <span>{ar}</span>
             </td>
-            <td align="right" width="100%" className="flex-block gap-1 px-1">
+            <td align="right" width="100%" className="flex-block self-center gap-1 px-1">
                 <NextLink href={`/dashboard/users/${userId}`}>
                     <NextImage className="inline-block" alt="FLAG" src="https://flagsapi.com/BE/shiny/64.png" width={20} height={14} />
                     <span className="inline-block px-1">{username}</span>
@@ -28,8 +30,12 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
 
             {audio[0]}
             <td>
-                <ButtonGroup className="gap-2">
-                    <Button disabled={disabled[0]} onClick={audio[2].play} small icon="play" text="play" />
+                <ButtonGroup>
+                    <Button variant="contained"
+                        size="small"
+                        className="bg-blue-700"
+                        endIcon={<PlayArrowIcon />}
+                        disabled={disabled[0]} onClick={audio[2].play}  >play</Button>
                     {/** @ts-ignore */}
                     {session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") && (
                         <Button
@@ -39,10 +45,11 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
                                 disabled[1](true);
                                 audio[2].pause();
                             }}
-                            small
-                            intent="primary"
-                            text="accept"
-                        />
+                            color="success"
+                            variant="contained"
+                            size="small"
+                            className="bg-green-700"
+                        >accept</Button>
                     )}
                     {/** @ts-ignore */}
                     {session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") && (
@@ -53,11 +60,13 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
                                 disabled[1](true);
                                 audio[2].pause();
                             }}
-                            small
-                            intent="danger"
-                            icon="trash"
-                            text="reject"
-                        />
+                            color="error"
+                            variant="contained"
+                            size="small"
+                            className="bg-red-700"
+                            startIcon={<DeleteIcon />}
+
+                        >reject</Button>
                     )}
                 </ButtonGroup>
             </td>
