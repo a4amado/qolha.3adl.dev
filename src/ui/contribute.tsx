@@ -1,5 +1,6 @@
-import { Callout, Dialog, DialogBody, DialogFooter, Divider } from "@blueprintjs/core";
+import { Callout, Dialog, DialogBody, DialogFooter, Divider, Spinner } from "@blueprintjs/core";
 import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import zIndex from "@mui/material/styles/zIndex";
 import Recorder from "@ui/recorder";
 import { trpc } from "@utils/trpc";
 import useAxios from "axios-hooks";
@@ -35,43 +36,48 @@ export default function ContributeClip() {
 
     return (
         <>
-            <Box className="flex flex-col max-w-xs border p-2">
+            <Box className="flex relative flex-col gap-2 my-3 max-w-xs border p-2">
+                {session.status === "unauthenticated" &&
+                    <Box sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        bgcolor: "white",
+                        zIndex: 4
+                    }}>Login</Box>
+                }
+                {session.status === "loading" || clip.loading &&
+                    <Box sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        bgcolor: "white",
+                        zIndex: 4
+                    }}><Spinner  /></Box>
+                }
                 <Typography className="text-center" variant="h3">
-                    {session.status != "authenticated" ? "Login To be able to contribute" : word.data?.ar}
+                    {session.status != "authenticated" ? "شجل دخولك" : word.data?.ar}
                 </Typography>
                 <Recorder disabled={!word.data?.ar || session.status != "authenticated"} onFinish={handleFinishRecord} />
-
-                <ButtonGroup>
-                    <Button
-                        className="w-1/2 bg-blue-500"
+                <Button
+                        className="  bg-blue-500"
                         type="button"
                         onClick={async () => {
                             await submitClip();
                             word.refetch();
                         }}
-                        disabled={session.status != "authenticated"}
+                        disabled={session.status != "authenticated" || clip.loading}
                         variant="contained"
+                        
                     >
                         send
                     </Button>
-
-                    <Button
-                        className="w-1/2 bg-red-500"
-                        type="button"
-                        onClick={async () => {
-                            if (!word?.data?.id) return;
-                            await deleted_word.mutateAsync({
-                                wordId: word?.data?.id,
-                            });
-                            word.refetch();
-                        }}
-                        disabled={session.status != "authenticated"}
-                        variant="contained"
-                        color="error"
-                    >
-                        delete word
-                    </Button>
-                </ButtonGroup>
+ 
+               
             </Box>
         </>
     );

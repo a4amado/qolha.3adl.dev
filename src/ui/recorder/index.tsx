@@ -18,7 +18,7 @@ export default function Recorder({ onFinish, disabled }: { onFinish: (b: Blob, l
     });
 
     return (
-        <Box>
+        <Box className="flex flex-col gap-2">
             <ButtonGroup className="w-full flex justify-around">
                 <Button
                     className="w-1/2 bg-blue-500 text-white hover:bg-blue-300"

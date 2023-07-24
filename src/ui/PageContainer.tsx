@@ -23,7 +23,7 @@ export default function PageContainer({
     return (
         <>
             <Header />
-            <div className="flex flex-col  w-full max-w-4xl px-4 py-2 mx-auto mt-16">
+            <div className="flex flex-col  w-full max-w-4xl px-4 py-2 mx-auto mt-16 ">
                 <div className="flex flex-row p-1 border  gap-2 bg-orange-400">
                     <ButtonGroup>
                         <NextLink className="text-black" href="/">
@@ -45,7 +45,7 @@ export default function PageContainer({
                     </ButtonGroup>
                 </div>
                 <div className="flex flex-col lg:flex-row  w-full">
-                    <main className="w-full">{children}</main>
+                    <main className="w-full min-h-[400px]">{children}</main>
                     {contributeClip && (
                         <aside>
                             <ContributeClip />{" "}
