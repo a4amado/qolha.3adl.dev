@@ -9,7 +9,7 @@ export default function Page() {
         <div className="flex flex-col">
             <PageContainer>
                 {s.data?.map((e) => {
-                    return <p>{e.ar}</p>;
+                    return <p key={e.id}>{e.ar}</p>;
                 })}
             </PageContainer>
         </div>

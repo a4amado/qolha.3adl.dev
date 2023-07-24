@@ -40,7 +40,7 @@ export default function WordPage({ trpcState, word }: any) {
             <PageContainer>
                 {QueryWord.data?.map((e) => {
                     return (
-                        <div>
+                        <div key={e.id}>
                             {e.ar} {e.clips.length}
                         </div>
                     );
