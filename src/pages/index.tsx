@@ -8,9 +8,9 @@ export default function Page() {
     return (
         <div className="flex flex-col">
             <PageContainer>
-                <p>//////////////////////////////////////</p>
+                <p>{">//////////////////////////////////////"}</p>
                 <p>Todo: Top 10 Word of the day</p>
-                <p>//////////////////////////////////////</p>
+                <p>{"//////////////////////////////////////"}</p>
             </PageContainer>
         </div>
     );
