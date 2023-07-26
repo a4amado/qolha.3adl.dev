@@ -97,7 +97,7 @@ model Account {
 }
 
 model Word {
-    ar             String
+    ar             String @unique
     id             String       @unique @default(uuid())
     
     description_ar String

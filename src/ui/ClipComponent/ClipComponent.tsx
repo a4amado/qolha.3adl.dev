@@ -1,12 +1,13 @@
-import { ButtonGroup, Button } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { ButtonGroup } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { trpc } from "@utils/trpc";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useAudio } from "react-use";
 import NextImage from "next/image";
 import NextLink from "next/link";
+import SolidButton from "@ui/Button";
 
 export default function ClipComponent({ number, ar, username, clipId, userId }: { number: number; ar: string; username: string; clipId: string; userId: string }) {
     const rej = trpc.clip.reject.useMutation();
@@ -31,43 +32,48 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
             {audio[0]}
             <td>
                 <ButtonGroup>
-                    <Button variant="contained"
-                        size="small"
-                        className="bg-blue-700"
-                        endIcon={<PlayArrowIcon />}
-                        disabled={disabled[0]} onClick={audio[2].play}  >play</Button>
-                    {/** @ts-ignore */}
-                    {session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") && (
-                        <Button
-                            disabled={disabled[0]}
-                            onClick={async () => {
-                                await acc.mutateAsync({ clipId: clipId });
-                                disabled[1](true);
-                                audio[2].pause();
-                            }}
-                            color="success"
-                            variant="contained"
-                            size="small"
-                            className="bg-green-700"
-                        >accept</Button>
-                    )}
-                    {/** @ts-ignore */}
-                    {session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") && (
-                        <Button
-                            disabled={disabled[0]}
-                            onClick={async () => {
-                                await rej.mutateAsync({ clipId: clipId });
-                                disabled[1](true);
-                                audio[2].pause();
-                            }}
-                            color="error"
-                            variant="contained"
-                            size="small"
-                            className="bg-red-700"
-                            startIcon={<DeleteIcon />}
+                    <SolidButton variant="contained" size="small" className="bg-blue-700" endIcon={<PlayArrowIcon />} disabled={disabled[0]} onClick={audio[2].play}>
+                        play
+                    </SolidButton>
 
-                        >reject</Button>
-                    )}
+                    <SolidButton
+                        disabled={disabled[0]}
+                        onClick={async () => {
+                            await acc.mutateAsync({ clipId: clipId });
+                            disabled[1](true);
+                            audio[2].pause();
+                        }}
+                        color="success"
+                        variant="contained"
+                        size="small"
+                        className="bg-green-700"
+                        sx={{
+                            // @ts-ignore
+                            display: session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none",
+                        }}
+                    >
+                        accept
+                    </SolidButton>
+
+                    <SolidButton
+                        disabled={disabled[0]}
+                        onClick={async () => {
+                            await rej.mutateAsync({ clipId: clipId });
+                            disabled[1](true);
+                            audio[2].pause();
+                        }}
+                        color="error"
+                        variant="contained"
+                        size="small"
+                        className="bg-red-700"
+                        startIcon={<DeleteIcon />}
+                        sx={{
+                            // @ts-ignore
+                            display: session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none",
+                        }}
+                    >
+                        reject
+                    </SolidButton>
                 </ButtonGroup>
             </td>
         </tr>

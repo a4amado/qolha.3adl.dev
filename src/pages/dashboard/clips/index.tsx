@@ -1,4 +1,3 @@
-import Header from "@ui/header";
 import Head from "next/head";
 import React from "react";
 import PageContainer from "@ui/PageContainer";
@@ -9,27 +8,28 @@ import { useRouter } from "next/router";
 import { trpc } from "@utils/trpc";
 
 import ClipComponent from "@ui/ClipComponent";
-import { Button, ButtonGroup, Spinner } from "@blueprintjs/core";
-import { Box } from "@mui/material";
+import { Spinner } from "@blueprintjs/core";
+
+import { Box, ButtonGroup } from "@mui/material";
+import { Feed } from "@mui/icons-material";
+import SolidButton from "@ui/Button";
 
 function Clips() {
     const session = useSession();
     const router = useRouter();
 
     const clip = trpc.clip.getClipThatNeedsRevision.useQuery();
- 
+
     if (session.status === "loading") return <Loading />;
     if (session.status === "unauthenticated") {
         return router.push({ pathname: "/api/auth/signin" });
     }
 
-    // @ts-ignore
-    // if (session.data.user.role != "owner") {
-    //     return router.push({ pathname: "/" });
-    // }
+    //@ts-ignore
+    if (session.data.user.role != "owner") {
+        return router.push({ pathname: "/" });
+    }
 
-    
-    
     return (
         <>
             <Head>
@@ -37,20 +37,25 @@ function Clips() {
             </Head>
             <PageContainer>
                 <div className="flex flex-col relative">
-                {clip.isLoading || clip.isFetching || clip.isRefetching  && <Box sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        bgcolor: "white",
-                        zIndex: 55
-                    }} ><Spinner /></Box>}
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            bgcolor: "white",
+                            zIndex: 55,
+                            display: clip.isLoading || clip.isFetching || clip.isRefetching ? "block" : "none",
+                        }}
+                    >
+                        <Spinner />
+                    </Box>
+
                     <ButtonGroup>
-                        <Button icon="feed" text="fetch" onClick={() => clip.refetch()} />
+                        <SolidButton onClick={() => clip.refetch()}>Fetch</SolidButton>
                     </ButtonGroup>
-                    
-                     
+
                     <span>{clip?.data?.PendingClips._count._all} clips needs revision</span>
                     <table width="500px">
                         {clip.data?.clips?.map((clip, i) => (

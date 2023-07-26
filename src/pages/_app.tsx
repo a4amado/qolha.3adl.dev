@@ -10,6 +10,12 @@ import React, { Suspense } from "react";
 import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 
+import { createTheme } from "@mui/material/styles";
+
+import { ThemeProvider } from "@emotion/react";
+
+const arabicPhoneticDictionaryTheme = createTheme({});
+
 import { SessionProvider } from "next-auth/react";
 import { trpc } from "@utils/trpc";
 
@@ -52,11 +58,13 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
 
     return (
         <Suspense>
-            <SessionProvider session={session}>
-                <Loading />
-                <Component {...pageProps} />
-                <GoToUp />
-            </SessionProvider>
+            <ThemeProvider theme={arabicPhoneticDictionaryTheme}>
+                <SessionProvider session={session}>
+                    <Loading />
+                    <Component {...pageProps} />
+                    <GoToUp />
+                </SessionProvider>
+            </ThemeProvider>
         </Suspense>
     );
 };

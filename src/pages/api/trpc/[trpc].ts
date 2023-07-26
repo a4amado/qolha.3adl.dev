@@ -6,9 +6,18 @@ import { getServerSession } from "next-auth/next";
 import { inferAsyncReturnType } from "@trpc/server";
 import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import prisma from "@db";
+import { trpc } from "@utils/trpc";
 
 async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
     const b = await getServerSession(req, res, authOptions(req, res));
+    // await prisma.user.update({
+    //     data: {
+    //         role: "owner"
+    //     },
+    //     where: {
+    //         email: "a4addel@gmail.com"
+    //     }
+    // })
 
     if (!b) return {};
 

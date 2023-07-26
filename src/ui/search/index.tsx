@@ -27,7 +27,7 @@ export default function Search() {
             loading={w.isLoading}
             onHighlightChange={(_, d) => setSelected(d?.label || "")}
             options={w.data?.map((e) => ({ id: e.id, label: e.ar, key: e.id })) || ([] as AutocompleteOption[])}
-            sx={{ maxWidth: 300, width: "100%", backgroundColor: "white" }}
+            sx={{ maxWidth: 300, width: "100%", backgroundColor: "white", borderRadius: "5px" }}
             filterOptions={(x) => x}
             renderOption={(e, { id, key, label }) => (
                 <NextLink href={`/word/${label}`}>

@@ -1,12 +1,11 @@
-import { Navbar, Button, ButtonGroup, Divider } from "@blueprintjs/core";
 import { PropsWithChildren, useRef, useState } from "react";
 import ContributeClip from "./contribute";
 import NextLink from "next/link";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import AddWord from "./addWord";
 import Header from "./header";
 import React from "react";
+import { ButtonGroup, Divider } from "@mui/material";
 
 export default function PageContainer({
     children,
@@ -25,23 +24,25 @@ export default function PageContainer({
             <Header />
             <div className="flex flex-col  w-full max-w-4xl px-4 py-2 mx-auto mt-16 ">
                 <div className="flex flex-row p-1 border  gap-2 bg-orange-400">
-                    <ButtonGroup>
+                    <ButtonGroup
+                        sx={{
+                            display: "flex",
+                            gap: "10px",
+                        }}
+                    >
                         <NextLink className="text-black" href="/">
                             Home
                         </NextLink>
-
-                        <NextLink className="text-black" hidden={!NotlogedIn} href="/api/auth/signin">
+                        <NextLink className={`text-black ${session.status === "authenticated" ? "none" : "inline-flex"}`} hidden={!NotlogedIn} href="/api/auth/signin">
                             SignIn
                         </NextLink>
-                        <Divider />
-                        <NextLink className="text-black" hidden={!logedIn} href="/api/auth/signout">
+
+                        <NextLink className={`text-black ${session.status === "unauthenticated" ? "none" : "inline-flex"}`} hidden={!logedIn} href="/api/auth/signout">
                             SignOut
                         </NextLink>
-                        <Divider />
                         <NextLink className="text-black" href="/dashboard/clips">
                             Review Clips
                         </NextLink>
-                        <Divider />
                     </ButtonGroup>
                 </div>
                 <div className="flex flex-col lg:flex-row  w-full">
