@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Changa:wght@200;400;600;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@200;300;400;500;600&display=swap");
 
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 .ql-editor-1 {
     direction: rtl;
@@ -27,6 +27,8 @@ body,
     /* height: 100%; */
     scroll-behavior: smooth;
     overflow: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 html {

@@ -1,17 +1,32 @@
-import { Input, FormControl, InputLabel, FormHelperText, Button, TextField } from "@mui/material";
+import { Button, Label, Input, shorthands, makeStyles, Field } from "@fluentui/react-components";
+
 import { InferType } from "yup";
 import * as yup from "yup";
+
+import { Formik, Form } from "formik";
+import { ChangeEvent } from "react";
+
+import { trpc } from "@utils/trpc";
+import { useSnackbar } from "notistack";
 
 const g = yup.object().shape({
     word: yup.string().required(),
 });
 
-import { Formik, Field, Form } from "formik";
-import { ChangeEvent } from "react";
-import { trpc } from "@utils/trpc";
+const useStyles = makeStyles({
+    root: {
+        ...shorthands.gap("10px"),
+        display: "flex",
+        flexDirection: "column",
+        marginRight: "auto",
+        marginLeft: "auto",
+    },
+});
 
 export default function AddWord() {
     const appendWord = trpc.word.insertWord.useMutation();
+
+    const snakbar = useSnackbar();
 
     return (
         <Formik
@@ -24,10 +39,9 @@ export default function AddWord() {
             }}
         >
             {(form) => (
-                <Form className="max-w-4xl flex flex-col gap-2 mx-auto my-3 h-auto">
-                    <Field as={TextField} onChange={(e: ChangeEvent) => form.handleChange(e)} value={form.values.word} name="word" id="text-input" placeholder="Word" />
+                <Form className={useStyles().root}>
                     <div className="m-auto">
-                        <Button className="bg-blue-500 hover:bg-blue-600" variant="contained" title="Add Word" onClick={() => form.handleSubmit()} type="submit">
+                        <Button type="submit" size="large">
                             Add Word
                         </Button>
                     </div>

@@ -111,7 +111,7 @@ model Word {
     wordPopularity wordPopularity[]
     approval WordApproval?
 
-    @@index([userId])
+    @@index([userId, ar])
 }
 
 model Clip {

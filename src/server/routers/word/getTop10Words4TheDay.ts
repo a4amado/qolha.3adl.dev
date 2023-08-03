@@ -3,34 +3,22 @@ import { publicProcedure } from "src/server/trpc";
 
 const getTop10Words4TheDay = publicProcedure.query(async (opts) => {
     const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
 
-    const top10WordsToday = await prisma.wordPopularity.groupBy({
-        by: ["wordId"], // Group by wordId and word
+    const wordPopularity = await prisma.wordPopularity.findMany({
         where: {
             date: {
-                gte: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-                lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+                gte: yesterday,
+                lt: today,
             },
         },
-        orderBy: {
-            _count: {
-                wordId: "desc", // Order by count of wordId in descending order
-            },
-        },
-        take: 15, // Get the top 10 most searched words
-        _count: {
-            wordId: true, // Include the count of each wordId
-        },
-    });
-    const w = await prisma.word.findMany({
-        where: {
-            id: {
-                in: top10WordsToday.map((e) => e.wordId),
-            },
+        include: {
+            word: true,
         },
     });
 
-    return w;
+    return wordPopularity;
 });
 
 export default getTop10Words4TheDay;

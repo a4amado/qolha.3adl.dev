@@ -5,13 +5,13 @@ import { trpc } from "@utils/trpc";
 
 export default function Page() {
     const s = trpc.word.getTop10Words4TheDay.useQuery();
+    console.log(s);
+
     return (
-        <div className="flex flex-col">
-            <PageContainer>
-                <p>{">//////////////////////////////////////"}</p>
-                <p>Todo: Top 10 Word of the day</p>
-                <p>{"//////////////////////////////////////"}</p>
-            </PageContainer>
-        </div>
+        <PageContainer>
+            <p>{"//////////////////////////////////////"}</p>
+            <p>{"/// "}Todo: Some thing</p>
+            <p>{"//////////////////////////////////////"}</p>
+        </PageContainer>
     );
 }

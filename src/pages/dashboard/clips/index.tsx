@@ -8,11 +8,13 @@ import { useRouter } from "next/router";
 import { trpc } from "@utils/trpc";
 
 import ClipComponent from "@ui/ClipComponent";
-import { Spinner } from "@blueprintjs/core";
+import { SpinnerIos20Regular } from "@fluentui/react-icons"
 
-import { Box, ButtonGroup } from "@mui/material";
-import { Feed } from "@mui/icons-material";
-import SolidButton from "@ui/Button";
+
+
+
+import LoadingOverlay from "@ui/LoadingOverlay";
+import { Button } from "@fluentui/react-components";
 
 function Clips() {
     const session = useSession();
@@ -36,25 +38,12 @@ function Clips() {
                 <link rel="stylesheet" href="/disable_scroll.css" />
             </Head>
             <PageContainer>
-                <div className="flex flex-col relative">
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100%",
-                            bgcolor: "white",
-                            zIndex: 55,
-                            display: clip.isLoading || clip.isFetching || clip.isRefetching ? "block" : "none",
-                        }}
-                    >
-                        <Spinner />
-                    </Box>
+                <div className="flex flex-col relative h-full">
+                    <LoadingOverlay active={clip.isLoading || clip.isFetching || clip.isRefetching}  />
 
-                    <ButtonGroup>
-                        <SolidButton onClick={() => clip.refetch()}>Fetch</SolidButton>
-                    </ButtonGroup>
+                    
+                        <Button onClick={() => clip.refetch()}>Fetch</Button>
+                    
 
                     <span>{clip?.data?.PendingClips._count._all} clips needs revision</span>
                     <table width="500px">

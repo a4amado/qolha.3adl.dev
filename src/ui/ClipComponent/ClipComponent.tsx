@@ -1,15 +1,22 @@
-import { ButtonGroup } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+
+
 import { trpc } from "@utils/trpc";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useAudio } from "react-use";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import SolidButton from "@ui/Button";
+
+import { Text } from "@fluentui/react-components";
+import { Button } from "@fluentui/react";
+import { mergeStyles } from "@fluentui/react";
+
+
+
 
 export default function ClipComponent({ number, ar, username, clipId, userId }: { number: number; ar: string; username: string; clipId: string; userId: string }) {
+    
+    
     const rej = trpc.clip.reject.useMutation();
     const acc = trpc.clip.accept.useMutation();
     const disabled = useState(false);
@@ -18,11 +25,25 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
         src: `/api/clip/${clipId}/stream`,
     });
     return (
-        <tr className={`flex p-1 justify-between ${number % 2 === 0 ? "bg-slate-200" : ""}`}>
-            <td className="self-center">
+        <tr className={mergeStyles({
+            display: "flex",
+            flexDirection: "row",
+            padding: "5px",
+            justifyContent: "space-between",
+            background: number % 2 === 0 ? "yellow" : ""
+        })
+        }>
+            <td className={mergeStyles({
+                justifySelf: "center"
+            })}>
                 <span>{ar}</span>
             </td>
-            <td align="right" width="100%" className="flex-block self-center gap-1 px-1">
+            <td align="right" width="100%" className={mergeStyles({
+                display: "flex-block",
+                justifySelf: "center",
+                gap: "5px",
+                padding: "0 5px"
+            })}>
                 <NextLink href={`/dashboard/users/${userId}`}>
                     <NextImage className="inline-block" alt="FLAG" src="https://flagsapi.com/BE/shiny/64.png" width={20} height={14} />
                     <span className="inline-block px-1">{username}</span>
@@ -31,12 +52,16 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
 
             {audio[0]}
             <td>
-                <ButtonGroup>
-                    <SolidButton variant="contained" size="small" className="bg-blue-700" endIcon={<PlayArrowIcon />} disabled={disabled[0]} onClick={audio[2].play}>
-                        play
-                    </SolidButton>
+                <div className={mergeStyles({
+                    display: "flex",
+                    flexDirection: "row"
+                })}>
 
-                    <SolidButton
+                    <Button  className="bg-blue-700" disabled={disabled[0]} onClick={audio[2].play}>
+                        play
+                    </Button>
+
+                    <Button
                         disabled={disabled[0]}
                         onClick={async () => {
                             await acc.mutateAsync({ clipId: clipId });
@@ -44,18 +69,21 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
                             audio[2].pause();
                         }}
                         color="success"
-                        variant="contained"
-                        size="small"
-                        className="bg-green-700"
-                        sx={{
+                        
+                        shape="rounded"
+                        
+
+                        className={mergeStyles({
                             // @ts-ignore
                             display: session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none",
-                        }}
+                            
+                        })}
+                        
                     >
                         accept
-                    </SolidButton>
+                    </Button>
 
-                    <SolidButton
+                    <Button
                         disabled={disabled[0]}
                         onClick={async () => {
                             await rej.mutateAsync({ clipId: clipId });
@@ -63,19 +91,21 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
                             audio[2].pause();
                         }}
                         color="error"
-                        variant="contained"
-                        size="small"
-                        className="bg-red-700"
-                        startIcon={<DeleteIcon />}
-                        sx={{
+                        
+                    
+
+
+                        className={mergeStyles({
                             // @ts-ignore
                             display: session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none",
-                        }}
+                        })}
                     >
                         reject
-                    </SolidButton>
-                </ButtonGroup>
+                    </Button>
+                </div>
+
             </td>
         </tr>
     );
 }
+

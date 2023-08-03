@@ -1,23 +1,18 @@
 import "../styles/globals.css";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 
 import { type AppType } from "next/app";
-import GoToUp from "@ui/GoToUp";
+import BackToTheTop from "@ui/backToTheTop";
 import Loading from "@ui/Loading";
 
 import React, { Suspense } from "react";
 import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 
-import { createTheme } from "@mui/material/styles";
-
-import { ThemeProvider } from "@emotion/react";
-
-const arabicPhoneticDictionaryTheme = createTheme({});
-
 import { SessionProvider } from "next-auth/react";
 import { trpc } from "@utils/trpc";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import wait from "@utils/wait";
+import { FluentProvider } from "@fluentui/react-components";
 
 Router.events.on("routeChangeStart", () => {
     const loadingContainer = document.getElementById("loading-container");
@@ -26,15 +21,15 @@ Router.events.on("routeChangeStart", () => {
     loadingContainer?.classList.add("active-loading");
 });
 
-Router.events.on("routeChangeComplete", () => {
+Router.events.on("routeChangeComplete", async () => {
     const loadingContainer = document.getElementById("loading-container");
     loadingContainer?.classList.add("out-loading");
-    setTimeout(() => {
-        loadingContainer?.classList.add("hide-loading");
-    }, 500);
+    await wait(500);
+    loadingContainer?.classList.add("hide-loading");
 });
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
+    const snackbar = useSnackbar();
     React.useEffect(() => {
         function handleSuccess(response: AxiosResponse) {
             return response;
@@ -43,11 +38,11 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
         function handleError(error: AxiosError) {
             // @ts-ignore
             error.response?.data.message.map((e) => {
-                // showNotification({
-                //     message: e,
-                //     type: "error",
-                //     destroyAfter: 1500,
-                // });
+                snackbar.enqueueSnackbar({
+                    message: e,
+                    autoHideDuration: 2000,
+                    style: { backgroundColor: "red" },
+                });
             });
 
             return Promise.reject(error);
@@ -57,15 +52,18 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any
     }, []);
 
     return (
-        <Suspense>
-            <ThemeProvider theme={arabicPhoneticDictionaryTheme}>
-                <SessionProvider session={session}>
+
+
+        <SessionProvider session={session}>
+            <FluentProvider>
+                <SnackbarProvider maxSnack={3}>
                     <Loading />
                     <Component {...pageProps} />
-                    <GoToUp />
-                </SessionProvider>
-            </ThemeProvider>
-        </Suspense>
+                    <BackToTheTop />
+                </SnackbarProvider>
+            </FluentProvider>
+        </SessionProvider>
+
     );
 };
 
