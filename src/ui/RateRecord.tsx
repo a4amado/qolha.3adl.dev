@@ -1,29 +1,37 @@
-import { Button, Dialog, DialogBody } from "@blueprintjs/core";
+import React from "react";
+import { Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure, useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { useCallback } from "react";
-import { useToggle } from "react-use";
 
 export default function RateRecord({ id }: { id: string }) {
-    const [open, toogle] = useToggle(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const close = useCallback(() => toogle(false), [open]);
     return (
         <>
-            <Button onClick={() => toogle(!open)}>قيّم</Button>
-            <Dialog title="قيم هذا الصوت" isOpen={open} onClose={close} isCloseButtonShown>
-                <DialogBody>
-                    <Rate clipID={id} type="BAD" text="سئ" toogle={toogle} />
-                    <Rate clipID={id} type="GOOD" text="لا غٌبار علية" toogle={toogle} />
-                    <Rate clipID={id} type="OK" text="مقبول" toogle={toogle} />
-                </DialogBody>
-            </Dialog>
+            <Button onClick={onOpen}>قيّم</Button>
+            {/* @ts-ignore */}
+            <AlertDialog isOpen={isOpen} onClose={onClose} leastDestructiveRef={undefined}>
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>قيم هذا الصوت</AlertDialogHeader>
+                        <AlertDialogBody>
+                            <Rate clipID={id} type="BAD" text="سئ" onClose={onClose} />
+                            <Rate clipID={id} type="GOOD" text="لا غٌبار علية" onClose={onClose} />
+                            <Rate clipID={id} type="OK" text="مقبول" onClose={onClose} />
+                        </AlertDialogBody>
+                        <AlertDialogFooter></AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </>
     );
 }
 
-function Rate({ type, toogle, text, clipID }: { type: "GOOD" | "BAD" | "OK"; toogle: any; text: string; clipID: string }) {
-    const [isLoading, ToogleLoading] = useToggle(false);
+function Rate({ type, onClose, text, clipID }: { type: "GOOD" | "BAD" | "OK"; onClose: () => void; text: string; clipID: string }) {
+    const [isLoading, setIsLoading] = React.useState(false);
+    const toast = useToast();
+
     async function doRate() {
+        setIsLoading(true);
         try {
             await axios({
                 method: "POST",
@@ -32,10 +40,27 @@ function Rate({ type, toogle, text, clipID }: { type: "GOOD" | "BAD" | "OK"; too
                     rate: type === "BAD" ? "0" : type === "GOOD" ? "100" : "50",
                 },
             });
-            ToogleLoading(false);
-            toogle(false);
-        } catch (error) {}
+            setIsLoading(false);
+            onClose();
+            toast({
+                title: "Rating Submitted",
+                description: "Your rating has been submitted successfully.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+        } catch (error) {
+            setIsLoading(false);
+            onClose();
+            toast({
+                title: "Error",
+                description: "An error occurred while submitting the rating.",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
     }
 
-    return <Button loading={isLoading} onClick={doRate} text={type} title={type} />;
+    return <Button isLoading={isLoading} onClick={doRate}  >text</Button>
 }

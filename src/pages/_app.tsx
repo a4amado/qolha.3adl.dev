@@ -1,23 +1,30 @@
-import "../styles/globals.css";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-
-import { type AppType } from "next/app";
+import { AppProps } from "next/app";
 import GoToUp from "@ui/GoToUp";
 import Loading from "@ui/Loading";
-
-import React, { Suspense } from "react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { SessionProvider } from "next-auth/react";
 import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
-
-import { createTheme } from "@mui/material/styles";
-
-import { ThemeProvider } from "@emotion/react";
-
-const arabicPhoneticDictionaryTheme = createTheme({});
-
-import { SessionProvider } from "next-auth/react";
 import { trpc } from "@utils/trpc";
+import Head from "next/head";
+
+import { ThemeConfig } from '@chakra-ui/react';
+import { mode, Styles } from '@chakra-ui/theme-tools';
+
+const config: ThemeConfig = {
+  initialColorMode: 'light',
+  useSystemColorMode: true,
+};
+
+const styles: Styles = {
+  global: (props) => ({
+    body: {
+      overflow: "scroll"
+    },
+  }),
+};
+
+const theme = extendTheme({ styles, config });
 
 Router.events.on("routeChangeStart", () => {
     const loadingContainer = document.getElementById("loading-container");
@@ -34,39 +41,46 @@ Router.events.on("routeChangeComplete", () => {
     }, 500);
 });
 
-const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: any) => {
-    React.useEffect(() => {
-        function handleSuccess(response: AxiosResponse) {
-            return response;
-        }
+function handleSuccess(response: AxiosResponse) {
+    return response;
+}
 
-        function handleError(error: AxiosError) {
-            // @ts-ignore
-            error.response?.data.message.map((e) => {
-                // showNotification({
-                //     message: e,
-                //     type: "error",
-                //     destroyAfter: 1500,
-                // });
-            });
+function handleError(error: AxiosError) {
+    // @ts-ignore
+    error.response?.data.message.map((e) => {
+        // showNotification({
+        //     message: e,
+        //     type: "error",
+        //     destroyAfter: 1500,
+        // });
+    });
 
-            return Promise.reject(error);
-        }
-        const id = Axios.interceptors.response.use(handleSuccess, handleError);
-        return () => Axios.interceptors.response.eject(id);
-    }, []);
+    return Promise.reject(error);
+}
 
+Axios.interceptors.response.use(handleSuccess, handleError);
+
+// @ts-ignore
+function MyApp({ Component, pageProps, session }: AppProps) {
     return (
-        <Suspense>
-            <ThemeProvider theme={arabicPhoneticDictionaryTheme}>
-                <SessionProvider session={session}>
-                    <Loading />
-                    <Component {...pageProps} />
-                    <GoToUp />
-                </SessionProvider>
-            </ThemeProvider>
-        </Suspense>
+        <ChakraProvider theme={theme}>
+            <SessionProvider session={session}>
+                <Head>
+                    <style global>{
+                        `
+                    body {
+                    background-image: url("/633.png")!important;
+                    background-size: 250px !important;
+                    background-repeat: repeat!important;
+                }
+                    `}</style>
+                </Head>
+                {/* <Loading /> */}
+                <Component {...pageProps} />
+                <GoToUp />
+            </SessionProvider>
+        </ChakraProvider>
     );
-};
+}
 
 export default trpc.withTRPC(MyApp);

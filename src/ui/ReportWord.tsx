@@ -1,20 +1,33 @@
 import React from "react";
-import { useToggle } from "react-use";
-import { Button, Dialog, DialogBody } from "@blueprintjs/core";
+import { ModalBody, useDisclosure } from "@chakra-ui/react";
+import { Button, Modal, ModalContent, ModalHeader, ModalFooter, ModalCloseButton, ModalOverlay } from "@chakra-ui/react";
+import { WarningIcon } from "@chakra-ui/icons";
 
 export default function ReportWord({ wordID }: { wordID: string }) {
-    const [open, toggle] = useToggle(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <>
-            <Button onClick={() => toggle(true)} text="Report" icon="warning-sign" />
-            <Dialog isOpen={open} title="ابلغ عن الكلمة">
-                <DialogBody>
-                    <span>ما سبب الابلاغ ؟</span>
-                    {/* <Select className="mx-2" defaultValue="اختر سبب الابلاغ" style={{ width: 250 }} options={["كاني", "ماني"].map((e) => ({ value: e, lable: e.toUpperCase() }))}></Select> */}
-
-                    <Button className="mx-2">إبلاغ</Button>
-                </DialogBody>
-            </Dialog>
+            <Button onClick={onOpen} leftIcon={<WarningIcon />} variant="solid">
+                Report
+            </Button>
+            <Modal isOpen={isOpen} onClose={onClose} size="md">
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>ابلغ عن الكلمة</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <span>ما سبب الابلاغ ؟</span>
+                        {/* <Select className="mx-2" defaultValue="اختر سبب الابلاغ" style={{ width: 250 }} options={["كاني", "ماني"].map((e) => ({ value: e, lable: e.toUpperCase() }))}></Select> */}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button mr={3} onClick={onClose}>
+                            إلغاء
+                        </Button>
+                        <Button colorScheme="blue">إبلاغ</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
     );
 }
