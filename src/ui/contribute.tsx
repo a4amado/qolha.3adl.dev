@@ -53,7 +53,7 @@ export default function ContributeClip() {
         <Flex flexDirection={"column"} bgColor={"white"} p="10px" position={"relative"} gap={2} borderRadius={1} overflow={"hidden"}>
             <LoadingComponent isLoading={clip.loading || session.status === "loading"} />
             <Flex flexDirection={"row"} w="full" justifyContent="space-around" gap={2}>
-                <Button onClick={() => (["recording", "paused"].includes(rec.status) ? rec.stopRecording() : rec.startRecording())} title={["recording", "paused"].includes(rec.status) ? "Record" : "Stop_"}>
+                <Button size={"xs"} borderRadius={0}onClick={() => (["recording", "paused"].includes(rec.status) ? rec.stopRecording() : rec.startRecording())} title={["recording", "paused"].includes(rec.status) ? "Record" : "Stop_"}>
                     {rec.status === "recording" ? "Stop" : "Start"}
                 </Button>
                 <Button
@@ -63,7 +63,8 @@ export default function ContributeClip() {
                         await word.refetch();
                     }}
                     disabled={session.status !== "authenticated" || clip.loading}
-                    size={"md"}
+                    size={"xs"}
+                    borderRadius={0}
                 >
                     send
                 </Button>
