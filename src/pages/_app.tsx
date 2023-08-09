@@ -1,30 +1,32 @@
 import { AppProps } from "next/app";
 import GoToUp from "@ui/GoToUp";
-import Loading from "@ui/Loading";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, PortalManager, ThemeConfig } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
 import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import { trpc } from "@utils/trpc";
 import Head from "next/head";
+import { Styles } from "@chakra-ui/theme-tools";
 
-import { ThemeConfig } from '@chakra-ui/react';
-import { mode, Styles } from '@chakra-ui/theme-tools';
+const noop = () => {};
 
 const config: ThemeConfig = {
-  initialColorMode: 'light',
-  useSystemColorMode: true,
+    initialColorMode: "light",
+    useSystemColorMode: true,
 };
 
 const styles: Styles = {
-  global: (props) => ({
-    body: {
-      overflow: "scroll"
-    },
-  }),
+    global: () => ({
+        body: {
+            overflow: "scroll",
+        },
+    }),
 };
 
-const theme = extendTheme({ styles, config });
+const theme = extendTheme({
+    styles,
+    config,
+});
 
 Router.events.on("routeChangeStart", () => {
     const loadingContainer = document.getElementById("loading-container");
@@ -47,37 +49,31 @@ function handleSuccess(response: AxiosResponse) {
 
 function handleError(error: AxiosError) {
     // @ts-ignore
-    error.response?.data.message.map((e) => {
-        // showNotification({
-        //     message: e,
-        //     type: "error",
-        //     destroyAfter: 1500,
-        // });
-    });
+    error.response?.data.message.map(noop);
 
     return Promise.reject(error);
 }
 
 Axios.interceptors.response.use(handleSuccess, handleError);
-
 // @ts-ignore
-function MyApp({ Component, pageProps, session }: AppProps) {
+function MyApp({ Component, pageProps, session }) {
     return (
         <ChakraProvider theme={theme}>
             <SessionProvider session={session}>
-                <Head>
-                    <style global>{
-                        `
+                <PortalManager>
+                    <Head>
+                        <style global>{`
                     body {
                     background-image: url("/633.png")!important;
                     background-size: 250px !important;
                     background-repeat: repeat!important;
                 }
                     `}</style>
-                </Head>
-                {/* <Loading /> */}
-                <Component {...pageProps} />
-                <GoToUp />
+                    </Head>
+                    {/* <Loading /> */}
+                    <Component {...pageProps} />
+                    <GoToUp />
+                </PortalManager>
             </SessionProvider>
         </ChakraProvider>
     );

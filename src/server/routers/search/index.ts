@@ -19,6 +19,7 @@ const searchRouter = router({
                     },
                 },
             },
+            take: 5,
         });
 
         return ss;

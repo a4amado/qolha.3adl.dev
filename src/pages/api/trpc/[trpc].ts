@@ -1,15 +1,17 @@
 import * as trpcNext from "@trpc/server/adapters/next";
 import { appRouter } from "../../../server/routers/_app";
-
 import { getServerSession } from "next-auth/next";
-
 import { inferAsyncReturnType } from "@trpc/server";
 import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import prisma from "@db";
-import { trpc } from "@utils/trpc";
+import { NextApiRequest, NextApiResponse } from "next";
 
-async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
+async function createContext({ req, res }: {
+    req: NextApiRequest,
+    res: NextApiResponse
+}) {
     const b = await getServerSession(req, res, authOptions(req, res));
+
     // await prisma.user.update({
     //     data: {
     //         role: "owner"
@@ -18,7 +20,6 @@ async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
     //         email: "a4addel@gmail.com"
     //     }
     // })
-
     if (!b) return {};
 
     const user = await prisma.user.findUnique({
@@ -26,8 +27,6 @@ async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
             email: b?.user?.email || "",
         },
     });
-
-    console.log(user);
 
     if (!user) return {};
 

@@ -6,7 +6,8 @@ import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
 import { trpc } from "@utils/trpc";
 import ClipComponent from "@ui/ClipComponent";
-import { Box, Button, ButtonGroup, Spinner, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Button, ButtonGroup, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import LoadingComponent from "@ui/ComponentLoading";
 
 function Clips() {
     const session = useSession();
@@ -15,14 +16,19 @@ function Clips() {
     const clip = trpc.clip.getClipThatNeedsRevision.useQuery();
 
     if (session.status === "loading") return <Loading />;
+
     if (session.status === "unauthenticated") {
-        router.push({ pathname: "/api/auth/signin" });
+        router.push({
+            pathname: "/api/auth/signin",
+        });
         return null;
     }
 
     // @ts-ignore
     if (session.data.user.role !== "owner") {
-        router.push({ pathname: "/" });
+        router.push({
+            pathname: "/",
+        });
         return null;
     }
 
@@ -33,14 +39,10 @@ function Clips() {
             </Head>
             <PageContainer>
                 <div className="flex flex-col relative">
-                    <Box position="absolute" top={0} left={0} width="100%" height="100%" bgColor="white" zIndex={55} display={clip.isLoading || clip.isFetching || clip.isRefetching ? "block" : "none"}>
-                        <Spinner />
-                    </Box>
-
+                    <LoadingComponent isLoading={clip.isLoading || clip.isFetching || clip.isRefetching} />
                     <ButtonGroup>
                         <Button onClick={() => clip.refetch()}>Fetch</Button>
                     </ButtonGroup>
-
                     <span>{clip?.data?.PendingClips._count._all} clips need revision</span>
                     <Table width="500px">
                         <Thead>

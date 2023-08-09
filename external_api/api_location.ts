@@ -1,5 +1,4 @@
 import axios from "axios";
-import Axios from "axios";
 
 const object = {
     ip: "156.217.162.253",
@@ -21,7 +20,7 @@ const object = {
     country_tld: ".eg",
     languages: "ar-EG,en,fr",
     country_flag: "https://ipgeolocation.io/static/flags/eg_64.png",
-    geoname_id: 7929057,
+    geoname_id: 7_929_057,
     isp: "TE-AS",
     connection_type: "",
     organization: "TE-AS",
@@ -41,15 +40,14 @@ const object = {
 };
 
 type Ip_To_LocationType = typeof object;
+
 export default async function getLocation(ip: string): Promise<Ip_To_LocationType | null> {
     try {
         const x = await axios.get(`https//api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_TO_LOCATION_API_KEY}&ip=${ip}`);
         const data = x.data as Ip_To_LocationType;
-        console.log(data);
 
         return data;
     } catch (error) {
-        console.log(error);
         return null;
     }
 }

@@ -1,8 +1,0 @@
-{
-    "rules": {
-        "remove-unused-variables": "on",
-        "remove-console": "on"
-
-    }
-}
- 

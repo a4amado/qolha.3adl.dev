@@ -1,14 +1,14 @@
 {
     "name": "qolha.3adl.dev",
     "version": "0.1.0",
+    "type": "commonjs",
     "private": true,
     "scripts": {
         "dev": "next dev",
         "format": "prettier --ignore-path .prettierignore --write \"**/*.{ts,tsx,html,css,scss}\"",
         "build": "npx prisma generate && next build",
         "start": "next start",
-        "reset": "rm -rf node_modules pnpm-lock.yaml .next &&  pnpm i && npx prisma migrate dev",
-        "putout": "putout ."
+        "reset": "rm -rf node_modules pnpm-lock.yaml .next &&  pnpm i && npx prisma migrate dev"
     },
     "dependencies": {
         "@chakra-ui/icons": "^2.1.0",
@@ -95,6 +95,7 @@
         "autoprefixer": "^10.4.14",
         "eslint": "^8.45.0",
         "eslint-config-next": "13.0.2",
+        "eslint-plugin-unused-imports": "^3.0.0",
         "mime-types": "^2.1.35",
         "nodemon": "^2.0.22",
         "postcss": "^8.4.26",

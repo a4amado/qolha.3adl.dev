@@ -1,7 +1,7 @@
 import prisma from "@db";
 import { publicProcedure } from "src/server/trpc";
 
-const getTop10Words4TheDay = publicProcedure.query(async (opts) => {
+const getTop10Words4TheDay = publicProcedure.query(async () => {
     const today = new Date();
 
     const top10WordsToday = await prisma.wordPopularity.groupBy({
@@ -22,6 +22,7 @@ const getTop10Words4TheDay = publicProcedure.query(async (opts) => {
             wordId: true, // Include the count of each wordId
         },
     });
+
     const w = await prisma.word.findMany({
         where: {
             id: {

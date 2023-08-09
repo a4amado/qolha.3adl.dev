@@ -1,34 +1,23 @@
 import PageContainer from "@ui/PageContainer";
 import { trpc } from "@utils/trpc";
 import type { GetServerSideProps } from "next";
-import { createServerSideHelpers } from "@trpc/react-query/server";
 import React from "react";
-import { appRouter } from "src/server/routers/_app";
-import ClipComponent from "@ui/ClipComponent";
 
+ 
 export function getQueryItem(query: any) {
     if (typeof query === "string") return query;
+
     if (Array.isArray(query)) return query[0];
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    // const helpers = createServerSideHelpers({
-    //     router: appRouter,
-    //     ctx: {},
-    // });
+export const getServerSideProps: GetServerSideProps = async (ctx) => ({
+    props: {
+        // trpcState: helpers.dehydrate(),
+        word: ctx.query.word,
+    },
+});
 
-    // @ts-ignore
-    // await helpers.word.getWord.prefetch(ctx.query.wordID);
-
-    return {
-        props: {
-            // trpcState: helpers.dehydrate(),
-            word: ctx.query.word,
-        },
-    };
-};
-
-export default function WordPage({ trpcState, word }: any) {
+export default function WordPage({ word }: { word: string }) {
     const QueryWord = trpc.search.searchWord.useMutation();
 
     React.useEffect(() => {
@@ -38,13 +27,12 @@ export default function WordPage({ trpcState, word }: any) {
     return (
         <>
             <PageContainer>
-                {QueryWord.data?.map((e) => {
-                    return (
-                        <div key={e.id}>
-                            {e.ar} {e.clips.length}
-                        </div>
-                    );
-                })}
+                {QueryWord.data?.map((e) => (
+                    <div key={e.id}>
+                        {e.ar}
+                        {e.clips.length}
+                    </div>
+                ))}
             </PageContainer>
         </>
     );

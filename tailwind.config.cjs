@@ -1,5 +1,4 @@
-
-
+'use strict';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

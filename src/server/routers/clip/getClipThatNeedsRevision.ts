@@ -1,7 +1,7 @@
 import prisma from "@db";
-import { adminProcedure, publicProcedure } from "src/server/trpc";
+import { publicProcedure } from "src/server/trpc";
 
-const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
+const getClipThatNeedsRevision = publicProcedure.query(async () => {
     const clip = await prisma.clip.findMany({
         where: {
             accept: false,
@@ -29,9 +29,15 @@ const getClipThatNeedsRevision = publicProcedure.query(async (opts) => {
         where: {
             accept: false,
         },
-        _count: { _all: true },
+        _count: {
+            _all: true,
+        },
     });
-    return { clips: clip, PendingClips };
+
+    return {
+        clips: clip,
+        PendingClips,
+    };
 });
 
 export default getClipThatNeedsRevision;

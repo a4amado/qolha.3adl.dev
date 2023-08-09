@@ -1,7 +1,7 @@
 import prisma from "@db";
 import { publicProcedure } from "src/server/trpc";
 
-const getWordThatNeedsClips = publicProcedure.query(async (opts) => {
+const getWordThatNeedsClips = publicProcedure.query(async () => {
     const word = await prisma.word.findFirst({
         orderBy: {
             clips: {

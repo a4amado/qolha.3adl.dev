@@ -11,18 +11,14 @@
 html,
 body,
 #__next {
-    height: 100%!important;
+    height: 100% !important;
     scroll-behavior: smooth;
-    overflow: auto !important;
-
-    
+    overflow-x: auto !important;
 }
 
 html {
     direction: ltr;
 }
-
- 
 
 .active-loading {
     position: fixed;

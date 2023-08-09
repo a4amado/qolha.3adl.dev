@@ -1,11 +1,8 @@
-import { Button, FormControl, FormHelperText, Input, Flex } from "@chakra-ui/react";
-import { Formik, Field, Form } from "formik";
-import { ChangeEvent } from "react";
+import { Button, FormControl, Input, Flex, useToast } from "@chakra-ui/react";
+import { Formik, Field, Form, FieldProps } from "formik";
 import { trpc } from "@utils/trpc";
-import { useToast } from "@chakra-ui/react";
 import { InferType } from "yup";
 import * as yup from "yup";
-import { log } from "console";
 
 const g = yup.object().shape({
     word: yup.string().required(),
@@ -13,7 +10,7 @@ const g = yup.object().shape({
 
 export default function AddWord() {
     const appendWord = trpc.word.insertWord.useMutation({
-        onError(error, variables, context) {
+        onError(error) {
             toast({
                 title: "Error",
                 description: error.message,
@@ -22,7 +19,7 @@ export default function AddWord() {
                 isClosable: true,
             });
         },
-        onSuccess(data, variables, context) {
+        onSuccess(data) {
             toast({
                 title: "Word Added",
                 description: data.ar,
@@ -31,31 +28,34 @@ export default function AddWord() {
                 isClosable: true,
             });
         },
-        retry: false
+        retry: false,
     });
+
     const toast = useToast();
 
     return (
         <Formik
             validationSchema={g}
-            initialValues={{ word: "" } as InferType<typeof g>}
+            initialValues={
+                {
+                    word: "",
+                } as InferType<typeof g>
+            }
             enableReinitialize={true}
             onSubmit={async (values, actions) => {
                 if (appendWord.isLoading) return;
-                
+
                 await appendWord.mutateAsync(values);
-                
+
                 actions.resetForm();
             }}
-
         >
             {(form) => (
-
                 <Flex as={Form} width={"full"} direction="column" gap={2} mx="auto" my={3}>
                     <Field name="word">
-                        {({ field }: any) => (
+                        {({ field }: FieldProps) => (
                             <FormControl>
-                                <Input  {...field} id="word" placeholder="Word" />
+                                <Input {...field} id="word" placeholder="Word" />
                             </FormControl>
                         )}
                     </Field>
@@ -65,9 +65,7 @@ export default function AddWord() {
                         </Button>
                     </Flex>
                 </Flex>
-
             )}
         </Formik>
     );
 }
-

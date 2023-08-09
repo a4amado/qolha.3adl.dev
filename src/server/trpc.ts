@@ -1,17 +1,13 @@
 import { TRPCError, initTRPC } from "@trpc/server";
-
 import type { Context } from "../pages/api/trpc/[trpc]";
 
-import { log } from "console";
-
 const t = initTRPC.context<Context>().create();
+
+export const router = t.router;
 /**
  * Export reusable router and procedure helpers
  * that can be used throughout the router
  */
-export const router = t.router;
-export const middleware = t.middleware;
-
 export const publicProcedure = t.procedure;
 
 export const protectedProcedure = t.procedure.use((opts) => {
@@ -30,6 +26,7 @@ export const adminProcedure = protectedProcedure.use((opts) => {
             code: "UNAUTHORIZED",
         });
     }
+
     return opts.next();
 });
 
@@ -39,5 +36,6 @@ export const ownerProcedure = protectedProcedure.use((opts) => {
         throw new TRPCError({
             code: "UNAUTHORIZED",
         });
+
     return opts.next();
 });

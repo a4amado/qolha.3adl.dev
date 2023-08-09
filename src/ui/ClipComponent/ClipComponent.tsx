@@ -1,17 +1,20 @@
-import { Button, ButtonGroup, Image } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons"; // Please note that the PlayIcon might not exist in Chakra UI Icons.
+import { Button, ButtonGroup, IconButton } from "@chakra-ui/react";
+import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+
 import { trpc } from "@utils/trpc";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useAudio } from "react-use";
-import NextImage from "next/image";
 import NextLink from "next/link";
 
-export default function ClipComponent({ number, ar, username, clipId, userId }: { number: number; ar: string; username: string; clipId: string; userId: string }) {
+export default function ClipComponent({ number, ar, username, clipId, userId }: {
+    number: number, ar: string, username: string, clipId: string, userId: string
+}) {
     const rej = trpc.clip.reject.useMutation();
     const acc = trpc.clip.accept.useMutation();
     const [disabled, setDisabled] = useState(false);
     const session = useSession();
+
     const [audio, state, controls] = useAudio({
         src: `/api/clip/${clipId}/stream`,
     });
@@ -21,13 +24,17 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
     };
 
     const handleAcceptClick = async () => {
-        await acc.mutateAsync({ clipId: clipId });
+        await acc.mutateAsync({
+            clipId: clipId,
+        });
         setDisabled(true);
         controls.pause();
     };
 
     const handleRejectClick = async () => {
-        await rej.mutateAsync({ clipId: clipId });
+        await rej.mutateAsync({
+            clipId: clipId,
+        });
         setDisabled(true);
         controls.pause();
     };
@@ -42,37 +49,27 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
                     <span className="inline-block px-1">{username}</span>
                 </NextLink>
             </td>
-
             {audio}
-
             <td>
                 <ButtonGroup>
                     <Button size="sm" colorScheme="blue" disabled={true} onClick={handlePlayClick}>
                         play
                     </Button>
-
-                    <Button
+                    <IconButton
                         disabled={disabled}
                         onClick={handleAcceptClick}
                         colorScheme="green"
-                        size="sm"
-                        // @ts-ignore
-                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"}
-                    >
-                        accept
-                    </Button>
-
-                    <Button
+                        icon={<AddIcon />}
+                        size="sm" // @ts-ignore
+                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"} aria-label={""}                    />
+                    <IconButton
+                    
                         disabled={disabled}
                         onClick={handleRejectClick}
                         colorScheme="red"
                         size="sm"
-                        leftIcon={<DeleteIcon />}
-                        // @ts-ignore
-                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"}
-                    >
-                        reject
-                    </Button>
+                        icon={<DeleteIcon />} // @ts-ignore
+                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"} aria-label={""}                    />
                 </ButtonGroup>
             </td>
         </tr>

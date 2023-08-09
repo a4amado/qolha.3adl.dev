@@ -4,7 +4,7 @@
         "lib": [
             "dom",
             "dom.iterable",
-            "esnext"
+            "esnext",
         ],
         "allowJs": true,
         "skipLibCheck": true,
@@ -21,34 +21,30 @@
         "noUncheckedIndexedAccess": true,
         "baseUrl": "./",
         "paths": {
-            "@ui/*": [
-                "./src/ui/*"
-            ],
+            "@ui/*": ["./src/ui/*"],
             "@utils/*": [
-                "./src/utils/*"
+                "./src/utils/*",
             ],
             "@middleware/*": [
-                "./src/middleware/*"
+                "./src/middleware/*",
             ],
             "@db": [
-                "backend/db/index"
+                "backend/db/index",
             ],
             "@backend/*": [
-                "./backend/*"
+                "./backend/*",
             ],
             "@schema/*": [
-                "./src/schema/*"
+                "./src/schema/*",
             ],
             "@hools/*": [
-                "./src/hooks/*"
+                "./src/hooks/*",
             ],
         },
-        "plugins": [
-            {
-                "name": "tsconfig-paths",
-                "afterDeclarations": true
-            }
-        ]
+        "plugins": [{
+            "name": "tsconfig-paths",
+            "afterDeclarations": true,
+        }],
     },
     "include": [
         "next-env.d.ts",
@@ -57,9 +53,9 @@
         "**/*.cjs",
         "**/*.mjs",
         "src/**/*.{ts.tsx}",
-        "tsconfig.server.json"
+        "tsconfig.server.json",
     ],
     "exclude": [
-        "node_modules"
-    ]
+        "node_modules",
+    ],
 }

@@ -55,3 +55,7 @@ yarn-error.log*
 
 
 /.next
+.idea
+*.swp
+yarn-error.log
+coverage

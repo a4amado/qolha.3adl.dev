@@ -1,6 +1,6 @@
 import prisma from "@db";
 import { Schema$Client$UpdateRole } from "@schema/user/update-role";
-import { ownerProcedure, publicProcedure } from "src/server/trpc";
+import { ownerProcedure } from "src/server/trpc";
 
 const updateRole = ownerProcedure.input(Schema$Client$UpdateRole).mutation(async (opts) => {
     const update_role = await prisma.user.update({
@@ -15,6 +15,7 @@ const updateRole = ownerProcedure.input(Schema$Client$UpdateRole).mutation(async
             id: true,
         },
     });
+
     return update_role;
 });
 
