@@ -7,9 +7,7 @@ import { useState } from "react";
 import { useAudio } from "react-use";
 import NextLink from "next/link";
 
-export default function ClipComponent({ number, ar, username, clipId, userId }: {
-    number: number, ar: string, username: string, clipId: string, userId: string
-}) {
+export default function ClipComponent({ number, ar, username, clipId, userId }: { number: number; ar: string; username: string; clipId: string; userId: string }) {
     const rej = trpc.clip.reject.useMutation();
     const acc = trpc.clip.accept.useMutation();
     const [disabled, setDisabled] = useState(false);
@@ -61,15 +59,18 @@ export default function ClipComponent({ number, ar, username, clipId, userId }: 
                         colorScheme="green"
                         icon={<AddIcon />}
                         size="sm" // @ts-ignore
-                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"} aria-label={""}                    />
+                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"}
+                        aria-label={""}
+                    />
                     <IconButton
-                    
                         disabled={disabled}
                         onClick={handleRejectClick}
                         colorScheme="red"
                         size="sm"
                         icon={<DeleteIcon />} // @ts-ignore
-                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"} aria-label={""}                    />
+                        display={session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") ? "inline-flex" : "none"}
+                        aria-label={""}
+                    />
                 </ButtonGroup>
             </td>
         </tr>

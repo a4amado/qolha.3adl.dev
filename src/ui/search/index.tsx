@@ -85,7 +85,9 @@ export default function Search() {
                     {w.isSuccess &&
                         data.map((e) => (
                             <Link display={"flex"} alignItems={"end"} padding={1} as={NextLink} href={`/word/${e.ar}`} backgroundColor={activeItem?.value.id === e.id ? "yellow" : ""}>
-                                <Box height={"10"} as="span"  >{e.ar}</Box>
+                                <Box height={"10"} as="span">
+                                    {e.ar}
+                                </Box>
                             </Link>
                         ))}
                 </Flex>

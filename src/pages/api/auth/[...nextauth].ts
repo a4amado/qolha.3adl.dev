@@ -67,6 +67,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): AuthOpti
         },
     },
 });
+
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     return await NextAuth(req, res, authOptions(req, res));
 }

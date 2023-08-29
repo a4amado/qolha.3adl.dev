@@ -6,8 +6,8 @@ import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import LoadingComponent from "./ComponentLoading";
 
-export default function ContributeClip() {
-    const word = trpc.word.getWordThatNeedsClips.useQuery();
+export default function ContributeClip({ wordId, afterFunc }: { wordId?: string; afterFunc?: Function }) {
+    const word = trpc.word.getWordThatNeedsClips.useQuery(wordId);
     const [clip, axiosSubmitClip] = useAxios(
         {
             method: "POST",
@@ -45,7 +45,13 @@ export default function ContributeClip() {
         await axiosSubmitClip({
             data: f,
         });
+
+        if (!!afterFunc) {
+            return afterFunc();
+        }
+
         setLink("");
+
         word.refetch();
     }
 
@@ -53,7 +59,7 @@ export default function ContributeClip() {
         <Flex flexDirection={"column"} bgColor={"white"} p="10px" position={"relative"} gap={2} borderRadius={1} overflow={"hidden"}>
             <LoadingComponent isLoading={clip.loading || session.status === "loading"} />
             <Flex flexDirection={"row"} w="full" justifyContent="space-around" gap={2}>
-                <Button size={"xs"} borderRadius={0}onClick={() => (["recording", "paused"].includes(rec.status) ? rec.stopRecording() : rec.startRecording())} title={["recording", "paused"].includes(rec.status) ? "Record" : "Stop_"}>
+                <Button size={"xs"} borderRadius={0} onClick={() => (["recording", "paused"].includes(rec.status) ? rec.stopRecording() : rec.startRecording())} title={["recording", "paused"].includes(rec.status) ? "Record" : "Stop_"}>
                     {rec.status === "recording" ? "Stop" : "Start"}
                 </Button>
                 <Button

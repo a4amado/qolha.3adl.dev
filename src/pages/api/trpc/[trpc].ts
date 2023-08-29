@@ -6,10 +6,7 @@ import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import prisma from "@db";
 import { NextApiRequest, NextApiResponse } from "next";
 
-async function createContext({ req, res }: {
-    req: NextApiRequest,
-    res: NextApiResponse
-}) {
+async function createContext({ req, res }: { req: NextApiRequest; res: NextApiResponse }) {
     const b = await getServerSession(req, res, authOptions(req, res));
 
     // await prisma.user.update({

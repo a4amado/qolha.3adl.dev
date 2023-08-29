@@ -25,13 +25,19 @@ function NavigationMenu() {
             <MenuButton as={IconButton} icon={<HamburgerIcon />} />
             <MenuList as={Flex} flexDirection={"column"} gap={1} padding={1}>
                 <NextLink href={"/dashboard/clips"}>
-                    <Button size={"xs"} as={MenuItem}>Review Clips</Button>
+                    <Button size={"xs"} as={MenuItem}>
+                        Review Clips
+                    </Button>
                 </NextLink>
                 <NextLink href={"/api/auth/signin"}>
-                    <Button size={"xs"} as={MenuItem}>Login</Button>
+                    <Button size={"xs"} as={MenuItem}>
+                        Login
+                    </Button>
                 </NextLink>
                 <NextLink href={"/word/add"}>
-                    <Button size={"xs"} as={MenuItem}>Add Word</Button>
+                    <Button size={"xs"} as={MenuItem}>
+                        Add Word
+                    </Button>
                 </NextLink>
             </MenuList>
         </Menu>

@@ -33,9 +33,13 @@ route.get(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
+    console.log(clip.clipName);
+
     const stream = createReadStream(join(process.cwd(), "files", "clips", clip.clipName));
 
-    stream.on("error", () => {
+    stream.on("error", (error) => {
+        console.log(error);
+
         return res.status(Codes.INTERNAL_SERVER_ERROR).send({
             message: ["Faild To stream the Clip"],
         });
