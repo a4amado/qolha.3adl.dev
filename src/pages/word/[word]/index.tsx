@@ -119,7 +119,6 @@ const ClipsPopover = ({ clips, wordId }: { clips: RouterOutput["search"]["search
                 <IconButton aria-label="open menu" icon={<BiPlay />} size={"xs"} />
             </PopoverTrigger>
 
-
             <PopoverContent>
                 <Flex display={"flex"} flexDirection={"column"} gap={"5px"} padding={"5px"}>
                     {clips.length === 0 && <NoClipsMessage />}

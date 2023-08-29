@@ -10,9 +10,9 @@ import LoadingComponent from "@ui/ComponentLoading";
 export default function Search() {
     const [input, setInput] = React.useState("");
 
-    const [items, setItems] = useState<Circular<RouterOutput["search"]["searchWord"][number]> | null>(() => new Circular());
+    const [items, setItems] = useState<Circular<RouterOutput["search"]["searchWord"]["words"][number]> | null>(() => new Circular());
     const data = items?.toArray() || [];
-    const [activeItem, setActiveItem] = useState<Node<RouterOutput["search"]["searchWord"][number]> | null>(() => new Node());
+    const [activeItem, setActiveItem] = useState<Node<RouterOutput["search"]["searchWord"]["words"][number]> | null>(() => new Node());
 
     function handleBtnDown(e: KeyboardEvent<HTMLInputElement>) {
         if (e.key === "ArrowDown") {
