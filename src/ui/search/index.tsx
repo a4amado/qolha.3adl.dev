@@ -14,27 +14,6 @@ export default function Search() {
     const data = items?.toArray() || [];
     const [activeItem, setActiveItem] = useState<Node<RouterOutput["search"]["searchWord"]["words"][number]> | null>(() => new Node());
 
-    function handleBtnDown(e: KeyboardEvent<HTMLInputElement>) {
-        if (e.key === "ArrowDown") {
-            e.preventDefault();
-            // @ts-ignore
-            setActiveItem(activeItem?.next);
-        }
-
-        if (e.key === "ArrowUp") {
-            e.preventDefault();
-            // @ts-ignore
-            setActiveItem(activeItem?.prev);
-        }
-
-        if (e.key === "Enter") {
-            e.preventDefault();
-            Router.push(`/word/${activeItem?.value.ar}`);
-        }
-
-        return true;
-    }
-
     const w = trpc.search.searchWord.useMutation({
         onSuccess(data) {
             const circular = new Circular();
@@ -48,12 +27,37 @@ export default function Search() {
         },
     });
 
+    function handleBtnDown(e: KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            // @ts-ignore
+            setActiveItem(activeItem?.next);
+        }
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault();
+            // @ts-ignore
+            setActiveItem(activeItem?.prev);
+
+        }
+
+        if (e.key === "Enter") {
+            e.preventDefault();
+            Router.push(`/word/${activeItem?.value.ar}`);
+            setItems(new Circular());
+        }
+
+        return true;
+    }
+
+
+
     React.useEffect(() => {
         w.mutate(input);
     }, [input]);
 
     return (
-        <Flex flexDirection={"column"}>
+        <Flex flexDirection={"column"} width={"full"} maxWidth={"500px"}>
             <Flex position={"relative"} background={"white"} borderRadius={"5px"}>
                 <Input
                     onKeyDown={handleBtnDown}
@@ -67,6 +71,8 @@ export default function Search() {
                     borderBottomRightRadius={data.length > 0 ? 0 : "nossne"}
                     borderBottom={data.length > 0 ? "none" : "asdasd"}
                 />
+
+
                 <Flex
                     padding={2}
                     borderColor={"inherit"}
@@ -81,7 +87,6 @@ export default function Search() {
                     width={"full"}
                     zIndex={1}
                 >
-                    <LoadingComponent height={"200px"} isLoading={w.isLoading} />
                     {w.isSuccess &&
                         data.map((e) => (
                             <Link display={"flex"} alignItems={"end"} padding={1} as={NextLink} href={`/word/${e.ar}`} backgroundColor={activeItem?.value.id === e.id ? "yellow" : ""}>

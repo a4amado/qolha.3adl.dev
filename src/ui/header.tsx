@@ -11,6 +11,8 @@ export default function Header() {
                     </Text>
                 </NextLink>
                 <Spacer />
+                <Search />
+                <Spacer />
                 <NavigationMenu />
             </Flex>
         </Box>
@@ -18,6 +20,7 @@ export default function Header() {
 }
 
 import { HamburgerIcon } from "@chakra-ui/icons";
+import Search from "./search";
 
 function NavigationMenu() {
     return (
