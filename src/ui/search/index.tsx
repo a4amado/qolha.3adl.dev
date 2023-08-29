@@ -39,7 +39,7 @@ export default function Search() {
         onSuccess(data) {
             const circular = new Circular();
 
-            for (const e of data) {
+            for (const e of data.words) {
                 circular.append(e);
             }
 
