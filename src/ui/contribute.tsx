@@ -1,12 +1,20 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button } from "antd";
 import useRecorder from "@wmik/use-media-recorder";
 import { trpc } from "@utils/trpc";
 import useAxios from "axios-hooks";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import LoadingComponent from "./ComponentLoading";
+import { useAudio } from "react-use";
+import { PauseCircleFilled, PlayCircleFilled } from "@ant-design/icons";
 
-export default function ContributeClip({ wordId, afterFunc }: { wordId?: string; afterFunc?: Function }) {
+export default function ContributeClip({
+    wordId,
+    afterFunc
+}: {
+    wordId?: string;
+    afterFunc?: Function;
+}) {
     const word = trpc.word.getWordThatNeedsClips.useQuery(wordId);
     const [clip, axiosSubmitClip] = useAxios(
         {
@@ -14,14 +22,18 @@ export default function ContributeClip({ wordId, afterFunc }: { wordId?: string;
             withCredentials: true,
             url: `/api/clip/insert?wordId=${word?.data && word?.data?.id}`,
             headers: {
-                "Content-Type": "multipart/form-data",
-            },
+                "Content-Type": "multipart/form-data"
+            }
         },
         {
-            manual: true,
+            manual: true
         }
     );
     const [link, setLink] = useState("");
+
+    const audio = useAudio({
+        src: link,
+    })
 
     const session = useSession();
 
@@ -29,12 +41,12 @@ export default function ContributeClip({ wordId, afterFunc }: { wordId?: string;
         recordScreen: false,
         mediaStreamConstraints: {
             audio: true,
-            video: false,
+            video: false
         },
         onStop: (b) => {
             const url = URL.createObjectURL(b);
             setLink(url);
-        },
+        }
     });
 
     async function submitClip() {
@@ -43,7 +55,7 @@ export default function ContributeClip({ wordId, afterFunc }: { wordId?: string;
         const f = new FormData();
         f.append("clip", rec.mediaBlob);
         await axiosSubmitClip({
-            data: f,
+            data: f
         });
 
         if (!!afterFunc) {
@@ -56,29 +68,44 @@ export default function ContributeClip({ wordId, afterFunc }: { wordId?: string;
     }
 
     return (
-        <Flex flexDirection={"column"} bgColor={"white"} p="10px" position={"relative"} gap={2} borderRadius={1} overflow={"hidden"}>
+        <div className="flex w-full flex-col bg-white p-10 relative gap-2 rounded overflow-hidden">
             <LoadingComponent isLoading={clip.loading || session.status === "loading"} />
-            <Flex flexDirection={"row"} w="full" justifyContent="space-around" gap={2}>
-                <Button size={"xs"} borderRadius={0} onClick={() => (["recording", "paused"].includes(rec.status) ? rec.stopRecording() : rec.startRecording())} title={["recording", "paused"].includes(rec.status) ? "Record" : "Stop_"}>
+            <div className="flex flex-row w-full justify-around gap-2">
+                <Button
+                    size="small"
+                    shape="round"
+                    onClick={() =>
+                        ["recording", "paused"].includes(rec.status)
+                            ? rec.stopRecording()
+                            : rec.startRecording()
+                    }
+                >
                     {rec.status === "recording" ? "Stop" : "Start"}
                 </Button>
                 <Button
-                    type="button"
                     onClick={async () => {
                         await submitClip();
                         await word.refetch();
                     }}
                     disabled={session.status !== "authenticated" || clip.loading}
-                    size={"xs"}
-                    borderRadius={0}
+                    size="small"
+                    shape="round"
                 >
-                    send
+                    Send
                 </Button>
-            </Flex>
-            <Flex w="full" border="1px solid black" fontSize="20px" h="100px" display="flex" justifyContent="center" alignItems="center" fontFamily="IBM Plex Sans Arabic">
+            </div>
+            <div className="w-full border border-black text-2xl h-24 flex justify-center items-center font-sans">
                 {word.data?.ar}
-            </Flex>
-            <audio src={link} controls />
-        </Flex>
+            </div>
+            <div>
+                {audio[0]}
+                <Button onClick={audio[2].play}>
+                    <PlayCircleFilled />
+                </Button>
+                <Button onClick={audio[2].pause}>
+                    <PauseCircleFilled />
+                </Button>
+            </div>
+        </div>
     );
 }

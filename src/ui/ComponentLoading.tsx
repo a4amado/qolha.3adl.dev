@@ -1,15 +1,24 @@
-import { Flex, FlexProps, Spinner } from "@chakra-ui/react";
+import { Spin } from "antd"; // Import Ant Design component
+import { SpinProps } from "antd/es/spin"; // Import SpinProps type
+import { FC } from "react"; // Import FC type
 
-export default function LoadingComponent({
-    isLoading,
-    ...rest
-}: {
+// Define props type
+interface LoadingComponentProps extends SpinProps {
     isLoading: boolean;
-} & FlexProps) {
-    if (!isLoading) return <></>
-    return (
-        <Flex {...rest} position="absolute" justifyContent={"center"} alignItems={"center"} top={0} left={0} width="100%" height="100%" bgColor="white" zIndex={4} >
-            <Spinner />
-        </Flex>
-    );
 }
+
+// Define the LoadingComponent as a functional component
+const LoadingComponent: FC<LoadingComponentProps> = ({ isLoading, ...rest }) => {
+    if (!isLoading) return null; // Return null when not loading
+
+    return (
+        <div
+            className="absolute flex justify-center items-center top-0 left-0 w-full h-full bg-white z-4"
+            {...rest}
+        >
+            <Spin />
+        </div>
+    );
+};
+
+export default LoadingComponent;

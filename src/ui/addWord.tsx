@@ -1,46 +1,29 @@
-import { Button, FormControl, Input, Flex, useToast } from "@chakra-ui/react";
-import { Formik, Field, Form, FieldProps } from "formik";
+import { Button, Input, Form, Space, message } from "antd"; // Import Ant Design components
+import { Field, Formik } from "formik";
 import { trpc } from "@utils/trpc";
-import { InferType } from "yup";
 import * as yup from "yup";
 
-const g = yup.object().shape({
-    word: yup.string().required(),
+const schema = yup.object().shape({
+    word: yup.string().required("This field is required"),
 });
 
 export default function AddWord() {
     const appendWord = trpc.word.insertWord.useMutation({
         onError(error) {
-            toast({
-                title: "Error",
-                description: error.message,
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-            });
+            message.error(error.message);
         },
         onSuccess(data) {
-            toast({
-                title: "Word Added",
-                description: data.ar,
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
+            message.success(`Word Added: ${data.ar}`);
         },
         retry: false,
     });
 
-    const toast = useToast();
-
     return (
         <Formik
-            validationSchema={g}
-            initialValues={
-                {
-                    word: "",
-                } as InferType<typeof g>
-            }
+            validationSchema={schema}
+            initialValues={{
+                word: "",
+            }}
             enableReinitialize={true}
             onSubmit={async (values, actions) => {
                 if (appendWord.isLoading) return;
@@ -50,21 +33,28 @@ export default function AddWord() {
                 actions.resetForm();
             }}
         >
-            {(form) => (
-                <Flex as={Form} width={"full"} direction="column" gap={2} mx="auto" my={3}>
+            {(formik) => (
+                <Form className="w-full max-w-md mx-auto my-3 space-y-2">
                     <Field name="word">
-                        {({ field }: FieldProps) => (
-                            <FormControl>
+                        {({ field, meta }: any) => (
+                            <div>
                                 <Input {...field} id="word" placeholder="Word" />
-                            </FormControl>
+                                {meta.touched && meta.error && (
+                                    <div className="text-red-500">{meta.error}</div>
+                                )}
+                            </div>
                         )}
                     </Field>
-                    <Flex justify="center">
-                        <Button colorScheme="blue" variant="solid" title="Add Word" onClick={() => form.handleSubmit()} type="submit">
+                    <Space align="center">
+                        <Button
+                            type="primary"
+                            loading={appendWord.isLoading}
+                            onClick={formik.handleSubmit}
+                        >
                             Add Word
                         </Button>
-                    </Flex>
-                </Flex>
+                    </Space>
+                </Form>
             )}
         </Formik>
     );

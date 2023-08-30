@@ -5,9 +5,11 @@ import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
 import { useRouter } from "next/router";
 import { trpc } from "@utils/trpc";
-import ClipComponent from "@ui/ClipComponent";
-import { Button, ButtonGroup, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import ClipComponent from "@ui/ClipAction";
+import { Button, Table } from "antd"; // Import Ant Design components
 import LoadingComponent from "@ui/ComponentLoading";
+
+const { Column, ColumnGroup } = Table; // Destructure Column and ColumnGroup components from Ant Design Table
 
 function Clips() {
     const session = useSession();
@@ -34,29 +36,22 @@ function Clips() {
 
     return (
         <>
-            <Head>
-                <link rel="stylesheet" href="/disable_scroll.css" />
-            </Head>
+
             <PageContainer>
                 <div className="flex flex-col relative">
                     <LoadingComponent isLoading={clip.isLoading || clip.isFetching || clip.isRefetching} />
-                    <ButtonGroup>
-                        <Button onClick={() => clip.refetch()}>Fetch</Button>
-                    </ButtonGroup>
+                    <Button onClick={() => clip.refetch()}>Fetch</Button>
                     <span>{clip?.data?.PendingClips._count._all} clips need revision</span>
-                    <Table width="500px">
-                        <Thead>
-                            <Tr>
-                                <Th>Word</Th>
-                                <Th>Username</Th>
-                                <Th>Actions</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {clip.data?.clips?.map((clip, i) => (
-                                <ClipComponent userId={clip.user?.id || ""} ar={clip.word.ar} clipId={clip.id} number={i} username={clip?.user?.name || ""} key={clip.id} />
-                            ))}
-                        </Tbody>
+                    <Table dataSource={clip.data?.clips} rowKey="id">
+                        <Column title="Word" dataIndex={["word", "ar"]} key="word" />
+                        <Column title="Username" dataIndex={["user", "name"]} key="username" />
+                        <Column
+                            title="Actions"
+                            key="actions"
+                            render={(clip, _, i) => (
+                                <ClipComponent userId={clip.user?.id || ""} ar={clip.word.ar} clipId={clip.id} number={i} username={clip?.user?.name || ""} />
+                            )}
+                        />
                     </Table>
                 </div>
             </PageContainer>

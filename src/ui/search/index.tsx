@@ -1,18 +1,26 @@
 import React, { useState, KeyboardEvent } from "react";
 import { trpc } from "@utils/trpc";
-import { Input, Flex, Link, Box } from "@chakra-ui/react";
+import { Input, Space, Typography } from "antd"; // Import Ant Design components
 import Router from "next/router";
 import { Circular, Node } from "doublie";
 import { RouterOutput } from "../../server/routers/_app";
 import NextLink from "next/link";
 import LoadingComponent from "@ui/ComponentLoading";
 
-export default function Search() {
-    const [input, setInput] = React.useState("");
+const { Link } = Typography; // Destructure Link component from Ant Design Typography
+const { Search } = Input; // Destructure Search component from Ant Design Input
+const { Text } = Typography; // Destructure Text component from Ant Design Typography
 
-    const [items, setItems] = useState<Circular<RouterOutput["search"]["searchWord"]["words"][number]> | null>(() => new Circular());
+export default function SearchComponent() {
+    const [input, setInput] = useState("");
+
+    const [items, setItems] = useState<Circular<RouterOutput["search"]["searchWord"]["words"][number]> | null>(
+        new Circular()
+    );
     const data = items?.toArray() || [];
-    const [activeItem, setActiveItem] = useState<Node<RouterOutput["search"]["searchWord"]["words"][number]> | null>(() => new Node());
+    const [activeItem, setActiveItem] = useState<Node<RouterOutput["search"]["searchWord"]["words"][number]> | null>(
+        new Node()
+    );
 
     const w = trpc.search.searchWord.useMutation({
         onSuccess(data) {
@@ -38,7 +46,6 @@ export default function Search() {
             e.preventDefault();
             // @ts-ignore
             setActiveItem(activeItem?.prev);
-
         }
 
         if (e.key === "Enter") {
@@ -50,53 +57,39 @@ export default function Search() {
         return true;
     }
 
-
-
     React.useEffect(() => {
         w.mutate(input);
     }, [input]);
 
     return (
-        <Flex flexDirection={"column"} width={"full"} maxWidth={"500px"}>
-            <Flex position={"relative"} background={"white"} borderRadius={"5px"}>
-                <Input
+        <div className="flex flex-col w-full max-w-md">
+            <div className="relative bg-white rounded-md">
+                <Search
                     onKeyDown={handleBtnDown}
                     value={input}
-                    width={"full"}
                     onChange={(e) => {
                         setInput(e.target.value);
                     }}
-                    _focusVisible={{}}
-                    borderBottomLeftRadius={data.length > 0 ? 0 : "nssone"}
-                    borderBottomRightRadius={data.length > 0 ? 0 : "nossne"}
-                    borderBottom={data.length > 0 ? "none" : "asdasd"}
+                    className="border rounded-t-md"
                 />
 
-
-                <Flex
-                    padding={2}
-                    borderColor={"inherit"}
-                    display={data?.length > 0 ? "flex" : "none"}
-                    background={"white"}
-                    borderTop={"none!important"}
-                    border={"1px solid black"}
-                    flexDirection={"column"}
-                    position={"absolute"}
-                    top={"100%"}
-                    left={"0"}
-                    width={"full"}
-                    zIndex={1}
+                <div
+                    className={`p-2 border border-black bg-white ${data?.length > 0 ? "block" : "hidden"
+                        } absolute top-full left-0 w-full z-[999999999999]`}
                 >
                     {w.isSuccess &&
                         data.map((e) => (
-                            <Link display={"flex"} alignItems={"end"} padding={1} as={NextLink} href={`/word/${e.ar}`} backgroundColor={activeItem?.value.id === e.id ? "yellow" : ""}>
-                                <Box height={"10"} as="span">
-                                    {e.ar}
-                                </Box>
+                            <Link
+                                key={e.id}
+                                className={`block px-1 py-2 ${activeItem?.value.id === e.id ? "bg-yellow-200" : ""
+                                    }`}
+                                href={`/word/${e.ar}`}
+                            >
+                                {e.ar}
                             </Link>
                         ))}
-                </Flex>
-            </Flex>
-        </Flex>
+                </div>
+            </div>
+        </div>
     );
 }

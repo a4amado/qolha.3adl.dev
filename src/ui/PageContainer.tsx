@@ -1,32 +1,29 @@
-import React, { PropsWithChildren } from "react";
+import React, { ReactNode } from "react";
 import ContributeClip from "./contribute";
 import Header from "./header";
-import { Flex } from "@chakra-ui/react";
+import { Layout, Row, Col } from "antd"; // Import Ant Design components
 
-export default function PageContainer({ children }: PropsWithChildren) {
+const { Content } = Layout; // Destructure Content component from Ant Design Layout
+
+interface PageContainerProps {
+    children: ReactNode;
+}
+
+export default function PageContainer({ children }: PageContainerProps) {
     return (
-        <Flex flexDirection={"column"} height={"full"} alignItems={"stretch"}>
+        <Layout>
             <Header />
-            <Flex
-                flex={"30px 1 0"}
-                gap={"10px"}
-                width={"full"}
-                height={"full"}
-                maxWidth={"1100px"}
-                padding={"10px 20px"}
-                margin={"0 auto"}
-                flexDirection={{
-                    base: "column",
-                    lg: "row",
-                }}
-            >
-                <Flex flexDirection={"column"} minHeight={"full"} position={"relative"} bgColor={"white"} padding={"10px"} width="full">
-                    {children}
-                </Flex>
-                <Flex as="aside" height={"fit-content"}>
+            <Content className="w-full max-w-6xl mx-auto flex flex-row m-4 gap-5">
+                <Row gutter={10} className="w-3/4">
+                    <div className="w-full bg-white p-10  relative">
+                        {children}
+                    </div>
+
+                </Row>
+                <Row className="w-1/4 h-fit">
                     <ContributeClip />
-                </Flex>
-            </Flex>
-        </Flex>
+                </Row>
+            </Content>
+        </Layout>
     );
 }

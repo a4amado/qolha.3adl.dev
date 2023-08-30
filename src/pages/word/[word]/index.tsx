@@ -1,32 +1,14 @@
-import {
-    IconButton,
-    Button,
-    Flex,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Text,
-    useDisclosure,
-    PopoverBody,
-    PopoverContent,
-    Popover,
-    PopoverTrigger,
-    Spacer,
-} from "@chakra-ui/react";
+import { Button, Divider, Modal, Popover, Typography, Space, Table } from "antd"; // Import Ant Design components
+import { InfoCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"; // Import Ant Design icons
 import PageContainer from "@ui/PageContainer";
 import { trpc } from "@utils/trpc";
-import type { GetServerSideProps } from "next";
-import React from "react";
-import { BiPlay } from "react-icons/bi";
+import { NextPageContext } from "next";
+import React, { useEffect, useState } from "react";
 import ContributeClip from "@ui/contribute";
 import { useAudio } from "react-use";
+import { RouterOutput } from "src/server/routers/_app";
+
+const { Text, Title } = Typography;
 
 export function getQueryItem(query: any) {
     if (typeof query === "string") return query;
@@ -34,108 +16,120 @@ export function getQueryItem(query: any) {
     if (Array.isArray(query)) return query[0];
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => ({
-    props: {
-        // trpcState: helpers.dehydrate(),
-        word: ctx.query.word,
-    },
-});
+interface WordPageProps {
+    word: string;
+}
 
-export default function WordPage({ word }: { word: string }) {
+export async function getServerSideProps(context: NextPageContext) {
+    return {
+        props: {
+            word: getQueryItem(context.query.word),
+        },
+    };
+}
+
+export default function WordPage({ word }: WordPageProps) {
     const QueryWord = trpc.search.searchWord.useMutation();
 
-    React.useEffect(() => {
+
+    useEffect(() => {
         QueryWord.mutate(word);
     }, []);
 
     return (
-        <>
-            <PageContainer>
-                <Flex direction={"column"} gap={"5px"}>
-                    <Text as="h1" textAlign={"center"}>
-                        <b>{QueryWord.data?.word}</b>
-                    </Text>
-                    {QueryWord?.data?.words && <RenderWords props={QueryWord?.data} />}
-                </Flex>
-            </PageContainer>
-        </>
+        <PageContainer>
+            <div className="flex flex-col gap-5">
+                <Title className="text-center">
+                    <b>{QueryWord.data?.word}</b>
+                </Title>
+                <Table rowKey="id" dataSource={QueryWord?.data?.words}>
+                    <Table.Column title="Word" dataIndex={["ar"]} key="ar" />
+                    <Table.Column title="User" dataIndex={["userId"]} key="userId" />
+                    <Table.Column title="Clips" key="clips"
+
+                        render={(props: RouterOutput["search"]["searchWord"]["words"][number]) => {
+                            return <ClipsPopover clips={props.clips} wordId={props.id} />
+                        }} />
+                </Table>
+
+            </div>
+        </PageContainer>
     );
 }
 
 const NoClipsComponent = ({ wordId }: { wordId: string }) => {
-    const open = useDisclosure({ defaultIsOpen: false });
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const showModal = () => {
+        setModalVisible(true);
+    };
+
+    const handleModalClose = () => {
+        setModalVisible(false);
+    };
 
     return (
         <>
-            <Button onClick={open.onOpen}>Help, Now !!!</Button>
-            <Modal onEsc={open.onClose} closeOnOverlayClick closeOnEsc onClose={open.onClose} isOpen={open.isOpen}>
-                <ModalHeader title="Thanks for helping the community." />
-                <ModalBody>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ContributeClip afterFunc={open.onClose} wordId={wordId} />
-                    </ModalContent>
-                </ModalBody>
-                <ModalFooter>ss</ModalFooter>
+            <Button onClick={showModal}>Help, Now !!!</Button>
+            <Modal
+                title="Thanks for helping the community."
+                visible={modalVisible}
+                onCancel={handleModalClose}
+                footer={null}
+                width={500}
+            >
+                <ContributeClip afterFunc={handleModalClose} wordId={wordId} />
             </Modal>
         </>
     );
 };
 
 const RenderAudio = ({ clipId, username, userId }: { clipId: string; username: string; userId: string }) => {
-    const audio = useAudio({
+    const [audio, state, controls] = useAudio({
         src: `/api/clip/${clipId}/stream`,
     });
 
     return (
-        <Flex justifyContent={"space-between"}>
-            {audio[0]}
+        <div className="flex items-center justify-between">
+            {audio}
             <Text>{username}</Text>
-            <IconButton aspectRatio={"square"} aria-label="PlayClip" icon={<BiPlay />} onClick={audio[2].play} />
-        </Flex>
+            <Button
+                shape="circle"
+                icon={<PlayCircleOutlined />}
+                onClick={controls.play}
+            />
+        </div>
     );
 };
 
-import type { RouterOutput } from "../../../server/routers/_app";
+interface RenderWordsProps {
+    props: RouterOutput["search"]["searchWord"];
+}
 
-const RenderWords = ({ props }: { props: RouterOutput["search"]["searchWord"] }) => {
-    return (
-        <>
-            {props.words?.map((e) => (
-                <Flex key={e.id} gap={"3px"} padding={"5px"} justifyContent={"space-between"} border={"1px solid black"}>
-                    <Text>{e.ar}</Text>
-                    <Spacer />
-                    <ClipsPopover clips={e.clips} wordId={e.id} />
-                </Flex>
-            ))}
-        </>
-    );
-};
+
 
 const ClipsPopover = ({ clips, wordId }: { clips: RouterOutput["search"]["searchWord"]["words"][number]["clips"]; wordId: string }) => {
     return (
-        <Popover>
-            <PopoverTrigger>
-                <IconButton aria-label="open menu" icon={<BiPlay />} size={"xs"} />
-            </PopoverTrigger>
-
-            <PopoverContent>
-                <Flex display={"flex"} flexDirection={"column"} gap={"5px"} padding={"5px"}>
-                    {clips.length === 0 && <NoClipsMessage />}
-
-                    {clips.map((clip) => (
-                        <RenderAudio userId={clip.user?.id || ""} username={clip.user?.name || ""} clipId={clip.id} />
-                    ))}
-
-                    <NoClipsComponent wordId={wordId} />
-                </Flex>
-            </PopoverContent>
-
-        </Popover >
+        <Popover content={<PopoverContent clips={clips} wordId={wordId} />}>
+            <Button icon={<PlayCircleOutlined />} size="small" />
+        </Popover>
     );
 };
+
+const PopoverContent = ({ clips, wordId }: { clips: RouterOutput["search"]["searchWord"]["words"][number]["clips"]; wordId: string }) => {
+    return (
+        <div className="flex flex-col gap-5 p-5">
+            {clips.length === 0 && <NoClipsMessage />}
+            {clips.map((clip) => (
+                <RenderAudio userId={clip.user?.id || ""} username={clip.user?.name || ""} clipId={clip.id} />
+            ))}
+            <NoClipsComponent wordId={wordId} />
+        </div>
+    );
+};
+
 const NoClipsMessage = () => (
-    <Flex flexDirection={"column"} padding={"0 5px"}>
-        <Text>This word need clips, would like to help ?</Text>
-    </Flex>
+    <div className="flex flex-col p-5">
+        <Text>This word needs clips. Would you like to help?</Text>
+    </div>
 );

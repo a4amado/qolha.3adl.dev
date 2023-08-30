@@ -1,46 +1,24 @@
+
 import { AppProps } from "next/app";
-import GoToUp from "@ui/GoToUp";
-import { ChakraProvider, extendTheme, PortalManager, ThemeConfig } from "@chakra-ui/react";
+import { Layout } from "antd"; // Import the Layout component from Ant Design
 import { SessionProvider } from "next-auth/react";
 import Router from "next/router";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import { trpc } from "@utils/trpc";
 import Head from "next/head";
-import { Styles } from "@chakra-ui/theme-tools";
 
-const noop = () => {};
+import "../styles/globals.css"; // Import your Tailwind CSS styles
 
-const config: ThemeConfig = {
-    initialColorMode: "light",
-    useSystemColorMode: true,
-};
+const { Header, Content } = Layout; // Destructure Header and Content components from Ant Design Layout
 
-const styles: Styles = {
-    global: () => ({
-        body: {
-            overflow: "scroll",
-        },
-    }),
-};
-
-const theme = extendTheme({
-    styles,
-    config,
-});
+const noop = () => { };
 
 Router.events.on("routeChangeStart", () => {
-    const loadingContainer = document.getElementById("loading-container");
-    loadingContainer?.classList.remove("out-loading");
-    loadingContainer?.classList.remove("hide-loading");
-    loadingContainer?.classList.add("active-loading");
+    // Your loading animation logic
 });
 
 Router.events.on("routeChangeComplete", () => {
-    const loadingContainer = document.getElementById("loading-container");
-    loadingContainer?.classList.add("out-loading");
-    setTimeout(() => {
-        loadingContainer?.classList.add("hide-loading");
-    }, 500);
+    // Your loading animation logic
 });
 
 function handleSuccess(response: AxiosResponse) {
@@ -55,27 +33,26 @@ function handleError(error: AxiosError) {
 }
 
 Axios.interceptors.response.use(handleSuccess, handleError);
-// @ts-ignore
-function MyApp({ Component, pageProps, session }) {
+
+function MyApp({ Component, pageProps, session }: AppProps & { session: any }) {
     return (
-        <ChakraProvider theme={theme}>
+        <Layout>
             <SessionProvider session={session}>
-                <PortalManager>
-                    <Head>
-                        <style global>{`
-                    body {
-                    background-image: url("/633.png")!important;
-                    background-size: 250px !important;
-                    background-repeat: repeat!important;
-                }
+                <Head>
+                    <style global jsx>{`
+                        body {
+                            background-image: url("/633.png");
+                            background-size: 250px;
+                            background-repeat: repeat;
+                        }
                     `}</style>
-                    </Head>
-                    {/* <Loading /> */}
+                </Head>
+
+                <Content>
                     <Component {...pageProps} />
-                    <GoToUp />
-                </PortalManager>
+                </Content>
             </SessionProvider>
-        </ChakraProvider>
+        </Layout>
     );
 }
 
