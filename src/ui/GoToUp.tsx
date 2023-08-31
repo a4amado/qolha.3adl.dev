@@ -1,5 +1,6 @@
-import { IconButton } from "@chakra-ui/react";
-import { ArrowUpIcon } from "@chakra-ui/icons";
+import { Button } from "antd";
+import { UpOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 export default function GoToUp() {
     function goToTop() {
@@ -10,5 +11,5 @@ export default function GoToUp() {
         });
     }
 
-    return <IconButton onClick={goToTop} position={"fixed"} right={"10px"} bottom={"10px"} bgColor={"white"} aria-label="Go to Top" icon={<ArrowUpIcon />} />;
+    return <Button className={classNames("fixed", "bottom-2", "right-2")} onClick={goToTop} type="default" shape="circle" icon={<UpOutlined />} />;
 }

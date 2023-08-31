@@ -25,6 +25,12 @@ const searchRouter = router({
                         },
                     },
                 },
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
             },
             take: 5,
         });

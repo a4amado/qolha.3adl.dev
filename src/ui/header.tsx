@@ -2,17 +2,16 @@ import { Button, Space, Typography, Dropdown, Menu } from "antd";
 import { HomeOutlined, LoginOutlined, PlusOutlined, MenuOutlined } from "@ant-design/icons";
 import NextLink from "next/link";
 import SearchComponent from "./search";
+import classNames from "classnames";
 
 const { Text } = Typography;
 
 export default function Header() {
     return (
-        <div className="bg-white w-full p-1">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className={classNames("bg-white", "w-full", "p-1")}>
+            <div className={classNames("max-w-7xl", "mx-auto", "flex", "items-center", "justify-between")}>
                 <NextLink href="/">
-                    <Text className="text-xl font-bold text-black cursor-pointer">
-                        Qolha
-                    </Text>
+                    <Text className={classNames("text-xl", "font-bold", "text-black", "cursor-pointer")}>Qolha</Text>
                 </NextLink>
                 <Space size="large">
                     <SearchComponent />

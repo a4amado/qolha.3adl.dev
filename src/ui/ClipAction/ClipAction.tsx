@@ -4,22 +4,17 @@ import { trpc } from "@utils/trpc";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useAudio } from "react-use";
-import NextLink from "next/link";
+
 
 interface ClipActionProps {
-    number: number;
-    ar: string;
-    username: string;
+
     clipId: string;
-    userId: string;
+
 }
 
 export default function ClipAction({
-    number,
-    ar,
-    username,
-    clipId,
-    userId,
+    clipId
+
 }: ClipActionProps) {
     const rej = trpc.clip.reject.useMutation();
     const acc = trpc.clip.accept.useMutation();
@@ -57,6 +52,7 @@ export default function ClipAction({
             <Button size="small" onClick={() => controls.play()}>
                 <PlayCircleOutlined /> Play
             </Button>
+            {/* @ts-ignore */}
             {session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") && (
                 <>
                     <Popconfirm

@@ -6,9 +6,9 @@ import * as yup from "yup";
 
 const { TabPane } = Tabs;
 
-export default function DashboardUsers() {
+const DashboardUsers = () => {
     return (
-        <PageContainer>
+        <PageContainer contribute="no">
             <Tabs size="small" tabBarGutter={20} style={{ width: "100%" }}>
                 <TabPane tab="Mixed Query" key="mixedQuery">
                     <Space size={10}>
@@ -40,26 +40,10 @@ export default function DashboardUsers() {
                             <Form>
                                 <Space>
                                     <div className="w-full">
-                                        <Field name="email">
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    placeholder="ahmad@ahmad.ahmad"
-                                                    className="text-center"
-                                                    size="small"
-                                                    bordered={false}
-                                                />
-                                            )}
-                                        </Field>
+                                        <Field name="email">{({ field }) => <Input {...field} placeholder="ahmad@ahmad.ahmad" className="text-center" size="small" bordered={false} />}</Field>
                                         <ErrorMessage name="email" />
                                     </div>
-                                    <Button
-                                        type="primary"
-                                        icon={<SearchOutlined />}
-                                        size="small"
-                                        onClick={form.handleSubmit}
-                                        style={{ borderRadius: 0 }}
-                                    />
+                                    <Button type="primary" icon={<SearchOutlined />} size="small" onClick={form.handleSubmit} style={{ borderRadius: 0 }} />
                                 </Space>
                             </Form>
                         )}
@@ -68,4 +52,6 @@ export default function DashboardUsers() {
             </Tabs>
         </PageContainer>
     );
-}
+};
+
+export default DashboardUsers;

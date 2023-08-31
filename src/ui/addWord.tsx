@@ -39,18 +39,12 @@ export default function AddWord() {
                         {({ field, meta }: any) => (
                             <div>
                                 <Input {...field} id="word" placeholder="Word" />
-                                {meta.touched && meta.error && (
-                                    <div className="text-red-500">{meta.error}</div>
-                                )}
+                                {meta.touched && meta.error && <div className="text-red-500">{meta.error}</div>}
                             </div>
                         )}
                     </Field>
                     <Space align="center">
-                        <Button
-                            type="primary"
-                            loading={appendWord.isLoading}
-                            onClick={formik.handleSubmit}
-                        >
+                        <Button type="primary" loading={appendWord.isLoading} onClick={formik.handleSubmit}>
                             Add Word
                         </Button>
                     </Space>

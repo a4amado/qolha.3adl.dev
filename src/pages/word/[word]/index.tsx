@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import ContributeClip from "@ui/contribute";
 import { useAudio } from "react-use";
 import { RouterOutput } from "src/server/routers/_app";
+import NextLink from "next/link";
 
 const { Text, Title } = Typography;
 
@@ -31,58 +32,37 @@ export async function getServerSideProps(context: NextPageContext) {
 export default function WordPage({ word }: WordPageProps) {
     const QueryWord = trpc.search.searchWord.useMutation();
 
-
     useEffect(() => {
         QueryWord.mutate(word);
     }, []);
 
     return (
-        <PageContainer>
+        <PageContainer contribute="yes">
             <div className="flex flex-col gap-5">
                 <Title className="text-center">
                     <b>{QueryWord.data?.word}</b>
                 </Title>
                 <Table rowKey="id" dataSource={QueryWord?.data?.words}>
                     <Table.Column title="Word" dataIndex={["ar"]} key="ar" />
-                    <Table.Column title="User" dataIndex={["userId"]} key="userId" />
-                    <Table.Column title="Clips" key="clips"
-
+                    <Table.Column
+                        title="Username"
+                        render={(user: RouterOutput["search"]["searchWord"]["words"][number]) => {
+                            return <a href={`/user/${user.user?.id}`}>{user.user?.name}</a>;
+                        }}
+                        key="username"
+                    />
+                    <Table.Column
+                        title="Clips"
+                        key="clips"
                         render={(props: RouterOutput["search"]["searchWord"]["words"][number]) => {
-                            return <ClipsPopover clips={props.clips} wordId={props.id} />
-                        }} />
+                            return <ClipsPopover clips={props.clips} wordId={props.id} />;
+                        }}
+                    />
                 </Table>
-
             </div>
         </PageContainer>
     );
 }
-
-const NoClipsComponent = ({ wordId }: { wordId: string }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-
-    const showModal = () => {
-        setModalVisible(true);
-    };
-
-    const handleModalClose = () => {
-        setModalVisible(false);
-    };
-
-    return (
-        <>
-            <Button onClick={showModal}>Help, Now !!!</Button>
-            <Modal
-                title="Thanks for helping the community."
-                visible={modalVisible}
-                onCancel={handleModalClose}
-                footer={null}
-                width={500}
-            >
-                <ContributeClip afterFunc={handleModalClose} wordId={wordId} />
-            </Modal>
-        </>
-    );
-};
 
 const RenderAudio = ({ clipId, username, userId }: { clipId: string; username: string; userId: string }) => {
     const [audio, state, controls] = useAudio({
@@ -93,20 +73,10 @@ const RenderAudio = ({ clipId, username, userId }: { clipId: string; username: s
         <div className="flex items-center justify-between">
             {audio}
             <Text>{username}</Text>
-            <Button
-                shape="circle"
-                icon={<PlayCircleOutlined />}
-                onClick={controls.play}
-            />
+            <Button shape="circle" icon={<PlayCircleOutlined />} onClick={controls.play} />
         </div>
     );
 };
-
-interface RenderWordsProps {
-    props: RouterOutput["search"]["searchWord"];
-}
-
-
 
 const ClipsPopover = ({ clips, wordId }: { clips: RouterOutput["search"]["searchWord"]["words"][number]["clips"]; wordId: string }) => {
     return (
@@ -119,17 +89,18 @@ const ClipsPopover = ({ clips, wordId }: { clips: RouterOutput["search"]["search
 const PopoverContent = ({ clips, wordId }: { clips: RouterOutput["search"]["searchWord"]["words"][number]["clips"]; wordId: string }) => {
     return (
         <div className="flex flex-col gap-5 p-5">
-            {clips.length === 0 && <NoClipsMessage />}
+            {clips.length === 0 && <NoClipsMessage wordId={wordId} />}
             {clips.map((clip) => (
                 <RenderAudio userId={clip.user?.id || ""} username={clip.user?.name || ""} clipId={clip.id} />
             ))}
-            <NoClipsComponent wordId={wordId} />
         </div>
     );
 };
 
-const NoClipsMessage = () => (
+const NoClipsMessage = ({ wordId }: { wordId: string }) => (
     <div className="flex flex-col p-5">
-        <Text>This word needs clips. Would you like to help?</Text>
+        <Text>
+            This word needs clips. Would you like to <NextLink href={`/clip/contribute/${wordId}`}>help</NextLink>?
+        </Text>
     </div>
 );

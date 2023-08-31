@@ -1,4 +1,3 @@
-
 import { AppProps } from "next/app";
 import { Layout } from "antd"; // Import the Layout component from Ant Design
 import { SessionProvider } from "next-auth/react";
@@ -11,7 +10,7 @@ import "../styles/globals.css"; // Import your Tailwind CSS styles
 
 const { Header, Content } = Layout; // Destructure Header and Content components from Ant Design Layout
 
-const noop = () => { };
+const noop = () => {};
 
 Router.events.on("routeChangeStart", () => {
     // Your loading animation logic

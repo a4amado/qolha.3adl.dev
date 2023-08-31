@@ -12,10 +12,7 @@ const LoadingComponent: FC<LoadingComponentProps> = ({ isLoading, ...rest }) => 
     if (!isLoading) return null; // Return null when not loading
 
     return (
-        <div
-            className="absolute flex justify-center items-center top-0 left-0 w-full h-full bg-white z-4"
-            {...rest}
-        >
+        <div className="absolute flex justify-center items-center top-0 left-0 w-full h-full bg-white z-4" {...rest}>
             <Spin />
         </div>
     );

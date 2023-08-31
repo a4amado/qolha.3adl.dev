@@ -3,7 +3,7 @@ import AddWord from "@ui/addWord";
 
 export default function addWordPage() {
     return (
-        <PageContainer>
+        <PageContainer contribute="no">
             <AddWord />
         </PageContainer>
     );
