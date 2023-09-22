@@ -10,7 +10,7 @@ import "../styles/globals.css"; // Import your Tailwind CSS styles
 
 const { Header, Content } = Layout; // Destructure Header and Content components from Ant Design Layout
 
-const noop = () => {};
+const noop = () => { };
 
 Router.events.on("routeChangeStart", () => {
     // Your loading animation logic
@@ -35,7 +35,7 @@ Axios.interceptors.response.use(handleSuccess, handleError);
 
 function MyApp({ Component, pageProps, session }: AppProps & { session: any }) {
     return (
-        <Layout>
+        <div className="dd">
             <SessionProvider session={session}>
                 <Head>
                     <style global jsx>{`
@@ -51,7 +51,7 @@ function MyApp({ Component, pageProps, session }: AppProps & { session: any }) {
                     <Component {...pageProps} />
                 </Content>
             </SessionProvider>
-        </Layout>
+        </div>
     );
 }
 

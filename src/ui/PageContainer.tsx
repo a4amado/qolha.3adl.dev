@@ -12,18 +12,20 @@ interface PageContainerProps {
 }
 
 export default function PageContainer({ children, contribute = "yes" }: PageContainerProps) {
-    const contentClassName = classNames("w-full", "max-w-6xl", "mx-auto", "flex", "flex-row", "m-4", "gap-5");
-    const rowClassName = classNames({
-        "w-3/4": contribute === "yes",
-        "w-full": contribute === "no",
-    });
+
+
 
     return (
-        <Layout>
+        <>
             <Header />
-            <Content className={contentClassName}>
-                <Row gutter={10} className={rowClassName}>
-                    <div className="w-full bg-white p-10 relative">{children}</div>
+            <Content className={classNames("w-full", "h-full", "max-w-6xl", "mx-auto", "flex", "flex-row", "m-4", "gap-5")}>
+                <Row gutter={10} className={classNames({
+                    "w-3/4": contribute === "yes",
+                    "w-full": contribute === "no",
+                })}>
+                    <div className="w-full bg-white p-10 relative">
+                        <span>{children}</span>
+                    </div>
                 </Row>
                 {contribute === "yes" && (
                     <Row className="w-1/4 h-fit">
@@ -31,6 +33,6 @@ export default function PageContainer({ children, contribute = "yes" }: PageCont
                     </Row>
                 )}
             </Content>
-        </Layout>
+        </>
     );
 }

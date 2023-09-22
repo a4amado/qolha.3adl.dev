@@ -3,6 +3,7 @@ import { HomeOutlined, LoginOutlined, PlusOutlined, MenuOutlined } from "@ant-de
 import NextLink from "next/link";
 import SearchComponent from "./search";
 import classNames from "classnames";
+import { useSession } from "next-auth/react";
 
 const { Text } = Typography;
 
@@ -23,6 +24,7 @@ export default function Header() {
 }
 
 function NavigationMenu() {
+    const session = useSession();
     const menu = (
         <Menu>
             <Menu.Item>
@@ -32,13 +34,26 @@ function NavigationMenu() {
                     </Button>
                 </NextLink>
             </Menu.Item>
-            <Menu.Item>
-                <NextLink href="/api/auth/signin">
-                    <Button size="small" type="link">
-                        Login
-                    </Button>
-                </NextLink>
-            </Menu.Item>
+
+            {
+                session.status === "unauthenticated" && (<Menu.Item>
+                    <NextLink href="/api/auth/signin">
+                        <Button size="small" type="link">
+                            Login
+                        </Button>
+                    </NextLink>
+                </Menu.Item>)
+            }
+            {
+                session.status === "authenticated" && (<Menu.Item>
+                    <NextLink href={`/user/${session.data.user.id}`}>
+                        <Button size="small" type="link">
+                            {session.data.user.name} - {session.data.user.role}
+                        </Button>
+                    </NextLink>
+                </Menu.Item>)
+            }
+
             <Menu.Item>
                 <NextLink href="/word/add">
                     <Button size="small" type="link">

@@ -12,6 +12,13 @@
     /* font-family: 'Amiri Quran', serif; */
     font-family: "Changa", sans-serif !important;
     /* border: 1px dashed red; */
+    padding: 0;
+    margin: 0;
+}
+
+.dd {
+    height: 100% !important;
+    background-color: #ededed;
 }
 
 html,
