@@ -1,7 +1,7 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Select, Space, Tabs } from "antd";
 import PageContainer from "@ui/PageContainer";
-import { Field, Form, Formik, ErrorMessage } from "formik";
+import { Field, Form, Formik, ErrorMessage, FieldProps } from "formik";
 import * as yup from "yup";
 
 const { TabPane } = Tabs;
@@ -40,10 +40,10 @@ const DashboardUsers = () => {
                             <Form>
                                 <Space>
                                     <div className="w-full">
-                                        <Field name="email">{({ field }) => <Input {...field} placeholder="ahmad@ahmad.ahmad" className="text-center" size="small" bordered={false} />}</Field>
+                                        <Field name="email">{({ field }: FieldProps) => <Input {...field} placeholder="ahmad@ahmad.ahmad" className="text-center" size="small" bordered={false} />}</Field>
                                         <ErrorMessage name="email" />
                                     </div>
-                                    <Button type="primary" icon={<SearchOutlined />} size="small" onClick={form.handleSubmit} style={{ borderRadius: 0 }} />
+                                    <Button type="primary" icon={<SearchOutlined />} size="small" onClick={() => form.handleSubmit()} style={{ borderRadius: 0 }} />
                                 </Space>
                             </Form>
                         )}

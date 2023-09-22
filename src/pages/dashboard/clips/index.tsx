@@ -1,5 +1,4 @@
-import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import PageContainer from "@ui/PageContainer";
 import { useSession } from "next-auth/react";
 import Loading from "@ui/Loading";
@@ -8,9 +7,9 @@ import { trpc } from "@utils/trpc";
 import ClipComponent from "@ui/ClipAction";
 import { Button, Table } from "antd";
 import LoadingComponent from "@ui/ComponentLoading";
-import classNames from "classnames"; // Import the classnames library
+import classNames from "classnames";
 
-const { Column } = Table; // Destructure Column component from Ant Design Table
+const { Column } = Table;
 
 function Clips() {
     const session = useSession();
@@ -35,8 +34,6 @@ function Clips() {
         return null;
     }
 
-
-
     return (
         <>
             <PageContainer contribute="no">
@@ -47,7 +44,7 @@ function Clips() {
                     <Table dataSource={clip.data?.clips} rowKey="id">
                         <Column title="Word" key="word" dataIndex={["word", "ar"]} />
                         <Column title="Username" render={(user) => <a href="/user">{user.name}</a>} dataIndex={["user"]} key="username" />
-                        <Column title="Actions" key="actions" render={(clip, _, i) => <ClipComponent userId={clip.user?.id || ""} ar={clip.word.ar} clipId={clip.id} number={i} username={clip?.user?.name || ""} />} />
+                        <Column title="Actions" key="actions" render={(clip, _, i) => <ClipComponent clipId={clip.id} />} />
                     </Table>
                 </div>
             </PageContainer>

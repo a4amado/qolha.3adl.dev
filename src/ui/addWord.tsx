@@ -44,7 +44,7 @@ export default function AddWord() {
                         )}
                     </Field>
                     <Space align="center">
-                        <Button type="primary" loading={appendWord.isLoading} onClick={formik.handleSubmit}>
+                        <Button type="primary" loading={appendWord.isLoading} onClick={() => formik.handleSubmit()}>
                             Add Word
                         </Button>
                     </Space>

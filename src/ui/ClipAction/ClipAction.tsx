@@ -5,17 +5,11 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useAudio } from "react-use";
 
-
 interface ClipActionProps {
-
     clipId: string;
-
 }
 
-export default function ClipAction({
-    clipId
-
-}: ClipActionProps) {
+export default function ClipAction({ clipId }: ClipActionProps) {
     const rej = trpc.clip.reject.useMutation();
     const acc = trpc.clip.accept.useMutation();
     const [disabled, setDisabled] = useState(false);
@@ -46,7 +40,6 @@ export default function ClipAction({
     };
 
     return (
-
         <Space>
             {audio}
             <Button size="small" onClick={() => controls.play()}>
@@ -55,33 +48,14 @@ export default function ClipAction({
             {/* @ts-ignore */}
             {session.status === "authenticated" && ["owner", "admin"].includes(session.data?.user?.role || "") && (
                 <>
-                    <Popconfirm
-                        title="Are you sure you want to accept this clip?"
-                        onConfirm={handleAcceptClick}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button
-                            type="primary"
-                            icon={<CheckOutlined />}
-                            size="small"
-                        />
+                    <Popconfirm title="Are you sure you want to accept this clip?" onConfirm={handleAcceptClick} okText="Yes" cancelText="No">
+                        <Button type="primary" icon={<CheckOutlined />} size="small" />
                     </Popconfirm>
-                    <Popconfirm
-                        title="Are you sure you want to reject this clip?"
-                        onConfirm={handleRejectClick}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button
-                            type="default"
-                            icon={<DeleteOutlined />}
-                            size="small"
-                        />
+                    <Popconfirm title="Are you sure you want to reject this clip?" onConfirm={handleRejectClick} okText="Yes" cancelText="No">
+                        <Button type="default" icon={<DeleteOutlined />} size="small" />
                     </Popconfirm>
                 </>
             )}
         </Space>
-
     );
 }

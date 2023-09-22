@@ -1,10 +1,9 @@
-import { Button, Divider, Modal, Popover, Typography, Space, Table } from "antd"; // Import Ant Design components
-import { InfoCircleOutlined, PlayCircleOutlined } from "@ant-design/icons"; // Import Ant Design icons
+import { Button, Popover, Typography, Table } from "antd"; // Import Ant Design components
+import { PlayCircleOutlined } from "@ant-design/icons"; // Import Ant Design icons
 import PageContainer from "@ui/PageContainer";
 import { trpc } from "@utils/trpc";
 import { NextPageContext } from "next";
-import React, { useEffect, useState } from "react";
-import ContributeClip from "@ui/contribute";
+import React, { useEffect } from "react";
 import { useAudio } from "react-use";
 import { RouterOutput } from "src/server/routers/_app";
 import NextLink from "next/link";
