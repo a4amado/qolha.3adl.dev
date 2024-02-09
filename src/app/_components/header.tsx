@@ -1,15 +1,14 @@
-"use session";
+"use client";
 
-import { Avatar, Button, Col, Flex } from "antd";
+import { Avatar, Button, Col, Flex, Popover } from "antd";
 import { SettingFilled } from "@ant-design/icons";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import CgProfile from "@react-icons/all-files/cg/CgProfile";
-import { getServerSession } from "next-auth";
-import { authOptions } from "~/server/auth";
-import Image from "next/image";
-export default async function Header() {
-  const session = await getServerSession(authOptions);
+import { useSession } from "~/helpers/hooks/supabase/auth/useSession";
+
+
+export default function Header() {
+  const session = useSession();
 
   return (
     <Flex className="w-full h-20">
@@ -17,12 +16,12 @@ export default async function Header() {
         <Col className="h-full">
           <Link
             href={{
-              pathname: session?.user ? "/settings" : "/auth",
+              pathname: session ? "/settings" : "/auth",
             }}
             className="aspect-square !h-full flex justify-center items-center"
           >
-            {session?.user ? (
-              <Avatar alt="profile pic" src={session.user.image || ""} />
+            {false ? (
+              <Avatar alt="profile pic" src={""} />
             ) : (
               <CgProfile.CgProfile className="text-4xl flex justify-center items-center border rounded-full hover:bg-slate-200" />
             )}
