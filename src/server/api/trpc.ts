@@ -7,6 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 
+import { Roles } from "@prisma/client";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -96,7 +97,8 @@ export const moderatorProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  if (!["MODERATOR", "OWNER"].includes(ctx.session.user.role)) {
+  const allowedRoles: Roles[] = ["SUPREME_LEADER", "MODRATOR"];
+  if (!allowedRoles.includes(ctx.session.user.role)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
@@ -110,7 +112,7 @@ export const adminProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  if (ctx.session.user.role !== "OWNER") {
+  if (ctx.session.user.role !== "SUPREME_LEADER") {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

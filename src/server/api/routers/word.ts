@@ -5,6 +5,7 @@ import {
   protectedProcedure,
 } from "../trpc";
 import { db } from "~/server/db";
+import { api } from "~/trpc/server";
 
 export const wordRouter = createTRPCRouter({
   createWord: protectedProcedure
@@ -22,9 +23,11 @@ export const wordRouter = createTRPCRouter({
         data: {
           text: ctx.input.text,
           lang: "ar",
-          creatorId: ctx.ctx.session.user.id,
+          user_id: ctx.ctx.session.user.id,
+          number_of_clips: 0
         },
       });
+
       return word;
     }),
   approveWords: moderatorProcedure
@@ -58,4 +61,18 @@ export const wordRouter = createTRPCRouter({
       });
       return deletedWord;
     }),
+  getaWordThatNeedClips: protectedProcedure.query(async () => {
+    const word = await db.word.findFirst({
+      orderBy: {
+        number_of_clips: "asc"
+      },
+      where: {
+        // approved: {
+        //   not: null
+        // }
+      }
+    })
+
+    return word;
+  })
 });

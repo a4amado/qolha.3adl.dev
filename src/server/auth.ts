@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { Roles } from "@prisma/client";
 import {
   getServerSession,
   type DefaultSession,
@@ -25,7 +26,7 @@ declare module "next-auth" {
   }
 
   interface User {
-    role: "USER" | "MODERATOR" | "OWNER";
+    role: Roles
   }
 }
 
@@ -61,9 +62,7 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
-  events: {
-    signIn(message) {},
-  },
+
   secret: env.NEXTAUTH_SECRET,
 };
 

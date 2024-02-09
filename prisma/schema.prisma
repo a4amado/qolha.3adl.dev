@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -51,7 +51,7 @@ model User {
     sessions      Session[]
     words         Word[]
     clips         Clip[]
-    role          String    @default("USER")
+    role          Roles     @default(PEASANT)
 }
 
 model VerificationToken {
@@ -67,22 +67,33 @@ model Word {
     text String
     lang String
 
-    createdBy User   @relation(fields: [creatorId], references: [id], onDelete: NoAction)
-    creatorId String
+    user    User?   @relation(fields: [user_id], references: [id], onDelete: SetNull)
+    user_id String?
 
-    clips Clip[]
-    approved DateTime?
+    number_of_clips Int    @default(0)
+    clips           Clip[]
+
+    create_at String?   @default(dbgenerated("now()::date"))
+    approved  DateTime?
 }
 
 model Clip {
-    id   String @unique @default(cuid())
-    text String @unique
+    id String @unique @default(cuid())
 
-    createdBy User    @relation(fields: [creatorId], references: [id])
-    creatorId String
-    
-    word Word @relation(fields: [wordId], references: [id])
-    wordId String
+    supabase_path       String @unique
+    supabase_public_url String @unique
+
+    user    User?   @relation(fields: [user_id], references: [id], onDelete: SetNull)
+    user_id String?
+
+    word    Word?   @relation(fields: [word_id], references: [id], onDelete: Cascade)
+    word_id String?
 
     approved DateTime?
+}
+
+enum Roles {
+    SUPREME_LEADER
+    MODRATOR
+    PEASANT
 }
