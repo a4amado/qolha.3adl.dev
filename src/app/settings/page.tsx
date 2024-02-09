@@ -1,9 +1,8 @@
-"use client";
+
 import { Select, SelectProps, AutoComplete, AutoCompleteProps, Typography, Flex, Form, Button, Col } from "antd";
+import { ContriesarabicNames, Contriescodes } from "../../../test";
 
 import { SendOutlined } from "@ant-design/icons"
-import { codes, contries } from "~/resources/contries";
-import Image from "next/image";
 
 
 export default function Page() {
@@ -14,18 +13,7 @@ export default function Page() {
       <Col className="w-full h-full">
         <AutoComplete
           placeholder="إختر بلدك"
-          direction="rtl"
-
-          options={contries.map((_, i) => ({
-            value: contries[i], label: <>
-              <Flex className="items-center gap-5" >
-
-                <Image alt={contries[i] || ""} src={`https://flagsapi.com/${codes[i]}/shiny/32.png`} width={32} height={32} />
-                {contries[i]}
-
-              </Flex>
-            </>
-          }))}
+          options={ContriesarabicNames.map((_, i) => ({ value: ContriesarabicNames[i], label: ContriesarabicNames[i] }))}
           className="!h-full !text-center  w-full border align-bottom max-w-4xl block mx-auto">
         </AutoComplete>
       </Col>
@@ -37,4 +25,3 @@ export default function Page() {
   </Flex>
 }
 
-// 

@@ -2,10 +2,12 @@ import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
+import { TRPCReactProvider } from "~/trpc/react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { lazy } from "react";
 import Header from "./_components/header";
+import { SessionProvider } from "next-auth/react";
 import Footer from "./_components/Footer";
-import { SupabaseSessionProvider } from "~/helpers/providers/Session";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,23 +20,22 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <SupabaseSessionProvider>
-      <html lang="ar" dir="rtl">
-        <body className={`font-sans ${inter.variable} overflow-y-scroll`}>
+    <html lang="ar" dir="rtl">
+      <body className={`font-sans ${inter.variable} overflow-y-scroll`}>
+        <TRPCReactProvider>
           <AntdRegistry>
             <Header />
             {children}
             <Footer />
-          </AntdRegistry>
-        </body>
-      </html>
-    </SupabaseSessionProvider>
+          </AntdRegistry>{" "}
+        </TRPCReactProvider>
+      </body>
+    </html>
   );
 }

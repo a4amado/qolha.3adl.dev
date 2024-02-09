@@ -1,10 +1,12 @@
 "use client";
-
-import { Button, Flex, Input } from "antd";
+import { api } from "~/trpc/server";
+import AddWord from "./_components/AddWord";
+import AddClip from "./_components/AddClip";
+import RenderClip from "./_components/RenderClip";
+import { AutoComplete, Flex, Input, Typography } from "antd";
 import Link from "next/link";
 import { useState } from "react";
-import { client } from "~/supabase/client";
-import { Database } from "types/supabase";
+
 
 
 export default function Home(ctx: any) {
@@ -17,11 +19,6 @@ export default function Home(ctx: any) {
 
   return (
     <main className="w-full h-screen max-w-4xl block mx-auto">
-      <Button onClick={async () => {
-        const s = await client.from("word").insert({ text: "asdasdasd" } as Database["public"]["Tables"]["word"]["Insert"])
-        console.log(s);
-
-      }}>ss</Button>
       <Flex className=" flex flex-end items-end m-5 flex-grow-0">
         <Input
           onChange={(e) => handleWord(e.target.value)}
@@ -42,4 +39,3 @@ export default function Home(ctx: any) {
 
   );
 }
-// BO7j2YebgNHJ7VCV

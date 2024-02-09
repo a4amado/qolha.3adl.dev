@@ -6,6 +6,8 @@ import { useSize } from "react-use";
 import { useRef } from "react";
 import { api } from "~/trpc/server";
 import { useAtom, atom } from "jotai";
+import type { appRouter } from "~/server/api/root";
+import { number } from "zod";
 
 type words = {
   word: string;
