@@ -6,6 +6,7 @@ import {
 } from "../trpc";
 import { db } from "~/server/db";
 import { api } from "~/trpc/server";
+import { Roles } from "@prisma/client";
 
 export const wordRouter = createTRPCRouter({
   createWord: protectedProcedure
@@ -24,12 +25,18 @@ export const wordRouter = createTRPCRouter({
           text: ctx.input.text,
           lang: "ar",
           user_id: ctx.ctx.session.user.id,
-          number_of_clips: 0
+          number_of_clips: 0,
+          approved: ["SUPREME_LEADER", "MODRATOR"].includes(
+            ctx.ctx.session.user.role,
+          )
+            ? new Date()
+            : null,
         },
       });
 
       return word;
     }),
+
   approveWords: moderatorProcedure
     .input(
       z.object({
@@ -64,15 +71,15 @@ export const wordRouter = createTRPCRouter({
   getaWordThatNeedClips: protectedProcedure.query(async () => {
     const word = await db.word.findFirst({
       orderBy: {
-        number_of_clips: "asc"
+        number_of_clips: "asc",
       },
       where: {
         // approved: {
         //   not: null
         // }
-      }
-    })
+      },
+    });
 
     return word;
-  })
+  }),
 });

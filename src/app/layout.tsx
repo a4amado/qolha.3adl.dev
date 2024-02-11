@@ -8,6 +8,8 @@ import { lazy } from "react";
 import Header from "./_components/header";
 import { SessionProvider } from "next-auth/react";
 import Footer from "./_components/Footer";
+import { Session } from "next-auth";
+import NextAuthProvider from "~/next-auth/Provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,11 +31,13 @@ export default function RootLayout({
     <html lang="ar" dir="rtl">
       <body className={`font-sans ${inter.variable} overflow-y-scroll`}>
         <TRPCReactProvider>
-          <AntdRegistry>
-            <Header />
-            {children}
-            <Footer />
-          </AntdRegistry>{" "}
+          <NextAuthProvider>
+            <AntdRegistry>
+              <Header />
+              {children}
+              <Footer />
+            </AntdRegistry>{" "}
+          </NextAuthProvider>
         </TRPCReactProvider>
       </body>
     </html>

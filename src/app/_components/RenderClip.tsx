@@ -30,13 +30,15 @@ const data: words = [
           name: "احمد",
           country: "مصر",
         },
-      }, {
+      },
+      {
         path: "path",
         user: {
           name: "احمد",
           country: "مصر",
         },
-      }, {
+      },
+      {
         path: "path",
         user: {
           name: "احمد",
@@ -416,8 +418,6 @@ const sampleData = {
   clipPath: "sss",
 };
 
-
-
 const WordContributor = ({
   wordIDX,
   clipIDX,
@@ -428,7 +428,8 @@ const WordContributor = ({
   const [s] = useAtom(val);
   return (
     <Col className="flex items-center">
-      {s[wordIDX]?.clips[clipIDX]?.user.name} من  {s[wordIDX]?.clips[clipIDX]?.user.country}
+      {s[wordIDX]?.clips[clipIDX]?.user.name} من{" "}
+      {s[wordIDX]?.clips[clipIDX]?.user.country}
     </Col>
   );
 };
@@ -444,10 +445,8 @@ const ClipItemList = ({
 
   return (
     <Flex className="w-full">
-      <Button
-        className=" !h-full !aspect-square flex justify-center items-center"
-      >
-        <PlayCircleOutlined className="text-1xl shadow-xl rounded-full !flex !justify-center !items-center" />
+      <Button className=" flex !aspect-square !h-full items-center justify-center">
+        <PlayCircleOutlined className="text-1xl !flex !items-center !justify-center rounded-full shadow-xl" />
       </Button>
       <WordContributor wordIDX={wordIDX} clipIDX={clipIDX} />
     </Flex>
@@ -458,20 +457,20 @@ function RenderClips({ wordIDX }: { wordIDX: number }) {
   const [s] = useAtom(val);
 
   return (
-    <Flex className="flex-col w-full h-full max-w-xl overflow-y-scroll gap-2">
+    <Flex className="h-full w-full max-w-xl flex-col gap-2 overflow-y-scroll">
       {s[wordIDX]?.clips.map((e, clipIDX) => {
         return <ClipItemList wordIDX={wordIDX} clipIDX={clipIDX} />;
       })}
     </Flex>
   );
-};
+}
 
 const WordListItem = ({ wordIDX }: { wordIDX: number }) => {
   const [word] = useAtom(val);
   console.log("RenderClips");
 
   return (
-    <Flex className="p-2 shadow-sm border">
+    <Flex className="border p-2 shadow-sm">
       <Col className="flex  !text-4xl">
         <Popover
           placement="bottom"
@@ -482,21 +481,16 @@ const WordListItem = ({ wordIDX }: { wordIDX: number }) => {
           }
           className="!w-full max-w-4xl"
           overlayStyle={{ width: 400 }} // Set the width to 400px
-
           content={<RenderClips wordIDX={wordIDX} />}
-
         >
-          <Button
-
-            className=" !h-full !aspect-square flex justify-center items-center"
-          >
-            <PlayCircleOutlined className="text-1xl shadow-xl rounded-full !flex !justify-center !items-center" />
+          <Button className=" flex !aspect-square !h-full items-center justify-center">
+            <PlayCircleOutlined className="text-1xl !flex !items-center !justify-center rounded-full shadow-xl" />
           </Button>
         </Popover>
       </Col>
 
-      <Col className="flex justify-start items-center w-full flex-grow-1  !text-4xl">
-        <Typography className=" !text-4xl px-4">
+      <Col className="flex-grow-1 flex w-full items-center justify-start  !text-4xl">
+        <Typography className=" px-4 !text-4xl">
           {word[wordIDX]?.word}
         </Typography>
       </Col>

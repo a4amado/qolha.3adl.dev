@@ -29,8 +29,8 @@ export default function MyCombobox() {
   });
 
   return (
-    <div className="w-full h-screen flex flex-col">
-      <div className="h-1/3 flex flex-end items-end m-5 flex-grow-0">
+    <div className="flex h-screen w-full flex-col">
+      <div className="flex-end m-5 flex h-1/3 flex-grow-0 items-end">
         <input
           onChange={(e) => setWord(e.target.value)}
           onKeyDown={(e) => {
@@ -39,7 +39,7 @@ export default function MyCombobox() {
             }
             return true;
           }}
-          className="h-28 text-center font-bold text-4xl w-full border align-bottom max-w-4xl block mx-auto"
+          className="mx-auto block h-28 w-full max-w-4xl border text-center align-bottom text-4xl font-bold"
           value={word}
         />
       </div>
@@ -49,7 +49,7 @@ export default function MyCombobox() {
           onClick={() => submit()}
           shape="round"
           size="large"
-          className=" font-rubik max-w-80 w-9/12 !h-28 !block mx-auto bg-slate-500 !text-4xl rounded"
+          className=" font-rubik mx-auto !block !h-28 w-9/12 max-w-80 rounded bg-slate-500 !text-4xl"
         >
           ادخل
         </Button>

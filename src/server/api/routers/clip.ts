@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { createTRPCRouter, moderatorProcedure } from "../trpc";
 import { db } from "~/server/db";
+import { api } from "~/trpc/server";
+import { client } from "~/app/api/clip/upload/route";
 
 const clipRouter = createTRPCRouter({
   approveClip: moderatorProcedure
@@ -31,9 +33,54 @@ const clipRouter = createTRPCRouter({
         where: {
           id: ctx.input.clipId,
         },
+        select: {
+          word: {
+            select: {
+              id: true,
+              number_of_clips: true,
+            },
+          },
+          supabase_path: true,
+        },
+      });
+
+      if (!rejectedClip.word) return;
+      if (rejectedClip.word.number_of_clips === 0) return;
+
+      await client.storage.from("clip").remove([rejectedClip.supabase_path]);
+      await db.word.update({
+        where: {
+          id: rejectedClip.word.id,
+        },
+        data: {
+          number_of_clips: {
+            decrement: 1,
+          },
+        },
       });
       return rejectedClip;
     }),
+  get15WordThatNeedsRevision: moderatorProcedure.query(async () => {
+    return await db.clip.findMany({
+      where: {
+        approved: null,
+      },
+      orderBy: {
+        word: {
+          number_of_clips: "asc",
+        },
+      },
+      take: 15,
+      include: {
+        word: {
+          select: {
+            text: true,
+            id: true,
+          },
+        },
+      },
+    });
+  }),
 });
 
 export default clipRouter;

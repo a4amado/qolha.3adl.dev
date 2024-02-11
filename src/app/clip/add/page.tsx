@@ -5,9 +5,14 @@ import AddClip from "~/app/_components/AddClip";
 import { authOptions } from "~/server/auth";
 
 export default async function Page() {
-  const sess = await getServerSession(authOptions)
+  const sess = await getServerSession(authOptions);
   if (!sess) {
-    redirect("/auth")
+    redirect("/auth");
   }
-  return <Flex className="w-full h-screen"> <AddClip /></Flex>;
+  return (
+    <Flex className="h-screen w-full">
+      {" "}
+      <AddClip />
+    </Flex>
+  );
 }
