@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, moderatorProcedure } from "../trpc";
 import { db } from "~/server/db";
 import { api } from "~/trpc/server";
-import { client } from "~/app/api/clip/upload/route";
+import { client } from "~/server/supabase";
 
 const clipRouter = createTRPCRouter({
   approveClip: moderatorProcedure

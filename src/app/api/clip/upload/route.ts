@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createClient } from "@supabase/supabase-js";
 import { getServerSession } from "next-auth";
-export const client = createClient(env.SUPABASE_BASEURL, env.SUPABASE_SECRET);
 import { v4 } from "uuid";
 import { db } from "~/server/db";
 import { authOptions } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { env } from "~/env";
+import { client } from "~/server/supabase";
+
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
