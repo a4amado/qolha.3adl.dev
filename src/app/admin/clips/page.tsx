@@ -8,10 +8,10 @@ import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import { RouterOutputs } from "~/trpc/shared"
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
+import { clipsState } from "~/state/reviewClips";
 
-export type ReviewClipItem = RouterOutputs["clip"]["get15WordThatNeedsRevision"][number]
+ type ReviewClipItem = RouterOutputs["clip"]["get15WordThatNeedsRevision"][number]
 
-export const clipsState = atom<ReviewClipItem[] | null>(null);
 
 export default function Page() {
   const [data, setClips] = useAtom(clipsState);

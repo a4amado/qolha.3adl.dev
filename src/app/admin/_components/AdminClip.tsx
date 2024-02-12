@@ -1,7 +1,9 @@
 "use client";
 
 import { TiTick } from "react-icons/ti";
-import { clipsState,ReviewClipItem } from "../clips/page";
+
+
+
 
 interface AcceptComponentProps {
   clipId: string;
@@ -45,6 +47,7 @@ import { api } from "~/trpc/react";
 import { useAudio } from "react-use";
 import { PauseCircleFilled, PlayCircleFilled } from "@ant-design/icons";
 import { useAtom } from "jotai";
+import { clipsState, ReviewClipItem } from "~/state/reviewClips";
 
 interface RejectComponentProps {
   clipId: string;
