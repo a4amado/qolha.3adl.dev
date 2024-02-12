@@ -31,8 +31,7 @@ export default function AddClip() {
   // @ts-ignore
   const word = api.word.getaWordThatNeedClips.useQuery(null, {
     refetchOnWindowFocus: false,
-    enabled: !first,
-  });
+   });
 
   let {
     error,
