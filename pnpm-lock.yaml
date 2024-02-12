@@ -86,6 +86,9 @@ dependencies:
   formidable:
     specifier: ^3.5.1
     version: 3.5.1
+  htmx.org:
+    specifier: ^1.9.10
+    version: 1.9.10
   jotai:
     specifier: ^2.6.4
     version: 2.6.4(@types/react@18.2.53)(react@18.2.0)
@@ -3964,6 +3967,10 @@ packages:
   /html-tags@3.3.1:
     resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}
     engines: {node: '>=8'}
+
+  /htmx.org@1.9.10:
+    resolution: {integrity: sha512-UgchasltTCrTuU2DQLom3ohHrBvwr7OqpwyAVJ9VxtNBng4XKkVsqrv0Qr3srqvM9ZNI3f1MmvVQQqK7KW/bTA==}
+    dev: false
 
   /hyphenate-style-name@1.0.4:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}

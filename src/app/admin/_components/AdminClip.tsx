@@ -1,47 +1,123 @@
 "use client";
-import { PauseCircleFilled, PlayCircleFilled } from "@ant-design/icons";
-import { Button, Col, Flex, Switch } from "antd";
-import { TiTick } from "react-icons/ti";
-import { FaTimes } from "react-icons/fa";
-import { useAudio } from "react-use";
-import { api } from "~/trpc/react";
 
-export default function ClipAdminComponent({
-  clipId,
-  wordId,
-  publicUrl,
-  text,
-}: {
+import { TiTick } from "react-icons/ti";
+import { clipsState,ReviewClipItem } from "../clips/page";
+
+interface AcceptComponentProps {
   clipId: string;
-  wordId: string;
+}
+
+export const AcceptComponent: React.FC<AcceptComponentProps> = ({ clipId }) => {
+  const approveClip = api.clip.approveClip.useMutation();
+  const[clip, setClips] = useAtom(clipsState);
+  function updateState() {
+    console.log(clip);
+    console.log(clipId);
+    
+    
+    if (!clip || clip.length == 0) return;
+    const newState = clip.filter((value : ReviewClipItem) => {
+      return value.id !==  clipId
+    })
+    console.log("newState", newState);
+    
+    setClips(newState)
+  }
+  
+  return (
+    <Col>
+      <Button
+        color="green"
+        icon={<TiTick />}
+        onClick={() => {
+          approveClip.mutateAsync({
+            clipId: clipId
+          })
+          .then(() => updateState())
+        }}
+      />
+    </Col>
+  );
+};
+import { Button, Col, Flex } from "antd";
+import { FaTimes } from "react-icons/fa";
+import { api } from "~/trpc/react";
+import { useAudio } from "react-use";
+import { PauseCircleFilled, PlayCircleFilled } from "@ant-design/icons";
+import { useAtom } from "jotai";
+
+interface RejectComponentProps {
+  clipId: string;
+}
+
+export const RejectComponent: React.FC<RejectComponentProps> = ({ clipId }) => {
+  const rejectClip = api.clip.rejectClip.useMutation();
+  const[clip, setClips] = useAtom(clipsState);
+  function updateState() {
+    console.log(clip);
+    console.log(clipId);
+    
+    
+    if (!clip || clip.length == 0) return;
+    const newState = clip.filter((value : ReviewClipItem) => {
+      return value.id !==  clipId
+    })
+    console.log("newState", newState);
+    
+    setClips(newState)
+  }
+  
+  return (
+    <Col>
+      <Button
+        onClick={() => {
+          console.log("Here@");
+          rejectClip.mutateAsync({
+            clipId: clipId,
+          }).then(() => updateState())
+        }}
+        icon={<FaTimes />}
+      />
+    </Col>
+  );
+};
+
+interface PlayComponentProps {
   publicUrl: string;
   text: string;
-}) {
-  const approveClip = api.clip.approveClip.useMutation();
-  const rejectClip = api.clip.rejectClip.useMutation();
+}
+
+interface PlayComponentProps {
+  publicUrl: string;
+  text: string;
+}
+
+export const PlayComponent: React.FC<PlayComponentProps> = ({ publicUrl, text }) => {
   const audio = useAudio({
     src: publicUrl,
   });
+
   function stopAllOtherAudiosInThePage() {
     const audios = document.querySelectorAll("audio");
     audios.forEach((element) => {
-      element.pause();
+      (element).pause();
     });
   }
+
   function play() {
     stopAllOtherAudiosInThePage();
 
     if (audio[1].paused) {
-      audio[2].seek(0);
-      audio[2].play();
+      (audio[2]).seek(0);
+      (audio[2]).play();
     }
   }
+
   return (
     <>
       {audio[0]}
 
       <Flex className="w-full gap-3 border p-3 hover:cursor-pointer">
-        s
         <Col>
           <Button
             color="green"
@@ -57,31 +133,8 @@ export default function ClipAdminComponent({
             onClick={play}
           />
         </Col>
-        <Col>
-          <Button
-            color="green"
-            icon={<TiTick />}
-            onClick={(e) => {
-              console.log("Here");
-              approveClip.mutate({
-                clipId: clipId,
-              });
-            }}
-          />
-        </Col>
-        <Col>
-          <Button
-            onClick={(e) => {
-              console.log("Here@");
-              rejectClip.mutate({
-                clipId: clipId,
-              });
-            }}
-            icon={<FaTimes />}
-          />
-        </Col>
         <Col className="flex h-full items-center">{text}</Col>
       </Flex>
     </>
   );
-}
+};

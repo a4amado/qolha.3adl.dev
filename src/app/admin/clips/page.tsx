@@ -1,47 +1,50 @@
 "use client";
 
 import { api } from "~/trpc/react";
-import ClipAdminComponent from "../_components/AdminClip";
-import { Button, Flex } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { AcceptComponent, RejectComponent, PlayComponent } from "../_components/AdminClip";
+import { Button, Flex, Table } from "antd";
+import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
+
+import { RouterOutputs } from "~/trpc/shared"
+import { atom, useAtom } from "jotai";
+import { useEffect } from "react";
+
+export type ReviewClipItem = RouterOutputs["clip"]["get15WordThatNeedsRevision"][number]
+
+export const clipsState = atom<ReviewClipItem[] | null>(null);
 
 export default function Page() {
+  const [data, setClips] = useAtom(clipsState);
+  
   // @ts-ignore
   const clips = api?.clip?.get15WordThatNeedsRevision?.useQuery(null, {
     refetchOnReconnect: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
+  useEffect(() => {
+    setClips(clips.data)
+  }, [])
 
   const isLoading = clips?.isLoading || clips.isFetching || clips.isRefetching;
-  const isNoData = !isLoading && clips.data.length === 0;
+  const isNoData = !isLoading && (data || []).length === 0;
   const isError = clips.isError;
   const isData = !isLoading && !isNoData;
-
+  function fetch() {
+    clips.refetch().then(e => {
+      // @ts-ignore
+      setClips(e.data)
+    })
+  }
   return (
     <>
-      <Button onClick={() => clips.refetch()}>s</Button>
-      {isLoading && (
-        <Flex className="h-screen w-full items-start justify-center">
-          <LoadingOutlined className="text-6xl" />
-        </Flex>
-      )}
-      {isNoData && (
-        <Flex className="h-screen w-full justify-center">
-          <p className="text-6xl">لا يوجد اصوات للمرجعه</p>
-        </Flex>
-      )}
-      {isData &&
-        clips?.data?.map((clip) => {
-          return (
-            <ClipAdminComponent
-              clipId={clip.id}
-              text={clip?.word?.text || ""}
-              publicUrl={clip.supabase_public_url}
-              wordId={clip.word?.id || ""}
-            />
-          );
-        })}
+      <Button loading={isLoading} disabled={isLoading} onClick={fetch} icon={<ReloadOutlined />} />
+      {/* @ts-ignore */}
+      <Table  loading={clips.isLoading || clips.isFetching || clips.isRefetching} className="w-full shadow" dataSource={data}>
+        <Table.Column title="قبول" dataIndex={""} render={(v: ReviewClipItem) => <AcceptComponent clipId={v.id} />} />
+        <Table.Column title="رفض" dataIndex={""} render={(v: ReviewClipItem) => <RejectComponent clipId={v.id} />} />
+        <Table.Column title="تشغيل" dataIndex={""} render={(v: ReviewClipItem) => <PlayComponent text={v.word?.text || ""} publicUrl={v.supabase_public_url} />} />
+      </Table>
     </>
   );
 }
