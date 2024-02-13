@@ -4,11 +4,11 @@ import { Button, Col, Flex, Typography } from "antd";
 import { ReloadOutlined, LoadingOutlined } from "@ant-design/icons";
 import { api } from "~/trpc/react";
 import useMediaRecorder from "@wmik/use-media-recorder";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IoReloadOutline } from "react-icons/io5";
 import useAxios from "axios-hooks";
 import FormData from "form-data";
-import { useFirstMountState } from "react-use";
+import { useAudio, useFirstMountState } from "react-use";
 import type { AppRouter } from "~/server/api/root";
 
 export default function AddClip() {
@@ -47,6 +47,17 @@ export default function AddClip() {
     mediaStreamConstraints: { audio: true },
   });
 
+
+  const [src, setSrc] = useState("")
+
+  useEffect(() => {
+    if (!mediaBlob) return;
+    setSrc(URL.createObjectURL(mediaBlob))
+  }, [status])
+  const [audio,inf, controller] = useAudio({
+    src: src
+  })
+  
   const loading =
     word.isFetching || word.isRefetching || word.isLoading || clipSubmitLoading;
 
@@ -68,6 +79,7 @@ export default function AddClip() {
 
   return (
     <Flex className="w-screen justify-center">
+      {audio}
       <Flex
         vertical
         className="relative m-3 aspect-square h-fit w-full max-w-sm rounded border p-3 shadow-md"
@@ -120,8 +132,17 @@ export default function AddClip() {
               className="block !h-full w-full  !shadow-md"
               type="primary"
               danger
+              onClick={() => {
+                if (inf.playing) {
+                  controller.pause()
+                } else {
+                  controller.play()
+                }
+              }}
             >
-              تشغيل
+              {
+                inf.playing ? "توقف": "تشغيل"
+              }
             </Button>
           </Col>
         </Flex>
