@@ -4,17 +4,18 @@ import { createClient } from "@supabase/supabase-js";
 import { getServerSession } from "next-auth";
 import { v4 } from "uuid";
 import { db } from "~/server/db";
-import { authOptions } from "~/server/auth";
-import { api } from "~/trpc/server";
+ import { api } from "~/trpc/server";
 import { env } from "~/env";
 import { client } from "~/server/supabase";
+import { headers } from "next/headers";
+import { getUserFromJWT } from "~/server/api/trpc";
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) {
+  const session = await getUserFromJWT(request.headers)
+  if (session.error || !session.data.user) {
     return new NextResponse();
   }
-
+  
   const formData = await request.formData();
 
   const file = formData.get("file") as Blob | null;
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const supbase_storage = await client.storage
-      .from("clip")
+      .from("clips")
       .upload(`/clips/${wordId}${v4()}.mp3`, buffer);
     if (supbase_storage.error) {
       throw supbase_storage.error;
@@ -43,11 +44,10 @@ export async function POST(request: NextRequest) {
       data: {
         supabase_path: supbase_storage.data.path,
         supabase_public_url: publicUrl.data.publicUrl,
-        user_id: session?.user.id || "",
         word_id: wordId || "",
-        approved: ["SUPREME_LEADER", "MODRATOR"].includes(session.user.role)
-          ? new Date()
-          : null,
+        // @ts-ignore
+        user_id: session?.data?.user.id || "",
+         
       },
     });
     await db.word.update({

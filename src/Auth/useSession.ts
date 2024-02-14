@@ -1,10 +1,10 @@
 "use client";
 
-import { session } from "./Provider";
+import { sessionState } from "./Provider";
 import { useAtom } from "jotai";
 
 function useSessionState() {
-  const [s] = useAtom(session);
+  const [s] = useAtom(sessionState);
   return s;
 }
 export default useSessionState;

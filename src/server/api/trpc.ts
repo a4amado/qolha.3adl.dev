@@ -7,13 +7,15 @@
  * need to use are documented accordingly near the end.
  */
 
-import { Roles } from "@prisma/client";
-import { initTRPC, TRPCError } from "@trpc/server";
+import type {USER_TYPE} from "types/roles"
+import { initTRPC, TRPCError,RootConfig} from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { supabaseclient } from "~/Auth/client";
+import cookie from "cookie"
 
-import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import { supabaseServer } from "~/Auth/server";
 
 /**
  * 1. CONTEXT
@@ -27,12 +29,22 @@ import { db } from "~/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await getServerAuthSession();
 
+
+export function getUserFromJWT(headers: Headers) {
+  const s = cookie.parse(headers.get("cookie") || "")
+  const session = s.session;
+  return  supabaseServer.auth.getUser(session);
+   
+  
+}
+export const createTRPCContext = async (opts: { headers: Headers }) => {
+  
+  const session = await getUserFromJWT(opts.headers)
+  
   return {
     db,
-    session,
+    session:session.data ,
     ...opts,
   };
 };
@@ -81,38 +93,41 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+export const authenticatedProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      session:  ctx.session 
     },
   });
 });
 
-export const moderatorProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+export const superUserProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  const allowedRoles: Roles[] = ["SUPREME_LEADER", "MODRATOR"];
-  if (!allowedRoles.includes(ctx.session.user.role)) {
+  const allowedRoles: USER_TYPE[] = ["SUPER_USER", "service_role"];
+  console.log("s: "+ ctx?.session.user?.role );
+  
+  if (!allowedRoles.includes((ctx?.session.user?.role || "")as USER_TYPE)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      session:  ctx.session 
     },
   });
 });
 export const adminProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+  if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  if (ctx.session.user.role !== "SUPREME_LEADER") {
+  const allowedRoles: USER_TYPE[] = ["service_role"];
+  if (!allowedRoles.includes((ctx?.session.user?.role || "")as USER_TYPE)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

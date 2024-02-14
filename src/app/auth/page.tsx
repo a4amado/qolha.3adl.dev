@@ -1,7 +1,19 @@
-"use server";
+"use client";
 
-import { redirect } from "next/navigation";
+import { Auth } from "@supabase/auth-ui-react";
+import {
+  // Import predefined theme
+  ThemeSupa,
+} from "@supabase/auth-ui-shared";
+import { createClient } from "@supabase/supabase-js";
+import { supabaseclient } from "~/Auth/client";
 
-export default async function Page() {
-  return redirect("/api/auth/signin");
-}
+const App = () => (
+  <Auth
+    supabaseClient={supabaseclient}
+    appearance={{ theme: ThemeSupa }}
+    providers={[]}
+  />
+);
+
+export default App;

@@ -2,40 +2,32 @@
 
 import { TiTick } from "react-icons/ti";
 
-
-
-
 interface AcceptComponentProps {
   clipId: string;
 }
 
 export const AcceptComponent: React.FC<AcceptComponentProps> = ({ clipId }) => {
   const approveClip = api.clip.approveClip.useMutation();
-  const[clip, setClips] = useAtom(clipsState);
+  const [clip, setClips] = useAtom(clipsState);
   function updateState() {
-    console.log(clip);
-    console.log(clipId);
-    
-    
+ 
     if (!clip || clip.length == 0) return;
-    const newState = clip.filter((value : ReviewClipItem) => {
-      return value.id !==  clipId
-    })
-    console.log("newState", newState);
-    
-    setClips(newState)
+    const newState = clip.filter((value: ReviewClipItem) => value.id != clipId);
+ 
+    setClips(newState);
   }
-  
+
   return (
     <Col>
       <Button
         color="green"
         icon={<TiTick />}
         onClick={() => {
-          approveClip.mutateAsync({
-            clipId: clipId
-          })
-          .then(() => updateState())
+          approveClip
+            .mutateAsync({
+              clipId: clipId,
+            })
+            .then(() => updateState());
         }}
       />
     </Col>
@@ -55,29 +47,27 @@ interface RejectComponentProps {
 
 export const RejectComponent: React.FC<RejectComponentProps> = ({ clipId }) => {
   const rejectClip = api.clip.rejectClip.useMutation();
-  const[clip, setClips] = useAtom(clipsState);
+  const [clip, setClips] = useAtom(clipsState);
   function updateState() {
-    console.log(clip);
-    console.log(clipId);
-    
-    
+ 
+
     if (!clip || clip.length == 0) return;
-    const newState = clip.filter((value : ReviewClipItem) => {
-      return value.id !==  clipId
-    })
-    console.log("newState", newState);
     
-    setClips(newState)
+    const newState = clip.filter((value: ReviewClipItem) => value.id != clipId);
+
+    setClips(newState);
   }
-  
+
   return (
     <Col>
       <Button
         onClick={() => {
           console.log("Here@");
-          rejectClip.mutateAsync({
-            clipId: clipId,
-          }).then(() => updateState())
+          rejectClip
+            .mutateAsync({
+              clipId: clipId,
+            })
+            .then(() => updateState());
         }}
         icon={<FaTimes />}
       />
@@ -95,7 +85,10 @@ interface PlayComponentProps {
   text: string;
 }
 
-export const PlayComponent: React.FC<PlayComponentProps> = ({ publicUrl, text }) => {
+export const PlayComponent: React.FC<PlayComponentProps> = ({
+  publicUrl,
+  text,
+}) => {
   const audio = useAudio({
     src: publicUrl,
   });
@@ -103,7 +96,7 @@ export const PlayComponent: React.FC<PlayComponentProps> = ({ publicUrl, text })
   function stopAllOtherAudiosInThePage() {
     const audios = document.querySelectorAll("audio");
     audios.forEach((element) => {
-      (element).pause();
+      element.pause();
     });
   }
 
@@ -111,8 +104,8 @@ export const PlayComponent: React.FC<PlayComponentProps> = ({ publicUrl, text })
     stopAllOtherAudiosInThePage();
 
     if (audio[1].paused) {
-      (audio[2]).seek(0);
-      (audio[2]).play();
+      audio[2].seek(0);
+      audio[2].play();
     }
   }
 

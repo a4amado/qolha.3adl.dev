@@ -10,7 +10,7 @@ import Header from "./_components/header";
 import { SessionProvider } from "next-auth/react";
 import Footer from "./_components/Footer";
 import { Session } from "next-auth";
-import NextAuthProvider from "~/next-auth/Provider";
+import NextAuthProvider from "~/Auth/Provider";
 
 const inter = Inter({
   subsets: ["latin"],

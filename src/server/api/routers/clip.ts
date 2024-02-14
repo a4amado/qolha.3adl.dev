@@ -1,14 +1,14 @@
 import { z } from "zod";
-import { createTRPCRouter, moderatorProcedure } from "../trpc";
+import { createTRPCRouter, authenticatedProcedure, superUserProcedure } from "../trpc";
 import { db } from "~/server/db";
 import { api } from "~/trpc/server";
 import { client } from "~/server/supabase";
 
 const clipRouter = createTRPCRouter({
-  approveClip: moderatorProcedure
+  approveClip: superUserProcedure
     .input(
       z.object({
-        clipId: z.string().cuid(),
+        clipId: z.string().uuid(),
       }),
     )
     .mutation(async (ctx) => {
@@ -22,10 +22,10 @@ const clipRouter = createTRPCRouter({
       });
       return approvedClip;
     }),
-  rejectClip: moderatorProcedure
+  rejectClip: superUserProcedure
     .input(
       z.object({
-        clipId: z.string().cuid(),
+        clipId: z.string().uuid(),
       }),
     )
     .mutation(async (ctx) => {
@@ -60,7 +60,7 @@ const clipRouter = createTRPCRouter({
       });
       return rejectedClip;
     }),
-  get15WordThatNeedsRevision: moderatorProcedure.query(async () => {
+  get15WordThatNeedsRevision: superUserProcedure.query(async () => {
     return await db.clip.findMany({
       where: {
         approved: null,

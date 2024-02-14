@@ -1,0 +1,10 @@
+-- Enable the pg_trgm extension if not already enabled
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+-- Your fuzzy search query
+SELECT *
+FROM verbs
+WHERE similarity(unvocalized, 'شرب') > 0.7
+ORDER BY similarity(unvocalized, 'شرب') DESC;
+
+Unknown argument `provider_providerAccountId`. Did you mean `providerId_providerAccountId`? Available options are marked

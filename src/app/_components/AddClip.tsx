@@ -31,7 +31,7 @@ export default function AddClip() {
   // @ts-ignore
   const word = api.word.getaWordThatNeedClips.useQuery(null, {
     refetchOnWindowFocus: false,
-   });
+  });
 
   let {
     error,
@@ -47,17 +47,16 @@ export default function AddClip() {
     mediaStreamConstraints: { audio: true },
   });
 
-
-  const [src, setSrc] = useState("")
+  const [src, setSrc] = useState("");
 
   useEffect(() => {
     if (!mediaBlob) return;
-    setSrc(URL.createObjectURL(mediaBlob))
-  }, [status])
-  const [audio,inf, controller] = useAudio({
-    src: src
-  })
-  
+    setSrc(URL.createObjectURL(mediaBlob));
+  }, [status]);
+  const [audio, inf, controller] = useAudio({
+    src: src,
+  });
+
   const loading =
     word.isFetching || word.isRefetching || word.isLoading || clipSubmitLoading;
 
@@ -134,15 +133,13 @@ export default function AddClip() {
               danger
               onClick={() => {
                 if (inf.playing) {
-                  controller.pause()
+                  controller.pause();
                 } else {
-                  controller.play()
+                  controller.play();
                 }
               }}
             >
-              {
-                inf.playing ? "توقف": "تشغيل"
-              }
+              {inf.playing ? "توقف" : "تشغيل"}
             </Button>
           </Col>
         </Flex>

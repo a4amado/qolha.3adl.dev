@@ -1,15 +1,13 @@
 import { z } from "zod";
 import {
   createTRPCRouter,
-  moderatorProcedure,
-  protectedProcedure,
+  superUserProcedure,
+  authenticatedProcedure,
 } from "../trpc";
 import { db } from "~/server/db";
-import { api } from "~/trpc/server";
-import { Roles } from "@prisma/client";
 
 export const wordRouter = createTRPCRouter({
-  createWord: protectedProcedure
+  createWord: authenticatedProcedure
     .input(
       z.object({
         text: z
@@ -23,21 +21,16 @@ export const wordRouter = createTRPCRouter({
       const word = await db.word.create({
         data: {
           text: ctx.input.text,
-          lang: "ar",
-          user_id: ctx.ctx.session.user.id,
           number_of_clips: 0,
-          approved: ["SUPREME_LEADER", "MODRATOR"].includes(
-            ctx.ctx.session.user.role,
-          )
-            ? new Date()
-            : null,
+          // ctx.ctx.session.user?.id
+          
         },
       });
 
       return word;
     }),
 
-  approveWords: moderatorProcedure
+  approveWords: superUserProcedure
     .input(
       z.object({
         wordID: z.string().cuid(),
@@ -46,7 +39,7 @@ export const wordRouter = createTRPCRouter({
     .mutation(async (ctx) => {
       const word = await db.word.update({
         data: {
-          approved: new Date().toISOString(),
+          // approved: new Date().toISOString(),
         },
         where: {
           id: ctx.input.wordID,
@@ -54,7 +47,7 @@ export const wordRouter = createTRPCRouter({
       });
       return word;
     }),
-  rejectWords: moderatorProcedure
+  rejectWords: superUserProcedure
     .input(
       z.object({
         wordID: z.string().cuid(),
@@ -68,7 +61,7 @@ export const wordRouter = createTRPCRouter({
       });
       return deletedWord;
     }),
-  getaWordThatNeedClips: protectedProcedure.query(async () => {
+  getaWordThatNeedClips: authenticatedProcedure.query(async () => {
     const word = await db.word.findFirst({
       orderBy: {
         number_of_clips: "asc",

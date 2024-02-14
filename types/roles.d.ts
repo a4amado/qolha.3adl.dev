@@ -1,0 +1,1 @@
+export type USER_TYPE = "authenticated" | "SUPER_USER" | "service_role"
