@@ -7,18 +7,23 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z.string().refine((str) => !str.includes("YOUR_MYSQL_URL_HERE"), "You forgot to change the default URL"),
-    NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    DATABASE_URL: z
+      .string()
+      .refine(
+        (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
+        "You forgot to change the default URL",
+      ),
+    NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
     SUPABASE_BASEURL: z.string(),
     SUPABASE_SECRET_SERVICE_ROLE: z.string(),
   },
-
 
   client: {
     NEXT_PUBLIC_SUPABASE_BASEURL: z.string(),
     NEXT_PUBLIC_SUPABASE_SECRET_ANON: z.string(),
   },
-
 
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -26,7 +31,8 @@ export const env = createEnv({
     SUPABASE_BASEURL: process.env.SUPABASE_BASEURL,
     SUPABASE_SECRET_SERVICE_ROLE: process.env.SUPABASE_SECRET_SERVICE_ROLE,
     NEXT_PUBLIC_SUPABASE_BASEURL: process.env.NEXT_PUBLIC_SUPABASE_BASEURL,
-    NEXT_PUBLIC_SUPABASE_SECRET_ANON: process.env.NEXT_PUBLIC_SUPABASE_SECRET_ANON,
+    NEXT_PUBLIC_SUPABASE_SECRET_ANON:
+      process.env.NEXT_PUBLIC_SUPABASE_SECRET_ANON,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -19,20 +19,19 @@ export const sessionState = atom<SS>({
 export default function NextAuthProvider({ children }: PropsWithChildren) {
   const [_, setSession] = useAtom(sessionState);
   const [cookie, setSessionCookie, deleteSessionCookie] = useCookie("session");
-  
 
   useEffect(() => {
     supabaseclient.auth
       .getSession()
       .then(({ data, error }) => {
-        setSessionCookie(data.session?.access_token || "")
+        setSessionCookie(data.session?.access_token || "");
         setSession({
           session: data.session,
           status: !data.session ? "unauthenticated" : "authenticated",
         });
         supabaseclient.auth.onAuthStateChange((event, session) => {
-          setSessionCookie(session?.access_token || "")
-          if (event === "SIGNED_OUT") deleteSessionCookie()
+          setSessionCookie(session?.access_token || "");
+          if (event === "SIGNED_OUT") deleteSessionCookie();
           setSession({
             session: event == "SIGNED_OUT" ? null : session,
             status: event == "SIGNED_OUT" ? "unauthenticated" : "authenticated",
@@ -40,7 +39,7 @@ export default function NextAuthProvider({ children }: PropsWithChildren) {
         });
       })
       .catch(() => {
-        deleteSessionCookie()
+        deleteSessionCookie();
         setSession({
           session: null,
           status: "unauthenticated",

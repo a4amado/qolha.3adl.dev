@@ -14,8 +14,7 @@ import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 import { clipsState } from "~/state/reviewClips";
 
-type ReviewClipItem =
-  RouterOutputs["clip"]["get15WordThatNeedsRevision"];
+type ReviewClipItem = RouterOutputs["clip"]["get15WordThatNeedsRevision"];
 
 export default function Page() {
   const [data, setClips] = useAtom(clipsState);
@@ -26,16 +25,15 @@ export default function Page() {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
-  
+
   useEffect(() => {
     if (clips.status == "success") {
       setClips(clips.data);
     }
   }, [clips.data]);
- 
+
   const isLoading = clips?.isLoading || clips.isFetching || clips.isRefetching;
- 
-  
+
   return (
     <>
       <Button
@@ -44,7 +42,7 @@ export default function Page() {
         onClick={() => clips.refetch()}
         icon={<ReloadOutlined />}
       />
-       {/* @ts-ignore */}
+      {/* @ts-ignore */}
       <Table
         loading={clips.isLoading || clips.isFetching || clips.isRefetching}
         className="w-full shadow"
@@ -53,12 +51,16 @@ export default function Page() {
         <Table.Column
           title="قبول"
           dataIndex={""}
-          render={(v: ReviewClipItem[number]) => <AcceptComponent clipId={v.id} />}
+          render={(v: ReviewClipItem[number]) => (
+            <AcceptComponent clipId={v.id} />
+          )}
         />
         <Table.Column
           title="رفض"
           dataIndex={""}
-          render={(v: ReviewClipItem[number]) => <RejectComponent clipId={v.id} />}
+          render={(v: ReviewClipItem[number]) => (
+            <RejectComponent clipId={v.id} />
+          )}
         />
         <Table.Column
           title="تشغيل"

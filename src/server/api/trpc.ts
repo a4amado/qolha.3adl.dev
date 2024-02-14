@@ -7,12 +7,12 @@
  * need to use are documented accordingly near the end.
  */
 
-import type {USER_TYPE} from "types/roles"
-import { initTRPC, TRPCError,RootConfig} from "@trpc/server";
+import type { USER_TYPE } from "types/roles";
+import { initTRPC, TRPCError, RootConfig } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { supabaseclient } from "~/Auth/client";
-import cookie from "cookie"
+import cookie from "cookie";
 
 import { db } from "~/server/db";
 import { supabaseServer } from "~/Auth/server";
@@ -30,21 +30,17 @@ import { supabaseServer } from "~/Auth/server";
  * @see https://trpc.io/docs/server/context
  */
 
-
 export function getUserFromJWT(headers: Headers) {
-  const s = cookie.parse(headers.get("cookie") || "")
+  const s = cookie.parse(headers.get("cookie") || "");
   const session = s.session;
-  return  supabaseServer.auth.getUser(session);
-   
-  
+  return supabaseServer.auth.getUser(session);
 }
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  
-  const session = await getUserFromJWT(opts.headers)
-  
+  const session = await getUserFromJWT(opts.headers);
+
   return {
     db,
-    session:session.data ,
+    session: session.data,
     ...opts,
   };
 };
@@ -100,7 +96,7 @@ export const authenticatedProcedure = t.procedure.use(({ ctx, next }) => {
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session:  ctx.session 
+      session: ctx.session,
     },
   });
 });
@@ -110,15 +106,15 @@ export const superUserProcedure = t.procedure.use(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   const allowedRoles: USER_TYPE[] = ["SUPER_USER", "service_role"];
-  console.log("s: "+ ctx?.session.user?.role );
-  
-  if (!allowedRoles.includes((ctx?.session.user?.role || "")as USER_TYPE)) {
+  console.log("s: " + ctx?.session.user?.role);
+
+  if (!allowedRoles.includes((ctx?.session.user?.role || "") as USER_TYPE)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session:  ctx.session 
+      session: ctx.session,
     },
   });
 });
@@ -127,7 +123,7 @@ export const adminProcedure = t.procedure.use(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   const allowedRoles: USER_TYPE[] = ["service_role"];
-  if (!allowedRoles.includes((ctx?.session.user?.role || "")as USER_TYPE)) {
+  if (!allowedRoles.includes((ctx?.session.user?.role || "") as USER_TYPE)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

@@ -1,20 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createClient } from "@supabase/supabase-js";
-import { getServerSession } from "next-auth";
-import { v4 } from "uuid";
+ import { v4 } from "uuid";
 import { db } from "~/server/db";
- import { api } from "~/trpc/server";
+import { api } from "~/trpc/server";
 import { env } from "~/env";
- import { getUserFromJWT } from "~/server/api/trpc";
+import { getUserFromJWT } from "~/server/api/trpc";
 import { supabaseServer } from "~/Auth/server";
 
 export async function POST(request: NextRequest) {
-  const session = await getUserFromJWT(request.headers)
+  const session = await getUserFromJWT(request.headers);
   if (session.error || !session.data.user) {
     return new NextResponse();
   }
-  
+
   const formData = await request.formData();
 
   const file = formData.get("file") as Blob | null;
@@ -46,7 +45,6 @@ export async function POST(request: NextRequest) {
         word_id: wordId || "",
         // @ts-ignore
         user_id: session?.data?.user.id || "",
-         
       },
     });
     await db.word.update({

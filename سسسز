@@ -7,4 +7,4 @@ FROM "Word"
 WHERE similarity(unvocalized, 'گفتن') > 0.7
 ORDER BY similarity(unvocalized, 'گفتن') DESC;
 
-Unknown argument `provider_providerAccountId`. Did you mean `providerId_providerAccountId`? Available options are marked
+

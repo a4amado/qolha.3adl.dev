@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { wordRouter } from "./routers/word";
 import clipRouter from "./routers/clip";
- 
+
 /**
  * This is the primary router for your server.
  *

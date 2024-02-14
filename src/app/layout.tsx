@@ -1,5 +1,4 @@
 import "~/styles/globals.css";
- 
 
 import { Inter } from "next/font/google";
 
@@ -7,10 +6,8 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { lazy } from "react";
 import Header from "./_components/header";
-import { SessionProvider } from "next-auth/react";
-import Footer from "./_components/Footer";
-import { Session } from "next-auth";
-import NextAuthProvider from "~/Auth/Provider";
+ import Footer from "./_components/Footer";
+ import NextAuthProvider from "~/Auth/Provider";
 
 const inter = Inter({
   subsets: ["latin"],

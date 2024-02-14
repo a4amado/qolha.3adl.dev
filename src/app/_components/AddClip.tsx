@@ -9,7 +9,7 @@ import { IoReloadOutline } from "react-icons/io5";
 import useAxios from "axios-hooks";
 import FormData from "form-data";
 import { useAudio, useFirstMountState } from "react-use";
-import type { AppRouter } from "~/server/api/root";
+
 
 export default function AddClip() {
   const first = useFirstMountState();

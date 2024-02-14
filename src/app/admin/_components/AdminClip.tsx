@@ -10,10 +10,9 @@ export const AcceptComponent: React.FC<AcceptComponentProps> = ({ clipId }) => {
   const approveClip = api.clip.approveClip.useMutation();
   const [clip, setClips] = useAtom(clipsState);
   function updateState() {
- 
     if (!clip || clip.length == 0) return;
     const newState = clip.filter((value: ReviewClipItem) => value.id != clipId);
- 
+
     setClips(newState);
   }
 
@@ -49,10 +48,8 @@ export const RejectComponent: React.FC<RejectComponentProps> = ({ clipId }) => {
   const rejectClip = api.clip.rejectClip.useMutation();
   const [clip, setClips] = useAtom(clipsState);
   function updateState() {
- 
-
     if (!clip || clip.length == 0) return;
-    
+
     const newState = clip.filter((value: ReviewClipItem) => value.id != clipId);
 
     setClips(newState);

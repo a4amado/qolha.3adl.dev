@@ -24,7 +24,6 @@ export const wordRouter = createTRPCRouter({
           text: ctx.input.text,
           number_of_clips: 0,
           // ctx.ctx.session.user?.id
-
         },
       });
 
@@ -84,28 +83,27 @@ export const wordRouter = createTRPCRouter({
     ORDER BY similarity(W.text, '${ctx.input}') DESC
     LIMIT 15;
       `);
-      const ids: string[] = (result as any[] || []).map((e) => (e.id));
+    const ids: string[] = ((result as any[]) || []).map((e) => e.id);
 
-const words = db.word.findMany({
-  where: {
-    id: {
-      in: ids
-    }
-  },
-  select: {
-    id: true, text: true,
-    clips: {
-       select: {
+    const words = await db.word.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      select: {
         id: true,
-        supabase_public_url: true
-       }
-    }
-  }
-})
-    return words
-
-  })
+        text: true,
+        clips: {
+          select: {
+            id: true,
+            supabase_public_url: true,
+          },
+        },
+      },
+    });
+  
+  
+    return words;
+  }),
 });
-
-
-
