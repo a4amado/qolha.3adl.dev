@@ -3,7 +3,7 @@
 import { Session } from "@supabase/supabase-js";
 import { atom, useAtom } from "jotai";
 import { PropsWithChildren, useEffect } from "react";
-import { client } from "~/server/supabase";
+
 import { supabaseclient } from "./client";
 import { useCookie } from "react-use";
 

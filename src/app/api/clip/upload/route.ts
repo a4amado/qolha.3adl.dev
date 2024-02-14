@@ -6,9 +6,8 @@ import { v4 } from "uuid";
 import { db } from "~/server/db";
  import { api } from "~/trpc/server";
 import { env } from "~/env";
-import { client } from "~/server/supabase";
-import { headers } from "next/headers";
-import { getUserFromJWT } from "~/server/api/trpc";
+ import { getUserFromJWT } from "~/server/api/trpc";
+import { supabaseServer } from "~/Auth/server";
 
 export async function POST(request: NextRequest) {
   const session = await getUserFromJWT(request.headers)
@@ -30,13 +29,13 @@ export async function POST(request: NextRequest) {
   console.log(session);
 
   try {
-    const supbase_storage = await client.storage
+    const supbase_storage = await supabaseServer.storage
       .from("clips")
       .upload(`/clips/${wordId}${v4()}.mp3`, buffer);
     if (supbase_storage.error) {
       throw supbase_storage.error;
     }
-    const publicUrl = client.storage
+    const publicUrl = supabaseServer.storage
       .from("clip")
       .getPublicUrl(supbase_storage.data.path);
 

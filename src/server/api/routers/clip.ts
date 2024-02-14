@@ -2,8 +2,8 @@ import { z } from "zod";
 import { createTRPCRouter, authenticatedProcedure, superUserProcedure } from "../trpc";
 import { db } from "~/server/db";
 import { api } from "~/trpc/server";
-import { client } from "~/server/supabase";
-
+import { supabaseServer } from "~/Auth/server";
+ 
 const clipRouter = createTRPCRouter({
   approveClip: superUserProcedure
     .input(
@@ -47,7 +47,7 @@ const clipRouter = createTRPCRouter({
       if (!rejectedClip.word) return;
       if (rejectedClip.word.number_of_clips === 0) return;
 
-      await client.storage.from("clip").remove([rejectedClip.supabase_path]);
+      await supabaseServer.storage.from("clip").remove([rejectedClip.supabase_path]);
       await db.word.update({
         where: {
           id: rejectedClip.word.id,
