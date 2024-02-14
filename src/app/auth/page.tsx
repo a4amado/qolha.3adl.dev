@@ -12,7 +12,7 @@ const App = () => (
   <Auth
     supabaseClient={supabaseclient}
     appearance={{ theme: ThemeSupa }}
-    redirectTo={`${document.location.protocol}://${document.location.host}/auth`}
+    redirectTo={typeof document != null ? `${document.location.protocol}://${document.location.host}/auth`: ""}
     providers={[]}
   />
 );
