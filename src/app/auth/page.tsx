@@ -6,15 +6,18 @@ import {
   ThemeSupa,
 } from "@supabase/auth-ui-shared";
 import { createClient } from "@supabase/supabase-js";
+import { useLocation } from "react-use";
 import { supabaseclient } from "~/Auth/client";
 
-const App = () => (
-  <Auth
-    supabaseClient={supabaseclient}
-    appearance={{ theme: ThemeSupa }}
-    redirectTo={typeof document != null ? `${document.location.protocol}://${document.location.host}/auth`: ""}
-    providers={[]}
-  />
-);
+const App = () => {
+  const link = useLocation()
+  
+  return <Auth
+  supabaseClient={supabaseclient}
+  appearance={{ theme: ThemeSupa }}
+  redirectTo={ `${link.protocol}://${link.host}/auth` }
+  providers={[]}
+/>
+}
 
 export default App;
