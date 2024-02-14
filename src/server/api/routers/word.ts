@@ -3,6 +3,7 @@ import {
   createTRPCRouter,
   superUserProcedure,
   authenticatedProcedure,
+  publicProcedure,
 } from "../trpc";
 import { db } from "~/server/db";
 
@@ -23,7 +24,7 @@ export const wordRouter = createTRPCRouter({
           text: ctx.input.text,
           number_of_clips: 0,
           // ctx.ctx.session.user?.id
-          
+
         },
       });
 
@@ -75,4 +76,36 @@ export const wordRouter = createTRPCRouter({
 
     return word;
   }),
+  search: publicProcedure.input(z.string()).query(async (ctx) => {
+    const result = await db.$queryRawUnsafe(`
+    SELECT W.text, W.id
+    FROM "Word" as W
+    WHERE similarity(W.text, '${ctx.input}') > ${ctx.input.length > 3 ? 0.6 : 0.4}
+    ORDER BY similarity(W.text, '${ctx.input}') DESC
+    LIMIT 15;
+      `);
+      const ids: string[] = (result as any[] || []).map((e) => (e.id));
+
+const words = db.word.findMany({
+  where: {
+    id: {
+      in: ids
+    }
+  },
+  select: {
+    id: true, text: true,
+    clips: {
+       select: {
+        id: true,
+        supabase_public_url: true
+       }
+    }
+  }
+})
+    return words
+
+  })
 });
+
+
+

@@ -3,7 +3,7 @@ import { createTRPCRouter, authenticatedProcedure, superUserProcedure } from "..
 import { db } from "~/server/db";
 import { api } from "~/trpc/server";
 import { supabaseServer } from "~/Auth/server";
- 
+
 const clipRouter = createTRPCRouter({
   approveClip: superUserProcedure
     .input(
@@ -19,6 +19,9 @@ const clipRouter = createTRPCRouter({
         where: {
           id: ctx.input.clipId,
         },
+        select: {
+          id: true
+        }
       });
       return approvedClip;
     }),

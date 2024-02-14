@@ -1,10 +1,14 @@
 generator client {
   provider = "prisma-client-js"
+      previewFeatures = ["postgresqlExtensions"]
+
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  extensions = [hstore(schema: "public"), pg_trgm]
+
 }
 
 model Clip {
@@ -19,7 +23,7 @@ model Clip {
 
 model Word {
   id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  text String
+  text String 
   clips Clip[]
   number_of_clips Int @default(0)
 
