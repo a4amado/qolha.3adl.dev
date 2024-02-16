@@ -51,7 +51,7 @@ const RenderClips = async ({ wordIDX }: { wordIDX: number }) => (
   <Flex className="h-full w-full max-w-xl flex-col gap-2 overflow-y-scroll">
     {/** @ts-ignore */}
     {words[wordIDX]?.clips.map((_, clipIDX) => {
-      return <ClipItemList id={words[wordIDX]?.id} word={words[wordIDX]?.text} url={words[wordIDX]?.clips[clipIDX]?.supabase_public_url} />;
+      return <ClipItemList  word={words[wordIDX]?.text + ""} url={words[wordIDX]?.clips[clipIDX]?.supabase_public_url + ""} />;
     })}
   </Flex>
 );

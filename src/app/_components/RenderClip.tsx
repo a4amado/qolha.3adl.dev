@@ -5,11 +5,10 @@ import { Flex, Button } from "antd";
 import { useAudio } from "react-use";
 
 const ClipItemList =   ({
-    id,url,word
+   url,word
 }: {
     url: string,
-    id: string,
-    word: string
+     word: string
 }) => {
     const [audio,s,c] = useAudio({
         src: url,
