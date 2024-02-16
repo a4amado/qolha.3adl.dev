@@ -12,7 +12,7 @@ model Clip {
   supabase_public_url String    @unique
   user_id             String?   @db.Uuid
   approved            DateTime?
-  id                  Int       @id @unique @default(autoincrement())
+  id                  String @db.Uuid       @id @unique @default(dbgenerated("gen_random_uuid()"))
   word_id            String @db.Uuid
   word Word @relation(fields: [word_id], references: [id])
 }
