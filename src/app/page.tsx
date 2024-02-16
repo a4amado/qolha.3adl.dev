@@ -1,7 +1,7 @@
 "use client";
 
-import AddWord from "./_components/AddWord";
-import AddClip from "./_components/AddClip";
+import AddWord from "./_components/add-word";
+import AddClip from "./_components/add-clip";
 import { AutoComplete, Flex, Input, Typography } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -48,4 +48,3 @@ export default function Home(ctx: any) {
     </main>
   );
 }
-

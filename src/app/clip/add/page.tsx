@@ -1,13 +1,12 @@
 "use client";
 
 import { Flex } from "antd";
- import AddClip from "~/app/_components/AddClip";
+import AddClip from "~/app/_components/add-clip";
 
 export default function Page() {
   return (
     <Flex className="h-screen w-full">
-      {" "}
-      <AddClip />
+      <AddClip type="random" />
     </Flex>
   );
 }

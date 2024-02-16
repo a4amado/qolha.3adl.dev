@@ -77,15 +77,15 @@ export const wordRouter = createTRPCRouter({
   }),
   search: publicProcedure.input(z.string()).query(async (ctx) => {
     const result = await db.$queryRawUnsafe(`
-    SELECT W.text, W.id
+    SELECT W.text, W.id,   similarity(W.text, '${ctx.input}') AS word_similarity
     FROM "Word" as W
-    WHERE similarity(W.text, '${ctx.input}') > ${ctx.input.length > 3 ?.5: .3}
+    WHERE similarity(W.text, '${ctx.input}') > ${ctx.input.length > 3 ? 0.5 : 0.3}
     ORDER BY similarity(W.text, '${ctx.input}') DESC
     LIMIT 15;
       `);
     const ids: string[] = ((result as any[]) || []).map((e) => e.id);
 
-    const words = await db.word.findMany({
+    let words = await db.word.findMany({
       where: {
         id: {
           in: ids,
@@ -102,8 +102,11 @@ export const wordRouter = createTRPCRouter({
         },
       },
     });
-  
-  
+
+    words = words.map((v, idx) => ({
+      ...v,
+      simi: result[idx]?.word_similarity,
+    }));
     return words;
   }),
 });

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createClient } from "@supabase/supabase-js";
- import { v4 } from "uuid";
+import { v4 } from "uuid";
 import { db } from "~/server/db";
 import { api } from "~/trpc/server";
 import { env } from "~/env";
@@ -63,4 +63,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error });
   }
 }
-

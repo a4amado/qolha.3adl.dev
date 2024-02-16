@@ -6,9 +6,14 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { lazy } from "react";
 import Header from "./_components/header";
- import Footer from "./_components/Footer";
- import NextAuthProvider from "~/Auth/Provider";
-
+import Footer from "./_components/Footer";
+import NextAuthProvider from "~/Auth/Provider";
+if (typeof document !== "undefined") {
+  const modalRoot = document.querySelector(".ant-modal-root");
+  if (modalRoot) {
+    modalRoot.addEventListener("click", (e) => e.stopPropagation())
+  }
+}
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
- import { Button } from "antd";
+import { Button } from "antd";
 import { api } from "~/trpc/react";
 import { notification } from "antd";
 
@@ -23,7 +23,7 @@ export default function MyCombobox() {
     if (wordApi.isLoading) return;
     wordApi.mutate({ text: word });
   }
- 
+
   return (
     <div className="flex h-screen w-full flex-col">
       <div className="flex-end m-5 flex h-1/3 flex-grow-0 items-end">

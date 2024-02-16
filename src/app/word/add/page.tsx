@@ -1,4 +1,4 @@
- import AddWord from "~/app/_components/AddWord";
+import AddWord from "~/app/_components/add-word";
 
 export default function Page() {
   return (

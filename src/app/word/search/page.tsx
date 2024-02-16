@@ -4,18 +4,15 @@ import { PlayCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Flex, Popover, Typography } from "antd";
 import { RouterOutputs } from "~/trpc/shared";
 
-
-
 import { api } from "~/trpc/server";
-import ClipItemList from "~/app/_components/RenderClip";
+import ClipItemList from "~/app/_components/render-clip";
+import AddClipModal from "~/app/_components/add-clip-modal";
 
- let words: RouterOutputs["word"]["search"]
+let words: RouterOutputs["word"]["search"];
 
- const WordList = async (ctx: any) => {
-
+const WordList = async (ctx: any) => {
   words = await api.word.search.query(ctx.searchParams.word);
   console.log(words);
-  
 
   return (
     <Flex className="!w-full justify-center">
@@ -32,9 +29,7 @@ import ClipItemList from "~/app/_components/RenderClip";
   );
 };
 
-export default WordList
-
-
+export default WordList;
 
 const WordContributor = async ({
   wordIDX,
@@ -46,13 +41,21 @@ const WordContributor = async ({
   return <Col className="flex items-center"></Col>;
 };
 
-
 const RenderClips = async ({ wordIDX }: { wordIDX: number }) => (
   <Flex className="h-full w-full max-w-xl flex-col gap-2 overflow-y-scroll">
     {/** @ts-ignore */}
     {words[wordIDX]?.clips.map((_, clipIDX) => {
-      return <ClipItemList  word={words[wordIDX]?.text + ""} url={words[wordIDX]?.clips[clipIDX]?.supabase_public_url + ""} />;
+      return (
+        <ClipItemList
+          word={words[wordIDX]?.text + ""}
+          url={words[wordIDX]?.clips[clipIDX]?.supabase_public_url + ""}
+        />
+      );
     })}
+    <AddClipModal
+      wordId={words[wordIDX]?.id || ""}
+      wordText={words[wordIDX]?.text || ""}
+    />
   </Flex>
 );
 
@@ -62,7 +65,6 @@ const WordListItem = async ({ wordIDX }: { wordIDX: number }) => {
       <Col className="flex  !text-4xl">
         <Popover
           placement="bottom"
-          destroyTooltipOnHide
           title={
             <Typography className="text-center">
               {/** @ts-ignore */}
@@ -70,7 +72,8 @@ const WordListItem = async ({ wordIDX }: { wordIDX: number }) => {
             </Typography>
           }
           className="!w-full max-w-4xl"
-          overlayStyle={{ width: 400 }} // Set the width to 400px
+          overlayStyle={{ width: 400 }}
+          trigger={["click"]}
           content={<RenderClips wordIDX={wordIDX} />}
         >
           <Button className=" flex !aspect-square !h-full items-center justify-center">
@@ -88,6 +91,5 @@ const WordListItem = async ({ wordIDX }: { wordIDX: number }) => {
     </Flex>
   );
 };
-
 
 // 231.26

@@ -10,10 +10,19 @@ import useAxios from "axios-hooks";
 import FormData from "form-data";
 import { useAudio, useFirstMountState } from "react-use";
 
+type AddClipProps =
+  | { type: "random" }
+  | {
+      type: "specefic";
+      id: string;
+      text: string;
+      close: () => void
+    };
 
-export default function AddClip() {
+export default function AddClip(props: AddClipProps) {
   const first = useFirstMountState();
   const [seconds, setSeconds] = useState(0);
+
   const [{ data, loading: clipSubmitLoading, error: clipSubmitError }, submit] =
     useAxios(
       {
@@ -31,8 +40,11 @@ export default function AddClip() {
   // @ts-ignore
   const word = api.word.getaWordThatNeedClips.useQuery(null, {
     refetchOnWindowFocus: false,
+    enabled: props.type === "random",
   });
 
+  const wordId = props.type === "specefic" ? props.id : word.data?.id;
+  const text = props.type === "specefic" ? props.text : word.data?.text;
   let {
     error,
     status,
@@ -58,7 +70,11 @@ export default function AddClip() {
   });
 
   const loading =
-    word.isFetching || word.isRefetching || word.isLoading || clipSubmitLoading;
+    (word.isFetching ||
+      word.isRefetching ||
+      word.isLoading ||
+      clipSubmitLoading) &&
+    props.type !== "specefic";
 
   useEffect(() => {
     if (status !== "recording") return;
@@ -77,7 +93,7 @@ export default function AddClip() {
   }
 
   return (
-    <Flex className="w-screen justify-center">
+    <Flex className=" justify-center">
       {audio}
       <Flex
         vertical
@@ -92,9 +108,7 @@ export default function AddClip() {
           onClick={() => word.refetch()}
         />
         <Flex className="h-2/5 items-center justify-center">
-          {word.data?.text && (
-            <span className="text-3xl font-bold">{word.data?.text}</span>
-          )}
+          {text && <span className="text-3xl font-bold">{text}</span>}
           {loading && <LoadingOutlined />}
         </Flex>
         <Flex className="text-bold h-1/5 items-center justify-center">
@@ -149,11 +163,16 @@ export default function AddClip() {
               if (status === "recording" || mediaBlob === null) return;
               const form = new FormData();
               form.append("file", mediaBlob);
-              form.append("word_id", word.data?.id);
+              form.append("word_id", wordId);
               await submit({ data: form });
               clearMediaStream();
               clearMediaBlob();
               setSeconds(0);
+
+              if (props.type === "specefic") {
+                return props.close()
+              }
+              
               word.refetch();
             }}
             loading={clipSubmitLoading}

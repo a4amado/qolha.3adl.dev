@@ -1,0 +1,115 @@
+This does not make any scence why the simililaity is much low with     {
+                        "id": "e2d98fc8-96d0-4871-8a56-52a520151ae1",
+                        "text": "خدا",
+                        "clips": [],
+                        "simi": 0.5
+                    }, when the word is the same as the query input گفت, and also the ordering does not make any scenece 
+
+
+here is te quey     SELECT W.text, W.id,   similarity(W.text, '${ctx.input}') AS word_similarity
+    FROM "Word" as W
+    WHERE similarity(W.text, '${ctx.input}') > ${ctx.input.length > 3 ?.5: .3}
+    ORDER BY similarity(W.text, '${ctx.input}') DESC
+    LIMIT 15;
+    and here is the result 
+
+{
+    "0": {
+        "result": {
+            "data": {
+                "json": [
+                    {
+                        "id": "02f55273-33c4-4b6d-a21f-645ae87618b5",
+                        "text": "خداو",
+                        "clips": [],
+                        "simi": 1
+                    },
+                    {
+                        "id": "0383e557-5b85-45b3-97f2-cfa0d50050e6",
+                        "text": "خدای",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "07215e7e-aebc-4770-b990-ccf704d1a108",
+                        "text": "خداش",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "308b3f76-97b5-4e41-b12e-3139496da853",
+                        "text": "خداع",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "3e33e54c-f259-4f85-bfe3-95f79be6bc8a",
+                        "text": "خداج",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "61bca197-d87e-4f0a-9b95-0f2a66557d5b",
+                        "text": "خدار",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "722aa6c0-b7b6-48b4-bbb7-ae1692ce2d04",
+                        "text": "خدات",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "743f1c2b-8d36-4cdf-b0f2-894529fb7155",
+                        "text": "خداى",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "8d52eae2-aa6e-4904-a09d-e3db3b3c86fe",
+                        "text": "خداد",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "92cd56d4-c126-4397-acd4-d4d9ac807308",
+                        "text": "خداوندا",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "9e4b3ca1-8cce-4406-ae45-6b80d3d5e649",
+                        "text": "خدایا",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "cb181e50-7304-4ff6-950f-36f7052497d8",
+                        "text": "خداند",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "e2d98fc8-96d0-4871-8a56-52a520151ae1",
+                        "text": "خدا",
+                        "clips": [],
+                        "simi": 0.5
+                    },
+                    {
+                        "id": "ebe41154-69dd-4c91-b270-f3ecadc26d95",
+                        "text": "خدام",
+                        "clips": [],
+                        "simi": 0.4285714328289032
+                    },
+                    {
+                        "id": "f88512c4-11eb-4a86-a873-44231bbf0fae",
+                        "text": "خداه",
+                        "clips": [],
+                        "simi": 0.4285714328289032
+                    }
+                ]
+            }
+        }
+    }
+}
