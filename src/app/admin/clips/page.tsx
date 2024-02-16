@@ -5,7 +5,7 @@ import {
   AcceptComponent,
   RejectComponent,
   PlayComponent,
-} from "../_components/AdminClip";
+} from "../_components/admin-clip";
 import { Button, Flex, Table } from "antd";
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 

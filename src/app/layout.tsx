@@ -6,7 +6,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { lazy } from "react";
 import Header from "./_components/header";
-import Footer from "./_components/Footer";
+import Footer from "./_components/footer";
 import NextAuthProvider from "~/Auth/Provider";
 if (typeof document !== "undefined") {
   const modalRoot = document.querySelector(".ant-modal-root");

@@ -105,6 +105,7 @@ export const wordRouter = createTRPCRouter({
 
     words = words.map((v, idx) => ({
       ...v,
+      // @ts-ignore
       simi: result[idx]?.word_similarity,
     }));
     return words;
