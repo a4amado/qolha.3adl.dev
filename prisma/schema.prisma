@@ -1,32 +1,28 @@
 generator client {
   provider = "prisma-client-js"
-      previewFeatures = ["postgresqlExtensions"]
-
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  extensions = [hstore(schema: "public"), pg_trgm]
-
 }
 
 model Clip {
-  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   supabase_path       String    @unique
   supabase_public_url String    @unique
   user_id             String?   @db.Uuid
-  word_id             String  @db.Uuid
   approved            DateTime?
-  word Word @relation(fields: [word_id], references: [id], onDelete: Cascade)
+  id                  Int       @id @unique @default(autoincrement())
+  word_id            String @db.Uuid
+  word Word @relation(fields: [word_id], references: [id])
 }
 
 model Word {
-  id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  text String 
-  clips Clip[]
-  number_of_clips Int @default(0)
+  text            String
+  number_of_clips Int    @default(0)
 
+  id              String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clips Clip[]
 }
 
 enum Roles {
@@ -35,4 +31,6 @@ enum Roles {
   PEASANT
 }
 
- 
+
+//  453,156 records
+//  440,480 records

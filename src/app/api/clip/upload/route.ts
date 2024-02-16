@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       throw supbase_storage.error;
     }
     const publicUrl = supabaseServer.storage
-      .from("clip")
+      .from("clips")
       .getPublicUrl(supbase_storage.data.path);
 
     await db.clip.create({
@@ -63,3 +63,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error });
   }
 }
+

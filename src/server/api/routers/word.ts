@@ -79,7 +79,7 @@ export const wordRouter = createTRPCRouter({
     const result = await db.$queryRawUnsafe(`
     SELECT W.text, W.id
     FROM "Word" as W
-    WHERE similarity(W.text, '${ctx.input}') > ${ctx.input.length > 3 ? 0.6 : 0.4}
+    WHERE similarity(W.text, '${ctx.input}') > ${ctx.input.length > 3 ?.5: .3}
     ORDER BY similarity(W.text, '${ctx.input}') DESC
     LIMIT 15;
       `);

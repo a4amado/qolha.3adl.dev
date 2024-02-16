@@ -2,18 +2,20 @@
 
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Flex, Popover, Typography } from "antd";
-import { NextRequest } from "next/server"
+import { RouterOutputs } from "~/trpc/shared";
+
 
 
 import { api } from "~/trpc/server";
+import ClipItemList from "~/app/_components/RenderClip";
 
-// @ts-ignore
-let words;
+ let words: RouterOutputs["word"]["search"]
 
-// @ts-ignore
-const WordList = async (ctx) => {
+ const WordList = async (ctx: any) => {
 
   words = await api.word.search.query(ctx.searchParams.word);
+  console.log(words);
+  
 
   return (
     <Flex className="!w-full justify-center">
@@ -44,28 +46,12 @@ const WordContributor = async ({
   return <Col className="flex items-center"></Col>;
 };
 
-const ClipItemList = async ({
-  clipIDX,
-  wordIDX,
-}: {
-  clipIDX: number;
-  wordIDX: number;
-}) => {
-  return (
-    <Flex className="w-full">
-      <Button className=" flex !aspect-square !h-full items-center justify-center">
-        <PlayCircleOutlined className="text-1xl !flex !items-center !justify-center rounded-full shadow-xl" />
-      </Button>
-      <WordContributor wordIDX={wordIDX} clipIDX={clipIDX} />
-    </Flex>
-  );
-};
 
 const RenderClips = async ({ wordIDX }: { wordIDX: number }) => (
   <Flex className="h-full w-full max-w-xl flex-col gap-2 overflow-y-scroll">
     {/** @ts-ignore */}
     {words[wordIDX]?.clips.map((_, clipIDX) => {
-      return <ClipItemList wordIDX={wordIDX} clipIDX={clipIDX} />;
+      return <ClipItemList id={words[wordIDX]?.id} word={words[wordIDX]?.text} url={words[wordIDX]?.clips[clipIDX]?.supabase_public_url} />;
     })}
   </Flex>
 );
@@ -76,6 +62,7 @@ const WordListItem = async ({ wordIDX }: { wordIDX: number }) => {
       <Col className="flex  !text-4xl">
         <Popover
           placement="bottom"
+          destroyTooltipOnHide
           title={
             <Typography className="text-center">
               {/** @ts-ignore */}
@@ -101,3 +88,6 @@ const WordListItem = async ({ wordIDX }: { wordIDX: number }) => {
     </Flex>
   );
 };
+
+
+// 231.26

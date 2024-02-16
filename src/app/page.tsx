@@ -39,7 +39,7 @@ export default function Home(ctx: any) {
                 }}
                 className="block text-3xl underline"
               >
-                {v.text}
+                {v.text} {v.id}
               </Link>
             );
           })}
@@ -48,3 +48,4 @@ export default function Home(ctx: any) {
     </main>
   );
 }
+
