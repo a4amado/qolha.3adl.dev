@@ -15,9 +15,11 @@ export default function Home(ctx: any) {
   const ss = useRef<any>(null)
 
   useEffect(() => {
+    
     clearTimeout(ss.current);
 
     ss.current = setTimeout(() => {
+      if (!word) return;
       q.mutateAsync(word)
 
     }, 1000);
