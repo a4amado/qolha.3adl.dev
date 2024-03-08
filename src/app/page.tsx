@@ -4,19 +4,25 @@ import AddWord from "./_components/add-word";
 import AddClip from "./_components/add-clip";
 import { AutoComplete, Flex, Input, Typography } from "antd";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "~/trpc/react";
 import Image from "next/image";
- export default function Home(ctx: any) {
+
+export default function Home(ctx: any) {
   const [word, setWord] = useState("");
   const q = api.word.search.useMutation();
-  useEffect(() => {
-    const time_out = setTimeout(() => {
-      q.mutate(word)
-    }, 700)
+  const [tigger, setTigger] = useState("");
+  const ss = useRef<any>(null)
 
-    return () => clearTimeout(time_out);
-  }, [word]);
+  useEffect(() => {
+    clearTimeout(ss.current);
+
+    ss.current = setTimeout(() => {
+      q.mutateAsync(word)
+
+    }, 1000);
+    () => clearTimeout(ss.current);
+  }, [tigger])
 
   function handleWord(v: string) {
     setWord(v);
@@ -26,7 +32,11 @@ import Image from "next/image";
     <main className="mx-auto block h-screen w-full max-w-4xl">
       <Flex className=" flex-end m-5 flex flex-grow-0 items-end">
         <Input
-          onChange={(e) => handleWord(e.target.value)}
+          onChange={(e) => {
+            handleWord(e.target.value);
+            setTigger(Math.random().toString())
+
+          }}
           value={word}
           placeholder="إبحث ........."
           className="mx-auto block h-28 w-full max-w-4xl border text-center align-bottom !text-4xl font-bold"
@@ -34,9 +44,9 @@ import Image from "next/image";
       </Flex>
       <Flex className="m-5  h-3/4  flex-grow-0 flex-col items-end">
         <Flex className="w-full flex-col text-center">
-          {q.status == "loading" && <Loading/>}
-          {q.status == "success" && q.data.length === 0 &&  word &&<Flex className="mx-auto">Sorry we found nothing for: {word}</Flex>}
-          {q.status == "error" &&  <Flex className="mx-auto">Something went wrong.</Flex>}
+          {q.status == "loading" && <Loading />}
+          {q.status == "success" && q.data.length === 0 && word && <Flex className="mx-auto">Sorry we found nothing for: {word}</Flex>}
+          {q.status == "error" && <Flex className="mx-auto">Something went wrong.</Flex>}
 
           {(q.data || [])?.map((v) => {
             return (
