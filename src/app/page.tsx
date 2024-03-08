@@ -22,9 +22,9 @@ export default function Home(ctx: any) {
       if (!word) return;
       q.mutateAsync(word)
 
-    }, 1000);
+    }, 700);
     () => clearTimeout(ss.current);
-  }, [tigger])
+  }, [ss.current])
 
   function handleWord(v: string) {
     setWord(v);
@@ -34,11 +34,7 @@ export default function Home(ctx: any) {
     <main className="mx-auto block h-screen w-full max-w-4xl">
       <Flex className=" flex-end m-5 flex flex-grow-0 items-end">
         <Input
-          onChange={(e) => {
-            handleWord(e.target.value);
-            setTigger(Math.random().toString())
-
-          }}
+          onChange={(e) => handleWord(e.target.value)}
           value={word}
           placeholder="إبحث ........."
           className="mx-auto block h-28 w-full max-w-4xl border text-center align-bottom !text-4xl font-bold"

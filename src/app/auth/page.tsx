@@ -5,7 +5,6 @@ import {
   // Import predefined theme
   ThemeSupa,
 } from "@supabase/auth-ui-shared";
-import { Flex } from "antd";
 import { useEffect } from "react";
 import { useLocation } from "react-use";
 import { supabaseclient } from "~/Auth/client";
