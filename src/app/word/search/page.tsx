@@ -11,8 +11,8 @@ import AddClipModal from "~/app/_components/add-clip-modal";
 let words: RouterOutputs["word"]["search"];
 
 const WordList = async (ctx: any) => {
-  words = await api.word.search.query(ctx.searchParams.word);
-  console.log(words);
+  words = await api.word.search.mutate(ctx.searchParams.word);
+  
 
   return (
     <Flex className="!w-full justify-center">
