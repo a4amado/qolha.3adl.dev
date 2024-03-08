@@ -100,13 +100,17 @@ export default function AddClip(props: AddClipProps) {
         className="relative m-3 aspect-square h-fit w-full max-w-sm rounded border p-3 shadow-md"
         gap={10}
       >
+        {
+          props.type == "random" &&
+        
         <Button
           className="!absolute right-1 top-1"
           disabled={loading}
           loading={word.isFetching || word.isRefetching || word.isLoading}
           icon={<IoReloadOutline />}
           onClick={() => word.refetch()}
-        />
+        />}
+        
         <Flex className="h-2/5 items-center justify-center">
           {text && <span className="text-3xl font-bold">{text}</span>}
           {loading && <LoadingOutlined />}
