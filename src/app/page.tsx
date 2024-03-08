@@ -6,11 +6,15 @@ import { AutoComplete, Flex, Input, Typography } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
-
+import Image from "next/image";
 export default function Home(ctx: any) {
   const [word, setWord] = useState("");
-  const q = api.word.search.useQuery(word);
-  useEffect(() => {}, [word]);
+  const q = api.word.search.useQuery(word, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retryOnMount: false
+  });
+  useEffect(() => { }, [word]);
 
   function handleWord(v: string) {
     setWord(v);
@@ -28,6 +32,10 @@ export default function Home(ctx: any) {
       </Flex>
       <Flex className="m-5  h-3/4  flex-grow-0 flex-col items-end">
         <Flex className="w-full flex-col text-center">
+          {q.status == "loading" && <Loading/>}
+          {q.status == "success" && q.data.length === 0 &&  word &&<Flex className="mx-auto">Sorry we found nothing for: {word}</Flex>}
+          {q.status == "error" &&  <Flex className="mx-auto">Something went wrong.</Flex>}
+
           {(q.data || [])?.map((v) => {
             return (
               <Link
@@ -47,4 +55,12 @@ export default function Home(ctx: any) {
       </Flex>
     </main>
   );
+}
+
+
+function Loading() {
+  return <>
+    <Image className="mx-auto" alt="loading" src="/Double Ring-0.8s-203px.svg" width={150} height={150} />
+
+  </>
 }

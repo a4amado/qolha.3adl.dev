@@ -93,7 +93,7 @@ export default function AddClip(props: AddClipProps) {
   }
 
   return (
-    <Flex className=" justify-center">
+    <Flex className="mx-auto w-full max-w-6xl justify-center">
       {audio}
       <Flex
         vertical

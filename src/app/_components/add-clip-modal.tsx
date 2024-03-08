@@ -12,7 +12,7 @@ export default function AddClipModal(props: {
   const [open, toogle] = useToggle(false);
   return (
     <>
-      <Button onClick={toogle}>Open</Button>
+      <Button onClick={toogle}>Contribute</Button>
       <Modal
         onCancel={toogle}
         onOk={toogle}
