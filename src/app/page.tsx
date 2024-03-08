@@ -24,7 +24,7 @@ export default function Home(ctx: any) {
 
     }, 700);
     () => clearTimeout(ss.current);
-  }, [ss.current])
+  }, [word])
 
   function handleWord(v: string) {
     setWord(v);
