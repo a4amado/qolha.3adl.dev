@@ -1,12 +1,11 @@
 import "~/styles/globals.css";
-
+ 
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 import Header from "./_components/header";
-import Footer from "~/app/_components/footer";
 
 import NextAuthProvider from "~/Auth/Provider";
 if (typeof document !== "undefined") {
@@ -39,8 +38,7 @@ export default function RootLayout({
             <AntdRegistry>
               <Header />
               {children}
-              <Footer />
-            </AntdRegistry>
+             </AntdRegistry>
           </NextAuthProvider>
         </TRPCReactProvider>
       </body>
