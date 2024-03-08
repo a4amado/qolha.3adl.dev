@@ -7,14 +7,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import Image from "next/image";
-export default function Home(ctx: any) {
+ export default function Home(ctx: any) {
   const [word, setWord] = useState("");
-  const q = api.word.search.useQuery(word, {
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    retryOnMount: false
-  });
-  useEffect(() => { }, [word]);
+  const q = api.word.search.useMutation();
+  useEffect(() => {
+    const time_out = setTimeout(() => {
+      q.mutate(word)
+    }, 700)
+
+    return () => clearTimeout(time_out);
+  }, [word]);
 
   function handleWord(v: string) {
     setWord(v);

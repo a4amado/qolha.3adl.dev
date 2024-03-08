@@ -75,7 +75,7 @@ export const wordRouter = createTRPCRouter({
 
     return word;
   }),
-  search: publicProcedure.input(z.string()).query(async (ctx) => {
+  search: publicProcedure.input(z.string()).mutation(async (ctx) => {
     const result = await db.$queryRawUnsafe(`
     SELECT W.text, W.id,   similarity(W.text, '${ctx.input}') AS word_similarity
     FROM "Word" as W
